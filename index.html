@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <!-- TODO: Content Security Policy
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        child-src 'none';
+        script-src 'self';
+        connect-src 'self' ws://localhost:11434;
+        img-src 'self';
+        style-src 'self' https://cdnjs.cloudflare.com/ajax/libs;
+        font-src 'self';">
+    -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="chat-app">
+        <aside id="sidebar">
+            <!-- Chats -->
+        </aside>
+        <div id="chat-area">
+            <header id="chat-header">
+                <!-- Chat header -->
+            </header>
+            <div id="chat-history">
+                <!-- Chat messages -->
+            </div>
+            <div id="chat-input">
+                <!-- Chat input and button -->
+                <textarea id="message-input" type="text" placeholder="Type a message..."></textarea>
+                <button id="send-button" class="button">Send</button>
+                <button id="abort-button" class="button hidden">Abort</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

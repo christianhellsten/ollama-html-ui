@@ -11,6 +11,7 @@
         connect-src 'self' ws://localhost:11434;">
     -->
     <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="grid.css">
     <link rel="stylesheet" href="typography.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -18,9 +19,10 @@
     <div id="chat-app">
         <aside id="sidebar">
             <h2>Chats</h2>
-            <button id="new-button" class="button button-primary">New</button>
+            <button id="new-chat-button" class="button button-primary">New</button>
             <button id="clear-button" class="button">Clear</button>
             <!-- Chats -->
+            <ul id="chat-list"></ul>
         </aside>
         <div id="chat-area">
             <header id="chat-header">
@@ -32,9 +34,13 @@
             </div>
             <div id="chat-input">
                 <!-- Chat input and button -->
-                <textarea id="message-input" type="text" placeholder="Type a message..."></textarea>
-                <button id="send-button" class="button button-primary">Send</button>
-                <button id="abort-button" class="button hidden">Abort</button>
+                <div class="textarea">
+                  <textarea id="message-input" type="text" placeholder="Type a message..."></textarea>
+                </div>
+                <div class="buttons">
+                  <button id="send-button" class="button button-primary">Send</button>
+                  <button id="abort-button" class="button hidden">Abort</button>
+                </div>
             </div>
         </div>
     </div>

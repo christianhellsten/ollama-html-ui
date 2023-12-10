@@ -7,6 +7,7 @@ body, html {
 
 body {
   color: #222;
+  background-color: #f5f5f5; /* Light grey background */
   font-family: Arial, sans-serif;
 }
 
@@ -14,66 +15,62 @@ textarea {
   font-family: Arial, sans-serif;
 }
 
-/* Chat app container */
-#chat-app {
-  display: flex;
-  height: 100vh;
-}
-
 /* Sidebar styling */
 #sidebar {
   padding: 1rem;
-  flex: 0 0 250px; /* fixed width */
   background-color: #f4f5f7;
   overflow-y: auto;
 }
 
-/* Chat area styling */
-#chat-area {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+/* Styling for chat list */
+#chat-list {
+  padding: 0.5rem;
 }
 
 /* Chat header */
 #chat-header {
-  flex: 0 0 50px; /* fixed height */
   background-color: #0052cc;
   color: white;
-  padding: 10px;
+  padding: 1rem;
 }
 
-/* Message area */
+/* Styling for chat history container */
 #chat-history {
-  flex-grow: 1;
-  padding: 10px;
-  overflow-y: auto;
+  max-width: 1024px;
+  width: 100%; /* Full width of its parent */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 /* Message input area */
 #chat-input {
-  flex: 0 0 60px; /* fixed height */
-  display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 0.5rem;
   background-color: #fff;
   border-top: 1px solid #ccc;
 }
 
 /* Input field */
 #chat-input textarea {
-  flex-grow: 1;
-  padding: 10px;
+  width: 100%;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px;
+  border-radius: 2px;
+  padding: 10px; /* Desired padding */
+  box-sizing: border-box; /* Include padding and border in the element's size */
+}
+
+.chat-link {
+  display: inline-block;
 }
 
 .button {
-  padding: 10px 15px;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 2px;
   cursor: pointer;
+}
+
+a {
+  text-decoration: none;
 }
 
 /* Primary button */
@@ -88,26 +85,27 @@ textarea {
 
 /* Base styling for all messages */
 .message {
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 2px;
 }
 
 /* Styling for user messages */
 .user-message {
-  background-color: #e0f7fa; /* Light blue background */
-  color: #01579b; /* Dark blue text */
-  align-self: flex-end; /* Align to the right */
-  border: 1px solid #b3e5fc; /* Light blue border */
+  background-color: #E3F2FD; /* Light blue background (50) */
+  color: #0D47A1; /* Dark blue text (900) */
+  align-self: flex-start; /* Align to the right */
+  border: 1px solid #BBDEFB; /* Light blue border (100) */
+  border-radius: 2px;
 }
 
 /* Styling for system messages */
 .system-message {
-  background-color: #ffe0b2; /* Light orange background */
-  color: #e65100; /* Dark orange text */
-  align-self: flex-start; /* Align to the left */
-  margin-left: 10px;
-  border: 1px solid #ffccbc; /* Light orange border */
+  background-color: #FFF3E0; /* Light orange background (50) */
+  color: #BF360C; /* Dark orange text (900) */
+  /*margin-left: 10px;*/
+  border: 1px solid #FFE0B2; /* Light orange border (100) */
+  border-radius: 2px;
 }
 
 /* Spinner */

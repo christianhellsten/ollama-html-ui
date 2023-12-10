@@ -1,0 +1,56 @@
+/* Basic Typography */
+body, html {
+  font-size: 16px; /* Base font size */
+  line-height: 1.5; /* Comfortable line height */
+}
+
+/* Heading styles */
+h1 {
+  font-size: 2rem; /* Larger size for main headings */
+  font-weight: bold; /* Bold for emphasis */
+}
+
+h2 {
+  font-size: 1.5rem; /* Medium size for secondary headings */
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.25rem; /* Smaller size for tertiary headings */
+  font-weight: normal; /* Normal weight for less emphasis */
+}
+
+/* Ensuring high contrast text for better readability */
+#chat-header {
+  line-height: 50px;
+  font-size: 1.25rem; /* Larger text for header */
+}
+
+/* Chat message typography */
+.message {
+  font-size: 0.9rem; /* Slightly smaller font for messages */
+  line-height: 1.4;
+}
+
+#chat-input textarea {
+  font-size: 0.9rem; /* Consistent font size in input area */
+}
+
+/* Responsive typography */
+@media (max-width: 600px) {
+  body, html {
+    font-size: 14px; /* Slightly smaller font on smaller screens */
+  }
+
+  #chat-header, h1 {
+    font-size: 1.1rem; /* Adjust header and h1 font size for smaller screens */
+  }
+
+  h2 {
+    font-size: 1rem; /* Adjust h2 font size for smaller screens */
+  }
+
+  h3 {
+    font-size: 0.9rem; /* Adjust h3 font size for smaller screens */
+  }
+}

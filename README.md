@@ -4,7 +4,12 @@
 
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
 
-HTML UI for Ollama REST API. Minimal dependencies (CSS & code highlighting). Easy to install (download and open in browser).
+HTML UI for Ollama.
+
+## Goals
+
+- Zero dependencies
+- Simple to install: download and open in browser.
 
 ## Features
 
@@ -12,6 +17,8 @@ HTML UI for Ollama REST API. Minimal dependencies (CSS & code highlighting). Eas
 - Mistral
 
 ## Installation
+
+First install (Olama)[https://ollama.ai/].
 
 ```bash
 $ git clone git@github.com:christianhellsten/ollama-html-ui.git
@@ -28,6 +35,7 @@ $ parcel build index.html
 ## Development
 
 ```bash
+$ ollama run mistral
 $ yarn add --dev parcel
 $ parcel index.html
 $ open http://locahost:1234

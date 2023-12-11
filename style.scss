@@ -20,18 +20,31 @@ textarea {
   padding: 1rem;
   background-color: #f4f5f7;
   overflow-y: auto;
+
+  .buttons {
+    width: 100%;
+    display: flex;
+    flex-grow: 1;
+  }
 }
 
 /* Styling for chat list */
 #chat-list {
-  padding: 0.5rem;
+  padding: .5rem 0;
+
+  .chat-list-item {
+    display: block;
+    width: 100%;
+    background: #efefef;
+    padding: 0.75rem;
+  }
 }
 
 /* Chat header */
 #chat-header {
   background-color: #0052cc;
   color: white;
-  padding: 1rem;
+  padding: 0 1rem;
 }
 
 /* Styling for chat history container */
@@ -129,6 +142,11 @@ a {
   border: 1px solid #aaa;
   background: #eef;
   padding: 2px;
+}
+
+#chat-title:before {
+  content: "\270E"; // Unicode character for ✎
+  margin-right: 8px; // Space between the title and the pen icon
 }
 
 /* Utilities */

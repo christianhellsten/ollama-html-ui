@@ -10,24 +10,29 @@
         child-src 'none';
         connect-src 'self' ws://localhost:11434;">
     -->
-    <link rel="stylesheet" href="reset.css" />
-    <link rel="stylesheet" href="grid.css">
-    <link rel="stylesheet" href="typography.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme.scss" />
 </head>
 <body>
     <div id="chat-app">
         <aside id="sidebar">
-            <h2>Chats</h2>
-            <button id="new-chat-button" class="button button-primary">New</button>
-            <button id="clear-button" class="button">Clear</button>
+            <!-- Buttons -->
+            <div class="row">
+                <button id="new-chat-button" class="col grw button button-primary" title="New chat"><i class="icon-new"></i></button>
+                <button id="settings-button" class="col grw button" title="Show settings"><i class="icon-settings"></i></button>
+                <button id="clear-button" class="col grw button" title="Clear chats"><i class="icon-clear"></i></button>
+            </div>
             <!-- Chats -->
-            <ul id="chat-list"></ul>
+            <div class="row">
+                <ul id="chat-list" class="col"></ul>
+            </div>
+            <!-- Buttons -->
+            <div class="row flex-align-end">
+            </div>
         </aside>
         <div id="chat-area">
             <header id="chat-header">
                 <!-- Chat header -->
-                <h2 id="chat-title" contenteditable>New chat</h2>
+                <h2 id="chat-title" contenteditable required>New chat</h2>
             </header>
             <div id="chat-history">
                 <!-- Chat messages -->
@@ -38,8 +43,8 @@
                   <textarea id="message-input" type="text" placeholder="Type a message..."></textarea>
                 </div>
                 <div class="buttons">
-                  <button id="send-button" class="button button-primary">Send</button>
-                  <button id="abort-button" class="button hidden">Abort</button>
+                  <button id="send-button" class="button button-primary" title="Send"><i class="icon-send"></i></button>
+                  <button id="abort-button" class="button hidden" title="Abort"><i class="icon-abort"></i></button>
                 </div>
             </div>
         </div>

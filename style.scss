@@ -167,6 +167,13 @@ a {
   margin-right: 8px; // Space between the title and the pen icon
 }
 
+#input-ollama-models {
+  .list-item {
+    color: blue;
+    cursor: pointer;
+  }
+}
+
 /* Utilities */
 .hidden {
   display: none;

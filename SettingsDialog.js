@@ -1,7 +1,10 @@
+import { Models } from './Models.js';
 import { LocalStorage } from './LocalStorage.js';
+import { List } from './List.js';
 
 export class SettingsDialog {
     constructor() {
+        this.models = new Models();
         this.domId = 'settings-dialog';
         this.storage = new LocalStorage();
         this.createDialogElements();
@@ -20,6 +23,7 @@ export class SettingsDialog {
     createDialogElements() {
         this.modal = document.getElementById(this.domId);
         this.urlInput = document.getElementById('input-ollama-url');
+        this.modelInput = document.getElementById('input-ollama-model');
         this.saveButton = document.getElementById('button-save-settings');
         this.saveButton.onclick = () => this.saveSettings();
         this.closeButton = document.getElementById('button-close-settings');
@@ -36,7 +40,16 @@ export class SettingsDialog {
     }
 
     loadSettings() {
-        const url = this.storage.get('url', '');
+        const url = this.storage.get('url', 'http://localhost:11434');
         this.urlInput.value = url;
+        this.models.load().then(() => {
+            console.log(this.models.getAllModelNames()); // This will log the model names once they are loaded
+            const modelList = new List('input-ollama-models', this.models.getAllModelNames())
+            modelList.onClick(model => {
+                console.log(model)
+                this.modelInput.value = model;
+                this.storage.set('model', model);
+            });
+        });
     }
 }

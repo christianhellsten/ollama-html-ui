@@ -26,8 +26,6 @@
  *   - Clear chats button
  *
  */
-import { SettingsDialog } from './SettingsDialog.js';
 import { App } from './App.js';
 
 const app = new App();
-//const settingsDialog = new SettingsDialog();

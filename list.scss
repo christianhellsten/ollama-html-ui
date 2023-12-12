@@ -1,0 +1,10 @@
+.list {
+    display: flex;       /* Enables flexbox */
+    flex-direction: column; /* Arranges children (list items) vertically */
+    list-style-type: none; /* Optional: Removes default list item styling */
+    padding: 0;           /* Optional: Removes default padding */
+}
+
+.list-item {
+    margin-bottom: 10px; /* Optional: Adds space between items */
+}

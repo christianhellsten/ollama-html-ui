@@ -1,6 +1,6 @@
 # ollama-html-ui
 
-![cover](/ollama-html-ui.jpg)
+![cover](/screenshots/ollama-html-ui.jpg)
 
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
 

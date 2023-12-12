@@ -10,7 +10,7 @@
         child-src 'none';
         connect-src 'self' ws://localhost:11434;">
     -->
-    <link rel="stylesheet" href="theme.scss" />
+    <link rel="stylesheet" href="/css/theme.scss" />
 </head>
 <body>
     <div id="chat-app">
@@ -62,7 +62,7 @@
                 </div>
                 <div class="input">
                     <label class="" for="input-ollama-models">Model</label>
-                    <input id="input-ollama-model" class="col" required class="input" placeholder="mistral"/>
+                    <input id="input-ollama-model" class="col" required disabled class="input" placeholder="mistral"/>
                 </div>
                 <div class="">
                     <h4>Available models</h4>
@@ -75,6 +75,6 @@
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="/js/script.js"></script>
 </body>
 </html>

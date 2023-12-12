@@ -8,7 +8,7 @@ A HTML UI for Ollama.
 
 ## Goals
 
-- Zero dependencies: Vanilla HTML, CSS, and Javascript
+- Zero dependencies: vanilla HTML, CSS, and Javascript
 - Simple installation: download and open in browser
 
 ## Features
@@ -41,7 +41,6 @@ $ git clone git@github.com:christianhellsten/ollama-html-ui.git
 ## Running
 
 ```bash
-$ ollama run mistral
 $ cd ollama-html-ui
 $ open index.html
 ```

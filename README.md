@@ -4,49 +4,65 @@
 
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
 
-HTML UI for Ollama.
+A HTML UI for Ollama.
 
 ## Goals
 
 - Zero dependencies
-- Simple to install: download and open in browser.
+- Simple installation: download and open in browser
 
 ## Features
 
 - Ollama
 - Mistral
 
-## Installation
+## Installing
 
-First install (Olama)[https://ollama.ai/].
+First, install and start [Olama](https://ollama.ai/).
+
+```bash
+$ ollama run mistral
+```
+
+Next, clone this repository:
 
 ```bash
 $ git clone git@github.com:christianhellsten/ollama-html-ui.git
-$ cd ollama-html-ui
-$ open index.html
 ```
 
-## Compilation
+## Running
 
 ```bash
-$ parcel build index.html
+$ ollama run mistral
+$ cd ollama-html-ui
+$ open index.html
 ```
 
 ## Development
 
 ```bash
-$ ollama run mistral
 $ yarn add --dev parcel
 $ parcel index.html
 $ open http://locahost:1234
 ```
 
+## Compiling
+
+```bash
+$ parcel build index.html
+```
+
 ## TODO
 
+- [ ] Set model
 - [ ] Delete Chat
-- [ ] Update URL to /chats/:id
-- [ ] Settings
+- [ ] Use Chat API
 - [ ] CSP
+- [ ] GPTs
 
-- [x] New Chat
-- [x] Local storage
+- [x] Save settings
+- [x] View settings
+- [x] Send message
+- [x] Abort response
+- [x] New chat
+- [x] Clear chats

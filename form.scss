@@ -1,0 +1,25 @@
+label {
+}
+
+input {
+    width: 100%;
+    padding: 8px 15px; /* Padding inside the input */
+    //margin: 8px 0; /* Margin around the input */
+    display: inline-block; /* Ensures the input does not break into a new line */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Makes sure padding does not affect the overall width */
+    font-size: 16px; /* Slightly larger font for readability */
+    color: #333; /* Darker text for better readability */
+    background-color: #f8f8f8; /* Light background color */
+}
+
+input:focus {
+    border-color: #4CAF50; /* Changes border color on focus */
+    outline: none; /* Removes the default focus outline */
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Adds a subtle shadow on focus */
+}
+
+input:hover {
+    background-color: #e9e9e9; /* Slightly darker background on hover */
+}

@@ -41,7 +41,9 @@ export class SettingsDialog {
 
     loadSettings() {
         const url = this.storage.get('url', 'http://localhost:11434');
+        const model = this.storage.get('model', 'mistral');
         this.urlInput.value = url;
+        this.modelInput.value = model;
         this.models.load().then(() => {
             console.log(this.models.getAllModelNames()); // This will log the model names once they are loaded
             const modelList = new List('input-ollama-models', this.models.getAllModelNames())

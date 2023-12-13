@@ -1,0 +1,35 @@
+/* Styling for chat list */
+#chat-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: .5rem 0;
+
+  .chat-list-item {
+    cursor: pointer;
+    width: 100%;
+    font-weight: 700;
+    background: #efefef;
+    padding: 0.75rem;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ececec;
+
+    a:visited {
+      color: #222;
+    }
+  }
+
+  .hover {
+    .hidden {
+      display: inline-block;
+    }
+  }
+
+  .selected {
+    background: #fefefe;
+  }
+
+  .chat-list-item:hover {
+    background: #fefefe;
+  }
+}

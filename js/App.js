@@ -37,17 +37,20 @@ export class App {
   }
 
   renderChatArea() {
-    // Restore current chat on load
     this.chatHistory.innerHTML = chats.getCurrentChat()?.content || '';
     this.chatTitle.innerHTML = chats.getCurrentChat()?.title || 'New chat';
   }
 
   renderChatList() {
     this.chatList.innerHTML = '';
-    // Restore chat list
     chats.getChats().forEach(chat => {
       const listItem = document.createElement('li');
       const chatLink = document.createElement('a');
+      const deleteChatLink = document.createElement('a');
+      const deleteIcon = document.createElement('i');
+      deleteIcon.classList.add('icon-delete');
+      deleteChatLink.classList.add('hidden', 'float-right');
+      deleteChatLink.appendChild(deleteIcon);
       listItem.classList.add('chat-list-item', `chat${chat.id}`);
       if (chat.id === chats.getCurrentChat()?.id) {
         listItem.classList.add('selected');
@@ -58,6 +61,20 @@ export class App {
       chatLink.classList.add('chat-link');
       chatLink.textContent = chat.title;
       chatLink.href = `/chats/${chat.id}`;
+      listItem.addEventListener("mouseover", () => {
+        listItem.classList.add('hover');
+      });
+      listItem.addEventListener("mouseout", () => {
+        listItem.classList.remove('hover');
+      });
+      deleteChatLink.addEventListener("click", (e) => {
+        window.history.pushState({}, '', '/');
+        chats.setCurrentChat(null);
+        chats.remove(chat.id)
+        this.render();
+        this.messageInput.focus();
+        e.stopPropagation(); // Stop list item from being clicked
+      });
       listItem.addEventListener("click", () => {
         window.history.pushState({}, '', `/chats/${chat.id}`);
         chats.setCurrentChat(chat.id);
@@ -65,6 +82,7 @@ export class App {
         this.messageInput.focus();
       });
       listItem.appendChild(chatLink);
+      listItem.appendChild(deleteChatLink);
       this.chatList.appendChild(listItem);
     });
   }

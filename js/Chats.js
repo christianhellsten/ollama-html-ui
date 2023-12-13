@@ -78,7 +78,7 @@ export class Chats {
     const chatIndex = this.chats.findIndex(chat => chat.id === id);
     if (chatIndex !== -1) {
       this.chats.splice(chatIndex, 1);
-      this.saveChats();
+      this.saveData();
     } else {
       console.error('Chat not found');
     }
@@ -86,13 +86,13 @@ export class Chats {
 
   // Set the current chat
   setCurrentChat(id) {
-    const chatExists = this.chats.some(chat => chat.id === id);
-    if (chatExists) {
-      this.currentChatId = id;
-      this.saveData();
-    } else {
-      console.error('Chat not found');
-    }
+    //const chatExists = this.chats.some(chat => chat.id === id);
+    //if (chatExists) {
+    this.currentChatId = id;
+    this.saveData();
+    //} else {
+    console.log(`Set current chat ${id}`);
+    //}
   }
 
   // Get the current chat

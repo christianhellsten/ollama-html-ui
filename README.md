@@ -63,13 +63,13 @@ $ parcel build index.html
 
 ## Todo
 
-- [ ] Delete Chat
 - [ ] Ollama Chat API
-- [ ] CSP
 - [ ] GPTs
+- [ ] CSP
 
 ## Done
 
+- [x] Delete Chat
 - [x] Select model
 - [x] Save settings
 - [x] View settings

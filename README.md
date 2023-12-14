@@ -64,8 +64,13 @@ $ parcel build index.html
 ## Todo
 
 - [ ] Ollama Chat API
-- [ ] GPTs
+- [ ] Select model in sidebar (global)
+- [ ] Select model in chat (local)
+- [ ] Delete message and response
+- [ ] Add browserslist to package.json for transpiling
+- [ ] Copy message / response
 - [ ] CSP
+- [ ] Unit and UI tests: https://nodejs.org/api/test.html
 
 ## Done
 

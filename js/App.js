@@ -164,6 +164,11 @@ export class App {
     element.setAttribute('disabled', 'disabled');
   }
 
+  // TODO: Make this a chat-specific setting
+  getModel() {
+    return storage.get('model', 'mistral');
+  }
+
   // Send message and handle response
   async sendMessage() {
     const message = this.messageInput.value.trim();
@@ -175,8 +180,7 @@ export class App {
       responseDiv.innerHTML = '<div class="spinner"></div>';
 
       try {
-        // TODO: Hardcoded to use mistral
-        const data = { model: "mistral", prompt: message };
+        const data = { model: this.getModel(), prompt: message };
         const response = await this.postMessage(data);
         this.handleResponse(response, responseDiv);
       } catch (error) {

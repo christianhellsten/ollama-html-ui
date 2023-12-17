@@ -1,0 +1,27 @@
+#chat-form {
+  flex: 0 0 60px; /* fixed height */
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+
+  .textarea {
+    display: flex;
+    flex-grow: 1;
+  }
+
+  .buttons {
+    position: absolute;
+    right: 1rem;
+  }
+
+  textarea {
+    resize: none;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 0.5rem; /* Desired padding */
+    box-sizing: border-box; /* Include padding and border in the element's size */
+  }
+}

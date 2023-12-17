@@ -37,7 +37,7 @@
             <div id="chat-history">
                 <!-- Chat messages -->
             </div>
-            <div id="chat-input">
+            <div id="chat-form">
                 <!-- Chat input and button -->
                 <div class="textarea">
                   <textarea id="message-input" type="text" placeholder="Type a message..."></textarea>
@@ -57,15 +57,15 @@
             </div>
             <div class="modal-body">
                 <div class="input">
-                    <label class="" for="input-ollama-url" class="hidden">URL</label>
-                    <input id="input-ollama-url" class="col" type="url" required class="input" placeholder="http://localhost:11434"/>
+                    <label class="" for="input-url" class="hidden">URL</label>
+                    <input id="input-url" class="col" type="url" required class="input" placeholder="Example: http://localhost:11434"/>
                 </div>
                 <div class="input">
-                    <label class="" for="input-ollama-models">Model</label>
-                    <input id="input-ollama-model" class="col" required disabled class="input" placeholder="mistral"/>
+                    <label class="" for="input-model">Model</label>
+                    <input id="input-model" class="col" required disabled class="input" placeholder="Select model"/>
                     <div class="">
                         <h4>Available models</h4>
-                        <div id="input-ollama-models" class=""></div>
+                        <div id="input-models" class=""></div>
                     </div>
                 </div>
                 <div class="buttons row">
@@ -75,6 +75,16 @@
             </div>
         </div>
     </div>
+    <!-- Chat list item template -->
+    <template id="chat-list-item-template">
+      <li class="chat-list-item">
+        <i class="icon-selected icon hidden"></i>
+        <span class="chat-title"></span>
+        <a class="delete-chat-button hidden float-right">
+          <i class="icon-delete"></i>
+        </a>
+      </li>
+    </template>
     <script type="module" src="/js/script.js"></script>
 </body>
 </html>

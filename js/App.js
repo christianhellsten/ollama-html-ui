@@ -1,137 +1,70 @@
-import { Chat, Chats } from './Chats.js';
-import { LocalStorage } from './LocalStorage.js';
-import { SettingsDialog } from './SettingsDialog.js';
+import { Event } from './Event.js';
+import { Chats } from './models/Chats.js';
+import { LocalStorage } from './models/LocalStorage.js';
+import { Sidebar } from './Sidebar.js';
+import { ChatArea } from './ChatArea.js';
 
 // Configuration and DOM elements
-export const storage = new LocalStorage();
-export const chats = new Chats();
+const storage = new LocalStorage();
 
-// App implements all UI functionality
 export class App {
   constructor() {
     this.controller = null;
-    this.settings = new SettingsDialog();
+    this.chats = new Chats();
+    this.sidebar = new Sidebar(this.chats);
+    this.chatArea = new ChatArea(this.chats);
+    this.initializeElements();
+    this.render();
+    this.bindEventListeners();
+    this.logInitialization();
+  }
 
-    // Elements
-    this.newChatButton = document.getElementById('new-chat-button');
+  initializeElements() {
     this.sendButton = document.getElementById('send-button');
     this.abortButton = document.getElementById('abort-button');
-    this.settingsButton = document.getElementById('settings-button');
     this.messageInput = document.getElementById('message-input');
-    this.clearButton = document.getElementById('clear-button');
     this.chatHistory = document.getElementById('chat-history');
-    this.chatList = document.getElementById('chat-list');
-    this.chatTitle = document.getElementById('chat-title');
+  }
 
-    // Render
-    this.render();
-
-    // Bind event listeners
-    this.bindEventListeners();
-    console.log(`~~~ Loaded App ~~~\nModel: ${storage.get('model')}\nURL: ${storage.get('url')}`);
+  logInitialization() {
+    let msg = `~~~\nOllama HTML UI\n~~~
+Model: ${storage.get('model')}
+URL:   ${storage.get('url')}
+Chat:  ${this.chats.getCurrentChat()?.id}
+`;
+    console.log(msg);
   }
 
   render() {
-    this.renderChatArea();
-    this.renderChatList();
-  }
-
-  renderChatArea() {
-    this.chatHistory.innerHTML = chats.getCurrentChat()?.content || '';
-    this.chatTitle.innerHTML = chats.getCurrentChat()?.title || 'New chat';
-  }
-
-  renderChatList() {
-    this.chatList.innerHTML = '';
-    chats.getChats().forEach(chat => {
-      const listItem = document.createElement('li');
-      const chatLink = document.createElement('a');
-      const deleteChatLink = document.createElement('a');
-      const deleteIcon = document.createElement('i');
-      deleteIcon.classList.add('icon-delete');
-      deleteChatLink.classList.add('hidden', 'float-right');
-      deleteChatLink.appendChild(deleteIcon);
-      listItem.classList.add('chat-list-item', `chat${chat.id}`);
-      if (chat.id === chats.getCurrentChat()?.id) {
-        listItem.classList.add('selected');
-        const icon = document.createElement('i');
-        icon.classList.add('icon-selected', 'icon');
-        listItem.appendChild(icon);
-      }
-      chatLink.classList.add('chat-link');
-      chatLink.textContent = chat.title;
-      chatLink.href = `/chats/${chat.id}`;
-      listItem.addEventListener("mouseover", () => {
-        listItem.classList.add('hover');
-      });
-      listItem.addEventListener("mouseout", () => {
-        listItem.classList.remove('hover');
-      });
-      deleteChatLink.addEventListener("click", (e) => {
-        window.history.pushState({}, '', '/');
-        chats.setCurrentChat(null);
-        chats.remove(chat.id)
-        this.render();
-        this.messageInput.focus();
-        e.stopPropagation(); // Stop list item from being clicked
-      });
-      listItem.addEventListener("click", () => {
-        window.history.pushState({}, '', `/chats/${chat.id}`);
-        chats.setCurrentChat(chat.id);
-        this.render();
-        this.messageInput.focus();
-      });
-      listItem.appendChild(chatLink);
-      listItem.appendChild(deleteChatLink);
-      this.chatList.appendChild(listItem);
-    });
+    // Render logic here
   }
 
   bindEventListeners() {
-    this.settingsButton.addEventListener('click', () => this.settings.show());
-    this.sendButton.addEventListener('click', () => this.sendMessage());
-    this.abortButton.addEventListener("click", () => {
-      if (this.controller) {
-        this.controller.abort();
-        this.enableInput();
-        console.log("Request aborted");
-      }
-    });
-    this.messageInput.addEventListener('keypress', event => {
-      if (event.key === 'Enter' && !event.shiftKey) {
-        this.sendMessage();
-      }
-    });
+    Event.listen('chatSelected', this.handleChatSelected);
+    this.sendButton.addEventListener('click', this.sendMessage);
+    this.abortButton.addEventListener("click", this.handleAbort);
+    this.messageInput.addEventListener('keypress', this.handleKeyPress);
+  }
+
+  handleChatSelected = () => {
+    const chat = this.chats.getCurrentChat();
+    window.history.pushState({}, '', `/chats/${chat.id}`);
+    this.chatHistory.innerHTML = chat.content;
     this.messageInput.focus();
+  }
 
-    this.newChatButton.addEventListener("click", () => {
-      const chatId = chats.add('New chat', '');
-      this.render();
-      this.messageInput.focus();
-    });
+  handleAbort = () => {
+    if (this.controller) {
+      this.controller.abort();
+      this.enableInput();
+      console.log("Request aborted");
+    }
+  }
 
-    this.clearButton.addEventListener("click", () => {
-      chats.clearData();
-      this.render();
-    });
-
-    this.chatTitle.addEventListener('blur', () => {
-      const currentChat = chats.getCurrentChat();
-      if (currentChat) {
-        const title = this.chatTitle.innerText;
-        currentChat.title = title;
-        chats.saveData();
-        this.renderChatList();
-        console.log('New chat title:', title);
-      }
-    });
-
-    this.chatTitle.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault(); // Prevents line breaks
-        this.blur(); // Triggers the blur event
-      }
-    });
+  handleKeyPress = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      this.sendMessage();
+    }
   }
 
   enableInput() {
@@ -147,81 +80,77 @@ export class App {
     this.disable(this.messageInput);
   }
 
-  // Helper methods for showing and hiding elements
-  show(element) {
+  show = (element) => {
     element.style.display = 'block';
   }
 
-  hide(element) {
+  hide = (element) => {
     element.style.display = 'none';
   }
 
-  enable(element) {
+  enable = (element) => {
     element.removeAttribute('disabled');
   }
 
-  disable(element) {
+  disable = (element) => {
     element.setAttribute('disabled', 'disabled');
   }
 
-  // TODO: Make this a chat-specific setting
-  getModel() {
-    return storage.get('model', 'mistral');
+  getModel = () => {
+    return storage.get('model');
   }
 
-  // Send message and handle response
   async sendMessage() {
     const message = this.messageInput.value.trim();
     this.messageInput.value = '';
-    if (message && message.length > 0) {
-      this.disableInput()
+    if (message) {
+      this.disableInput();
       const requestDiv = this.createMessageDiv(message, 'user');
-      const responseDiv = this.createMessageDiv('...', 'system');
-      responseDiv.innerHTML = '<div class="spinner"></div>';
+      const responseDiv = this.createMessageDiv('', 'system');
+      responseDiv.innerHTML = this.getSpinner();
       try {
         const data = { model: this.getModel(), prompt: message };
         const response = await this.postMessage(data, responseDiv);
         this.handleResponse(response, responseDiv);
       } catch (error) {
-        this.updateChat(responseDiv, `Error: ${error.message}`, 'system');
+        this.updateResponse(responseDiv, `Error: ${error.message}`, 'system');
       }
     }
   }
 
-  // Create a div for displaying a message
-  createMessageDiv(text, sender) {
+  createMessageDiv = (text, sender) => {
     const div = document.createElement('div');
-    div.initialResponse = true;
     div.classList.add('message', `${sender}-message`);
     div.textContent = text;
+    div.initialResponse = true;
     this.chatHistory.appendChild(div);
     this.chatHistory.scrollTop = this.chatHistory.scrollHeight;
     return div;
   }
 
-  // Post message to the server
+  getSpinner = () => {
+    return '<div class="spinner"></div>';
+  }
+
   async postMessage(data, responseDiv) {
     this.controller = new AbortController();
-    const signal = this.controller.signal;
-    const ollamaModel = storage.get('model', 'mistral');
-    const ollamaHost = storage.get('url', 'http://localhost:11434');
-    const url = `${ollamaHost}/api/generate`;
-    const response = await fetch(url, {
+    const { signal } = this.controller;
+    const response = await fetch(`${storage.get('url')}/api/generate`, {
       signal,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    // 404 = Model not found, etc.
-    if (response.status === 404) {
-      throw new Error(`Ollama responded with an error. Please verify the settings. URL: ${ollamaHost} Model: ${ollamaModel}`);
-    } else if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    this.handleHTTPError(response);
     return response;
   }
 
-  // Handle response stream and update UI
+  handleHTTPError = (response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  }
+
   async handleResponse(response, responseDiv) {
     const reader = response.body.getReader();
     let partialLine = '';
@@ -230,7 +159,7 @@ export class App {
       while (true) {
         const { done, value } = await reader.read();
         if (done) {
-          this.enableInput();
+          this.handleDone();
           break;
         }
 
@@ -240,55 +169,56 @@ export class App {
 
         lines.forEach(line => {
           if (line.trim()) {
-            this.updateChat(responseDiv, JSON.parse(line).response, 'system');
+            this.updateResponse(responseDiv, JSON.parse(line).response);
           }
         });
       }
 
       if (partialLine.trim()) {
-        updateChat(responseDiv, partialLine);
+        this.updateResponse(responseDiv, partialLine);
       }
     } catch (error) {
-      if (error.name === 'AbortError') {
-        console.log('Fetch aborted');
-      } else {
-        // Handle other errors
-        this.updateChat(responseDiv, `Error: ${error.message}`, 'system');
-      }
+      this.handleResponseError(error, responseDiv);
     } finally {
       this.enableInput();
     }
   }
 
-  // Update response div with new content
-  //
-  // Example content:
-  //
-  //   Object { model: "mistral", created_at: "2023-12-09T17:36:20.24176Z", response: "Hello", done: false }
-  //
-  updateChat(div, content) {
-    // TODO: Sanitize
-    //const sanitizedContent = sanitize(content); // Sanitize content
-    const sanitizedContent = content;
-    if (div.initialResponse == true) {
-      div.innerHTML = sanitizedContent; // Replace content
-      div.initialResponse = false
+  handleResponseError = (error, responseDiv) => {
+    if (error.name === 'AbortError') {
+      console.log('Fetch aborted');
     } else {
-      div.innerHTML += sanitizedContent; // Append content
-    }
-    const chat = chats.getCurrentChat();
-    if (chat !== null) {
-      chats.update(chat.id, chat.title, content);
-    } else {
-      chats.add('New chat', content);
-      this.renderChatList();
+      this.updateResponse(responseDiv, `Error: ${error.message}`, 'system');
     }
   }
 
-  // Returns the id from the URL /chats/1 returns 1
-  getIdParam() {
-    const url = new URL(window.location.href);
-    const id = url.pathname.split('/').pop();
-    return id;
+  updateResponse = (div, content) => {
+    const sanitizedContent = this.sanitizeContent(content);
+    if (div.initialResponse) {
+      div.innerHTML = sanitizedContent;
+      div.initialResponse = false;
+    } else {
+      div.innerHTML += sanitizedContent;
+    }
+  }
+
+  sanitizeContent = (content) => {
+    // TODO: Sanitization logic here
+    return content;
+  }
+
+  handleDone = () => {
+    const chat = this.chats.getCurrentChat();
+    const content = this.chatHistory.innerHTML;
+    if (chat !== null) {
+      this.chats.update(chat.id, chat.title, content);
+    } else {
+      this.chats.add('New chat', content);
+    }
+    this.chats.saveData()
+  }
+
+  getIdParam = () => {
+    return new URL(window.location.href).pathname.split('/').pop();
   }
 }

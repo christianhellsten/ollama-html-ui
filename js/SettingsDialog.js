@@ -1,5 +1,5 @@
 import { Models } from './Models.js';
-import { LocalStorage } from './LocalStorage.js';
+import { LocalStorage } from './models/LocalStorage.js';
 import { List } from './List.js';
 
 export class SettingsDialog {
@@ -8,7 +8,6 @@ export class SettingsDialog {
         this.domId = 'settings-dialog';
         this.storage = new LocalStorage();
         this.createDialogElements();
-        this.attachEventListeners();
         this.loadSettings();
     }
 
@@ -22,16 +21,12 @@ export class SettingsDialog {
 
     createDialogElements() {
         this.modal = document.getElementById(this.domId);
-        this.urlInput = document.getElementById('input-ollama-url');
-        this.modelInput = document.getElementById('input-ollama-model');
+        this.urlInput = document.getElementById('input-url');
+        this.modelInput = document.getElementById('input-model');
         this.saveButton = document.getElementById('button-save-settings');
         this.saveButton.onclick = () => this.saveSettings();
         this.closeButton = document.getElementById('button-close-settings');
         this.closeButton.onclick = () => this.hide();
-    }
-
-    attachEventListeners() {
-        // Optional: Implement event listeners if needed (e.g., keyboard shortcuts)
     }
 
     saveSettings() {
@@ -41,14 +36,12 @@ export class SettingsDialog {
 
     loadSettings() {
         const url = this.storage.get('url', 'http://localhost:11434');
-        const model = this.storage.get('model', 'mistral');
+        const model = this.storage.get('model');
         this.urlInput.value = url;
         this.modelInput.value = model;
         this.models.load().then(() => {
-            console.log(this.models.getAllModelNames()); // This will log the model names once they are loaded
-            const modelList = new List('input-ollama-models', this.models.getAllModelNames())
+            const modelList = new List('input-models', this.models.getAllModelNames())
             modelList.onClick(model => {
-                console.log(model)
                 this.modelInput.value = model;
                 this.storage.set('model', model);
             });

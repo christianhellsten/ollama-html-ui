@@ -16,19 +16,6 @@ textarea {
   font-family: Arial, sans-serif;
 }
 
-/* Sidebar styling */
-#sidebar {
-  padding: 1rem;
-  background-color: #f4f5f7;
-  overflow-y: auto;
-
-  .buttons {
-    width: 100%;
-    display: flex;
-    flex-grow: 1;
-  }
-}
-
 /* Chat header */
 #chat-header {
   background-color: #0052cc;
@@ -41,23 +28,6 @@ textarea {
   max-width: 1024px;
   width: 100%; /* Full width of its parent */
   overflow-y: auto; /* Enable vertical scrolling */
-}
-
-/* Message input area */
-#chat-input {
-  align-items: center;
-  padding: 0.5rem;
-  background-color: #fff;
-  border-top: 1px solid #ccc;
-}
-
-/* Input field */
-#chat-input textarea {
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  padding: 10px; /* Desired padding */
-  box-sizing: border-box; /* Include padding and border in the element's size */
 }
 
 .chat-link {
@@ -96,7 +66,7 @@ a {
   margin-right: 8px; // Space between the title and the pen icon
 }
 
-#input-ollama-models {
+#input-models {
   .list-item {
     color: blue;
     cursor: pointer;

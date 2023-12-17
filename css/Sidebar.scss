@@ -1,0 +1,12 @@
+/* Sidebar styling */
+#sidebar {
+  padding: 1rem;
+  background-color: #f4f5f7;
+  overflow-y: auto;
+
+  .buttons {
+    width: 100%;
+    display: flex;
+    flex-grow: 1;
+  }
+}

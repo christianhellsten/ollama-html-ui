@@ -1,6 +1,6 @@
 # ollama-html-ui
 
-![cover](/screenshots/ollama-html-ui.jpg)
+![cover](/screenshots/main.png)
 
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
 
@@ -50,6 +50,12 @@ $ npm run server
 $ open http://locahost:1234
 ```
 
+## Deployment
+
+```bash
+$ parcel build index.html
+```
+
 ## Development
 
 ```bash
@@ -60,10 +66,14 @@ $ parcel index.html
 $ open http://locahost:1234
 ```
 
-## Compiling
+## Testing
+
+Tests are written using `Playwright` and `node:test`.
+
+The the tests can be run from the command line using this command:
 
 ```bash
-$ parcel build index.html
+$ node test
 ```
 
 ## Todo
@@ -79,7 +89,6 @@ $ parcel build index.html
 - [ ] Uploads
 - [ ] Search chats
 - [ ] IndexedDB
-- [ ] Unit and UI tests: https://nodejs.org/api/test.html
 
 ## Done
 
@@ -92,3 +101,4 @@ $ parcel build index.html
 - [x] New chat
 - [x] Abort response
 - [x] Send message
+- [x] UI tests: https://nodejs.org/api/test.html

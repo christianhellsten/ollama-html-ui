@@ -73,6 +73,7 @@ Tests are written using `Playwright` and `node:test`.
 The the tests can be run from the command line using this command:
 
 ```bash
+$ ollama run mistral
 $ node test
 ```
 

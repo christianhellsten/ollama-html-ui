@@ -40,6 +40,14 @@
     box-sizing: border-box;
     border-bottom: 1px solid #ececec;
 
+    .button {
+      padding: 0rem 0.75rem;
+    }
+
+    a {
+      margin-left: 10px;
+    }
+
     a:visited {
       color: #222;
     }

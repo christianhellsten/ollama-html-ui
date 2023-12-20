@@ -1,8 +1,6 @@
 /* Basic Typography */
 body, h1, h2, h3, h4, h5, h6 {
-  font-family: -apple-system, BlinkMacSystemFont, 
-  "Segoe UI", Ubuntu, Roboto, 
-  "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Ubuntu, Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
 }
 
@@ -12,7 +10,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
-body, html {
+html * {
   font-size: 16px; /* Standard font size for body */
   color: #333; /* Standard text color, good for readability */
 }
@@ -33,12 +31,6 @@ h3 {
   font-weight: normal; /* Normal weight for less emphasis */
 }
 
-/* Ensuring high contrast text for better readability */
-#chat-header {
-  line-height: 50px;
-  font-size: 1.25rem; /* Larger text for header */
-}
-
 /* Chat message typography */
 .message {
   font-size: 0.9rem; /* Slightly smaller font for messages */
@@ -47,27 +39,4 @@ h3 {
 
 #chat-input textarea {
   font-size: 0.9rem; /* Consistent font size in input area */
-}
-
-.button {
-  font-weight: 600;
-}
-
-/* Responsive typography */
-@media (max-width: 600px) {
-  body, html {
-    font-size: 14px; /* Slightly smaller font on smaller screens */
-  }
-
-  #chat-header, h1 {
-    font-size: 1.1rem; /* Adjust header and h1 font size for smaller screens */
-  }
-
-  h2 {
-    font-size: 1rem; /* Adjust h2 font size for smaller screens */
-  }
-
-  h3 {
-    font-size: 0.9rem; /* Adjust h3 font size for smaller screens */
-  }
 }

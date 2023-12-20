@@ -39,14 +39,6 @@
   flex: 0 0 250px; /* fixed width */
 }
 
-/* Chat area styling */
-#chat-area {
-  gap: 0.5rem;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
 /* Chat history */
 #chat-history {
   display: flex;
@@ -56,7 +48,7 @@
 
 .buttons {
   display: flex;
-  flex: 0 0 60px; /* fixed width */
+  //flex: 0 0 60px; /* fixed width */
 
   .button {
     border-radius: 0;

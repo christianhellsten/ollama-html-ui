@@ -25,6 +25,11 @@ class AppTest {
     this.browser = await chromium.launch();
     this.context = await this.browser.newContext();
     this.page = await this.context.newPage();
+    this.page.on('console', message => {
+      if (message.type() === 'error') {
+        throw Exception(`Console error detected: ${message.text()}`);
+      }
+    });
     await this.page.goto('http://localhost:1234');
   }
 
@@ -77,8 +82,8 @@ class AppTest {
 
   async deleteChat(title) {
     const selector = `.chat-list-item:has-text("${title}")`;
-    await this.hover(selector);
-    await this.page.click('.delete-chat-button');
+    await this.page.locator(selector).click();
+    await this.page.click('#delete-chat-button');
     await expect(this.page.locator(selector)).not.toBeVisible();
     await expect(this.page.locator('#chat-title')).toHaveText('New chat');
   }
@@ -91,12 +96,19 @@ class AppTest {
 test.describe('Application tests', () => {
   let app;
 
-  test.beforeEach(async () => {
+  test.beforeEach(async ({ test }) => {
     app = new AppTest();
     await app.start();
   });
 
-  test.afterEach(async () => {
+  test.afterEach(async ({ test }) => {
+    /*
+    TODO: https://nodejs.org/api/test.html#aftereachfn-options
+    console.log(test.name);
+    if (test.status === 'failed') {
+      this.screenshot(`${test.title}-failure.png`);
+    }
+    */
     await app.close();
   });
 
@@ -150,11 +162,18 @@ test.describe('Application tests', () => {
     await app.screenshot('screenshots/settings.png');
   });
 
-  /*
   test('Send message', async () => {
     await app.page.fill('#message-input', 'What is 10+10?');
     await app.page.click('#send-button');
-    await app.page.click('#send-button');
+    await app.screenshot('screenshots/chat.png');
+    await expect(app.page.locator('#abort-button')).toBeVisible();
+    //await app.page.waitForSelector('#send-button', { timeout: 60000 });
+  });
+
+  /*
+  TODO
+  test('Send message (server down)', async () => {
+    await app.page.fill('#message-input', 'What is 10+10?');
     await app.page.click('#send-button');
     await app.screenshot('screenshots/chat.png');
     await expect(app.page.locator('#abort-button')).toBeVisible();

@@ -7,21 +7,48 @@
   border-top: 1px solid #ccc;
 
   .textarea {
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-grow: 1;
   }
 
   .buttons {
-    position: absolute;
-    right: 1rem;
+    display: flex;
+    position: relative;
+    height: 100%;
+    //width: 100%;
+    //right: 1rem;
+    .button {
+      //display: flex;
+      //font-size: 2rem;
+      //width: 4rem;
+      //line-height: 2rem;
+      border-radius: 3px;
+      i {
+        //font-size: 1.2rem;
+      }
+      //padding: 0.5rem 0.5rem;
+    }
   }
+
 
   textarea {
     resize: none;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    padding: 0.5rem; /* Desired padding */
-    box-sizing: border-box; /* Include padding and border in the element's size */
+    border: 0px;
+    //width: 100%;
+    //border: 1px solid #ccc;
+    //border-radius: 2px;
+    //padding: 0.5rem;
+    //box-sizing: border-box;
   }
+
+  textarea:focus {
+    outline:0px none transparent;
+  }
+}
+
+#message-input {
+  width: 100%;
+  padding: 0.25rem;
 }

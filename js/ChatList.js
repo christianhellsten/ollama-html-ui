@@ -14,7 +14,6 @@ export class ChatList {
 
   selectChat(chatId) {
     this.chats.setCurrentChat(chatId);
-    this.render();
   }
 
   deleteChat(chatId) {
@@ -26,8 +25,7 @@ export class ChatList {
     this.chatListElement.innerHTML = '';
     this.chats.getChats().forEach(chat => {
       const chatListItem = new ChatListItem(chat, this);
-      const listItemElement = chatListItem.render();
-      this.chatListElement.appendChild(listItemElement);
+      this.chatListElement.appendChild(chatListItem.element);
     });
   }
 }

@@ -9,12 +9,28 @@ export class ChatArea {
     this.chatForm = new ChatForm();
     this.bindEventListeners();
     this.chatHistory = document.getElementById('chat-history');
-    this.render();
+    this.messageInput = document.getElementById('message-input');
   }
 
   render() {
     this.chatHistory.innerHTML = this.chats.getCurrentChat()?.content || '';
     this.chatTitle.render();
+    this.messageInput.focus();
+    // Edit chat
+    const editChatButton = document.getElementById('edit-chat-button').addEventListener("click", (event) => {
+      this.chatTitle.focus();
+      event.stopPropagation();
+    });
+    // Delete chat
+    const deleteChatButton = document.getElementById('delete-chat-button').addEventListener("click", (event) => {
+      const chat = this.chats.getCurrentChat();
+      if(chat) {
+        this.chats.delete(chat.id);
+        this.chatHistory.innerHTML = '';
+        Event.emit('deleteChat', chat.id)
+      }
+      event.stopPropagation();
+    });
   }
 
   bindEventListeners() {

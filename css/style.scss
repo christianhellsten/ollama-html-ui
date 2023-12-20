@@ -16,13 +16,6 @@ textarea {
   font-family: Arial, sans-serif;
 }
 
-/* Chat header */
-#chat-header {
-  background-color: #0052cc;
-  color: white;
-  padding: 0.25rem 1rem;
-}
-
 /* Styling for chat history container */
 #chat-history {
   max-width: 1024px;
@@ -51,19 +44,6 @@ a {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-/* Styling for inline editing of title */
-#chat-title:focus {
-  color: #222;
-  border: 1px solid #aaa;
-  background: #eef;
-  padding: 2px;
-}
-
-#chat-title:before {
-  content: "\270E"; // Unicode character for ✎
-  margin-right: 8px; // Space between the title and the pen icon
 }
 
 #input-models {

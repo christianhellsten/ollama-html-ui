@@ -1,8 +1,17 @@
+button {
+  font-size: 14px;
+  font-weight: 600;
+  background-color: white;
+}
+
 .button {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 2px;
   cursor: pointer;
+  i {
+    color: #222;
+  }
 }
 
 .button:hover {
@@ -13,6 +22,9 @@
 .button-primary {
   background-color: #0052cc;
   color: white;
+  i {
+    color: white;
+  }
 }
 
 .button-primary:hover {

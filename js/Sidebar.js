@@ -10,9 +10,10 @@ export class Sidebar {
     this.newChatButton = this.sidebarElement.querySelector('#new-chat-button');
     this.settingsButton = this.sidebarElement.querySelector('#settings-button');
     this.clearButton = this.sidebarElement.querySelector('#clear-button');
-
-    // Bind event listeners
     this.bindEventListeners();
+  }
+
+  render() {
     this.chatList.render();
   }
 

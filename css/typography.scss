@@ -1,5 +1,5 @@
 /* Basic Typography */
-body, h1, h2, h3, h4, h5, h6 {
+html * {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Ubuntu, Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
 }
@@ -8,11 +8,6 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   font-weight: 600;
-}
-
-html * {
-  font-size: 16px; /* Standard font size for body */
-  color: #333; /* Standard text color, good for readability */
 }
 
 /* Heading styles */

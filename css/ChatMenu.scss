@@ -1,0 +1,23 @@
+#app-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #f0f0f0; /* Example background color */
+}
+
+.hamburger-menu {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.hamburger-menu .bar {
+    width: 1.5rem;
+    height: 2px;
+    background-color: #333;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+

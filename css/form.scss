@@ -5,13 +5,12 @@ label {
 
 input {
     width: 100%;
-    padding: 8px 15px; /* Padding inside the input */
+    padding: 0.5rem 0.75rem;
     display: inline-block; /* Ensures the input does not break into a new line */
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #cfcfcf;
+    //border-radius: 4px;
     box-sizing: border-box; /* Makes sure padding does not affect the overall width */
-    font-size: 16px; /* Slightly larger font for readability */
-    color: #333; /* Darker text for better readability */
+    //font-size: 16px; /* Slightly larger font for readability */
     background-color: #f8f8f8; /* Light background color */
 }
 

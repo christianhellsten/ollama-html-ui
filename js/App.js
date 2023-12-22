@@ -136,21 +136,19 @@ Chat:  ${this.chats.getCurrentChat()?.id}
 
   async postMessage(data, responseDiv) {
     this.controller = new AbortController();
+    const url = `${storage.get('url')}/api/generate`;
     const { signal } = this.controller;
-    const response = await fetch(`${storage.get('url')}/api/generate`, {
+    const response = await fetch(url, {
       signal,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    this.handleHTTPError(response);
-    return response;
-  }
-
-  handleHTTPError = (response) => {
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      this.enableInput();
+      throw new Error(`POST ${url} status ${response.status}`);
     }
+    return response;
   }
 
   async handleResponse(response, responseDiv) {
@@ -214,7 +212,7 @@ Chat:  ${this.chats.getCurrentChat()?.id}
     if (chat !== null) {
       this.chats.update(chat.id, chat.title, content);
     } else {
-      this.chats.add('New chat', content);
+      this.chats.add(null, content);
     }
     this.chats.saveData()
   }

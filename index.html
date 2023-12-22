@@ -14,43 +14,56 @@
 </head>
 <body>
     <div id="chat-app">
-        <aside id="sidebar">
-            <!-- Buttons -->
-            <div class="row">
-                <button id="new-chat-button" class="col button" title="New chat"><i class="icon-new"></i></button>
-                <div class="flex-align-end">
-                    <button id="clear-button" class="col button" title="Clear chats"><i class="icon-clear"></i></button>
-                    <button id="settings-button" class="col button" title="Show settings"><i class="icon-settings"></i></button>
-                </div>
+        <header id="chat-menu" class="row">
+            <div id="hamburger-menu" class="hamburger-menu col">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
             </div>
-            <!-- Chats -->
-            <div class="row">
-                <ul id="chat-list" class="col"></ul>
-            </div>
-        </aside>
-        <div id="chat-area">
-            <header id="chat-header" class="row">
-                <!-- Chat header -->
-                <h2 id="chat-title" class="col" contenteditable required title="Edit chat title">New chat</h2>
-                <button id="edit-chat-button" class="button col">
+            <!-- Chat menu -->
+            <h2 id="chat-title" class="col grw" contenteditable required title="Edit chat title">New chat</h2>
+            <div class="col">
+                <button id="edit-chat-button" class="button">
                   <i class="icon-edit"></i>
                 </button>
-                <button id="delete-chat-button" class="button col">
+                <button id="delete-chat-button" class="button">
                   <i class="icon-delete"></i>
                 </button>
-            </header>
+            </div>
+        </header>
+        <div id="chat-area">
+            <aside id="sidebar">
+                <!-- Buttons -->
+                <div class="row">
+                    <button id="new-chat-button" class="col button" title="New chat"><i class="icon-new"></i></button>
+                    <button id="search-button" class="col button" title="Search chats"><i class="icon-search"></i></button>
+                    <button id="settings-button" class="col button" title="Show settings"><i class="icon-settings"></i></button>
+                    <button id="clear-button" class="col button" title="Clear chats"><i class="icon-clear"></i></button>
+                </div>
+                <!-- Search -->
+                <div class="row hidden mt-1" id="search-row">
+                    <input type="text" id="search-input" class="col" placeholder="Search chats...">
+                    <!--
+                    <button id="perform-search" class="col button"><i class="icon-search"></i></button>
+                    -->
+                </div>
+                <!-- Chats -->
+                <div class="row">
+                    <ul id="chat-list" class="col"></ul>
+                </div>
+            </aside>
             <div id="chat-history">
                 <!-- Chat messages -->
             </div>
-            <div id="chat-form">
-                <!-- Chat input and button -->
-                <div class="textarea">
-                    <textarea id="message-input" type="text" placeholder="Type a message..." contenteditable required title="Type a message..."></textarea>
-                </div>
-                <div class="buttons">
-                    <button id="send-button" class="button button-primary" title="Send"><i class="icon-send"></i></button>
-                    <button id="abort-button" class="button hidden" title="Abort"><i class="icon-abort"></i></button>
-                </div>
+        </div>
+        <div id="chat-form">
+            <!-- Chat input and button -->
+            <div class="textarea">
+                <textarea id="message-input" type="text" placeholder="Type a message..." contenteditable required title="Type a message..."></textarea>
+            </div>
+            <div class="buttons">
+                <button id="send-button" class="button button-primary" title="Send"><i class="icon-send"></i></button>
+                <button id="abort-button" class="button hidden" title="Abort"><i class="icon-abort"></i></button>
             </div>
         </div>
     </div>

@@ -9,18 +9,9 @@ html {
 body {
   color: #222;
   background-color: #f5f5f5; /* Light grey background */
-  font-family: Arial, sans-serif;
 }
 
 textarea {
-  font-family: Arial, sans-serif;
-}
-
-/* Styling for chat history container */
-#chat-history {
-  max-width: 1024px;
-  width: 100%; /* Full width of its parent */
-  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .chat-link {
@@ -51,13 +42,4 @@ a {
     color: blue;
     cursor: pointer;
   }
-}
-
-/* Utilities */
-.hidden {
-  display: none;
-}
-
-.float-right {
-  float: right;
 }

@@ -30,3 +30,11 @@ button {
 .button-primary:hover {
   background-color: #0041c4;
 }
+
+.buttons {
+  display: flex;
+
+  .button {
+    border-radius: 0;
+  }
+}

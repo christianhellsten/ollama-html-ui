@@ -1,6 +1,7 @@
 export class ChatTitle {
   constructor(chats) {
     this.chats = chats;
+    this.defaultTitle = 'Untitled';
     this.element = document.getElementById('chat-title');
     this.bindEventListeners();
   }
@@ -11,7 +12,7 @@ export class ChatTitle {
   }
 
   setTitle(title) {
-    this.element.textContent = title || 'New chat';
+    this.element.textContent = title || this.defaultTitle;
   }
 
   focus() {
@@ -25,7 +26,7 @@ export class ChatTitle {
     this.element.addEventListener('blur', () => {
       let title = this.element.textContent.trim();
       if (title.length === 0) {
-        title = 'New chat';
+        title = this.defaultTitle;
         this.element.classList.add('error');
       } else {
         this.element.classList.remove('error');

@@ -53,6 +53,13 @@ class AppTest {
     await this.page.locator('#button-save-settings').click()
   }
 
+  async sendMessage (message) {
+    await this.page.fill('#message-input', message)
+    await this.page.click('#send-button')
+    await expect(this.page.locator('#abort-button')).toBeVisible()
+    await this.page.waitForSelector('#send-button', { timeout: 60000 })
+  }
+
   async newChat (title) {
     await this.page.click('#new-chat-button')
     const newTitle = /Untitled/
@@ -145,7 +152,6 @@ test.describe('Application tests', () => {
     await app.selectChat('Happy Hamster')
     await app.selectChat('Super Hamster')
     await app.selectChat('Smart Hamster')
-    await app.screenshot('screenshots/main.png')
   })
 
   test('Edit chat title', async () => {
@@ -155,16 +161,16 @@ test.describe('Application tests', () => {
 
   test('Show settings', async () => {
     await app.showSettings()
+    await app.screenshot('screenshots/settings.png')
   })
 
   test('Update settings', async () => {
     await app.updateSettings(url, model)
-    await app.screenshot('screenshots/settings.png')
   })
 
   test('Search chats', async () => {
     // Create chats for each country
-    for (const name of ['Finland', 'Sweden', 'Norway', 'Denmark']) {
+    for (const name of ['Finland', 'Sweden', 'Canada', 'Norway', 'Denmark']) {
       await app.newChat(name)
     }
 
@@ -183,7 +189,7 @@ test.describe('Application tests', () => {
 
     // Search for 'Sweden', and verify its visibility
     await app.page.fill('#search-input', '')
-    await app.page.type('#search-input', 'Sweden')
+    await app.page.type('#search-input', 'w')
     await app.page.waitForTimeout(500) // Small delay to allow UI to update
     await app.screenshot('screenshots/search.png')
     // Check if 'Sweden' is visible
@@ -210,10 +216,7 @@ test.describe('Application tests', () => {
   test('Send message', async () => {
     await app.updateSettings(url, model)
     await app.editChatTitle('What is 10+10?')
-    await app.page.fill('#message-input', 'What is 10+10?')
-    await app.page.click('#send-button')
-    await expect(app.page.locator('#abort-button')).toBeVisible()
-    await app.page.waitForSelector('#send-button', { timeout: 60000 })
+    await app.sendMessage('What is 10+10?')
     await app.screenshot('screenshots/chat.png')
   })
 
@@ -226,4 +229,29 @@ test.describe('Application tests', () => {
     await expect(app.page.locator('#abort-button')).not.toBeVisible()
     await expect(app.page.locator('#send-button')).toBeVisible()
   })
+
+  /*
+  TODO:
+  test('Download chat', async () => {
+    await app.updateSettings(url, model)
+    await app.sendMessage('What is 10+10?')
+
+    // Set up a listener for the download event
+    const [ download ] = await Promise.all([
+      // It's important to set up the listener before triggering the download
+      app.page.waitForEvent('download'),
+      // Trigger the download here
+      app.page.click('.download-button')
+    ])
+
+    // Wait for the download to complete
+    const path = await download.path()
+
+    // Verify the download (e.g., check file name, size, etc.)
+    console.log(`Downloaded file: ${path}`)
+
+    // Optional: Check the download's filename
+    console.log(`Downloaded filename: ${download.suggestedFilename()}`)
+  })
+  */
 })

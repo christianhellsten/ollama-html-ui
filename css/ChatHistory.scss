@@ -15,6 +15,11 @@
   padding: 0.5rem;
   border-radius: 2px;
   border: 1px solid #BBDEFB; /* Light blue border (100) */
+
+  .button {
+    margin-top: 1rem;
+    display: block;
+  }
 }
 
 /* Styling for user messages */
@@ -33,4 +38,3 @@
   //border: 1px solid #FFE0B2; /* Light orange border (100) */
   border-radius: 2px;
 }
-

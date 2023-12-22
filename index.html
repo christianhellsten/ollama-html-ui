@@ -22,13 +22,16 @@
             </div>
             <!-- Chat menu -->
             <h2 id="chat-title" class="col grw" contenteditable required title="Edit chat title">New chat</h2>
-            <div class="col">
-                <button id="edit-chat-button" class="button">
-                  <i class="icon-edit"></i>
-                </button>
-                <button id="delete-chat-button" class="button">
-                  <i class="icon-delete"></i>
-                </button>
+            <div class="buttons">
+            <button id="edit-chat-button" class="button col" title="Edit chat">
+              <i class="icon-edit"></i>
+            </button>
+            <button id="delete-chat-button" class="button col" title="Delete chat">
+              <i class="icon-delete"></i>
+            </button>
+            <button data-target="chat-history" class="button download-button col" title="Download chat">
+              <i class="icon-download"></i>
+            </button>
             </div>
         </header>
         <div id="chat-area">
@@ -107,6 +110,15 @@
         </a>
         -->
       </li>
+    </template>
+    <!-- Chat message template -->
+    <template id="chat-message-template">
+        <div class="message">
+            <span class="message-text"></span>
+            <!--
+            <button class="copy-button button button-mini"><i class="icon-copy"></i></button>
+            -->
+        </div>
     </template>
     <script type="module" src="/js/script.js"></script>
 </body>

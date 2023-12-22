@@ -2,6 +2,8 @@ import { Event } from './Event.js'
 import { Chats } from './models/Chats.js'
 import { LocalStorage } from './models/LocalStorage.js'
 import { Sidebar } from './Sidebar.js'
+import { CopyButton } from './CopyButton.js'
+import { DownloadButton } from './DownloadButton.js'
 import { ChatArea } from './ChatArea.js'
 
 // Configuration and DOM elements
@@ -10,6 +12,8 @@ const storage = new LocalStorage()
 export class App {
   static run () {
     const app = new App()
+    this.downloadButton = new DownloadButton()
+    this.copyButton = new CopyButton()
     return app
   }
 
@@ -124,13 +128,26 @@ Chat:  ${this.chats.getCurrentChat()?.id}
   }
 
   createMessageDiv = (text, sender) => {
-    const div = document.createElement('div')
-    div.classList.add('message', `${sender}-message`)
-    div.textContent = text
-    div.initialResponse = true
-    this.chatHistory.appendChild(div)
+    // Get the template and its content
+    const template = document.getElementById('chat-message-template')
+    const messageClone = template.content.cloneNode(true)
+
+    // Find the div and span elements within the cloned template
+    const messageDiv = messageClone.querySelector('div')
+    const textSpan = messageClone.querySelector('.message-text')
+
+    // Set the class for sender and text content
+    messageDiv.classList.add(`${sender}-message`)
+    textSpan.textContent = text
+
+    // Set initialResponse property
+    messageDiv.initialResponse = true
+
+    // Append to chatHistory and adjust scroll
+    this.chatHistory.appendChild(messageDiv)
     this.chatHistory.scrollTop = this.chatHistory.scrollHeight
-    return div
+
+    return messageDiv
   }
 
   getSpinner = () => {

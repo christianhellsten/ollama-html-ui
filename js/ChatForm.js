@@ -1,26 +1,26 @@
 export class ChatForm {
-  constructor() {
-    this.chatHistory = document.getElementById('chat-history');
-    this.messageInput = document.getElementById('message-input');
-    this.sendButton = document.getElementById('send-button');
-    this.abortButton = document.getElementById('abort-button');
+  constructor () {
+    this.chatHistory = document.getElementById('chat-history')
+    this.messageInput = document.getElementById('message-input')
+    this.sendButton = document.getElementById('send-button')
+    this.abortButton = document.getElementById('abort-button')
   }
 
-  render() {
+  render () {
     // Implementation for rendering the chat form
   }
 
-  bindEventListeners(appInstance) {
+  bindEventListeners (appInstance) {
     // TODO: Bind event listeners for the chat form
-    //this.sendButton.addEventListener('click', () => appInstance.sendMessage());
+    // this.sendButton.addEventListener('click', () => appInstance.sendMessage());
     // Other event listeners...
   }
 
-  enableInput() {
+  enableInput () {
     // Enable the input field and send button
   }
 
-  disableInput() {
+  disableInput () {
     // Disable the input field and send button
   }
 }

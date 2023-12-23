@@ -25,4 +25,6 @@ jobs:
         # nohup npm run server > server.log 2>&1 &
         # Wait for the server to start
         sleep 10
-        GITHUB_ACTIONS=true npm test
+        export GITHUB_ACTIONS=true
+        npm run test
+        npm run test:mobile

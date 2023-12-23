@@ -5,6 +5,7 @@
   "scripts": {
     "server": "node scripts/server.js",
     "test": "node js/App.test.js",
+    "test:mobile": "MOBILE=true node js/App.test.js",
     "build": "parcel build index.html"
   },
   "devDependencies": {

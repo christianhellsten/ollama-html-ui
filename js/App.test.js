@@ -17,7 +17,8 @@ function openScreenshot (filePath) {
   })
 }
 
-const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS || false
+const MOBILE = process.env.MOBILE === 'true' || false
+const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true' || false
 
 class AppTest {
   async start () {
@@ -29,8 +30,17 @@ class AppTest {
         throw Error(`Console error detected: ${message.text()}`)
       }
     })
+    if (MOBILE) {
+      this.mobileDevice()
+    }
     await this.page.goto('http://localhost:1234')
     this.sidebar = this.page.locator('#sidebar')
+  }
+
+  async mobileDevice () {
+    const width = 375
+    const height = 667
+    await this.page.setViewportSize({ width, height })
   }
 
   async showSettings () {
@@ -95,6 +105,10 @@ class AppTest {
     if (path === undefined) {
       path = 'screenshot.png'
     }
+    if (MOBILE) {
+      path = `mobile-${path}`
+    }
+    path = `screenshots/${path}`
     await this.page.screenshot({ path })
     openScreenshot(path)
   }
@@ -168,7 +182,7 @@ test.describe('Application tests', () => {
 
   test('Search chats', async () => {
     // Create chats for each country
-    for (const name of ['Finland', 'Sweden', 'Canada', 'Norway', 'Denmark']) {
+    for (const name of ['History of Finland', 'History of Sweden', 'History of Canada', 'History of Norway', 'History of Denmark']) {
       await app.newChat(name)
     }
 
@@ -189,7 +203,7 @@ test.describe('Application tests', () => {
     await app.page.fill('#search-input', '')
     await app.page.type('#search-input', 'w')
     await app.page.waitForTimeout(500) // Small delay to allow UI to update
-    await app.screenshot('screenshots/search.png')
+    await app.screenshot('search.png')
     // Check if 'Sweden' is visible
     swedenVisible = await app.page.locator('.chat-list-item:has-text("Sweden")').isVisible()
     expect(swedenVisible).toBeTruthy()
@@ -200,7 +214,7 @@ test.describe('Application tests', () => {
 
   test('Collapse sidebar', async () => {
     // Create chats for each country
-    for (const name of ['Finland', 'Sweden', 'Norway', 'Denmark']) {
+    for (const name of ['History of Finland', 'History of Sweden', 'History of Norway', 'History of Denmark']) {
       await app.newChat(name)
     }
     // Collapse sidebar
@@ -212,17 +226,20 @@ test.describe('Application tests', () => {
   })
 
   if (GITHUB_ACTIONS === false) {
-    console.log('AAAAAAAAAAAAAA')
     test('Send message', async () => {
       await app.updateSettings(url, model)
-      await app.editChatTitle('What is 10+10?')
-      await app.sendMessage('What is 10+10?')
-      await app.screenshot('screenshots/chat.png')
+      // Create chat
+      await app.editChatTitle('What is Mistral?')
+      await app.sendMessage('What is Mistral?')
+      await app.screenshot('chat.png')
+      // Collapse
+      await app.page.click('#hamburger-menu')
+      await app.screenshot('chat-collapsed.png')
     })
 
     test('Show settings', async () => {
       await app.showSettings()
-      await app.screenshot('screenshots/settings.png')
+      await app.screenshot('settings.png')
     })
 
     test('Update settings', async () => {
@@ -232,10 +249,10 @@ test.describe('Application tests', () => {
 
   test('Send message (server down)', async () => {
     await app.page.fill('#message-input', 'Server is down')
-    await app.page.fill('#message-input', 'What is 10+10?')
+    await app.page.fill('#message-input', 'What is Mistral?')
     await app.page.click('#send-button')
     await app.page.waitForTimeout(500) // Small delay to allow UI to update
-    await app.screenshot('screenshots/chat-error.png')
+    await app.screenshot('chat-error.png')
     await expect(app.page.locator('#abort-button')).not.toBeVisible()
     await expect(app.page.locator('#send-button')).toBeVisible()
   })

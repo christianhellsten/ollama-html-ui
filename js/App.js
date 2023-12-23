@@ -4,6 +4,7 @@ import { LocalStorage } from './models/LocalStorage.js'
 import { Sidebar } from './Sidebar.js'
 import { CopyButton } from './CopyButton.js'
 import { DownloadButton } from './DownloadButton.js'
+import { DropDownMenu } from './DropDownMenu.js'
 import { ChatArea } from './ChatArea.js'
 
 // Configuration and DOM elements
@@ -14,6 +15,7 @@ export class App {
     const app = new App()
     this.downloadButton = new DownloadButton()
     this.copyButton = new CopyButton()
+    this.dropDownMenu = new DropDownMenu()
     return app
   }
 

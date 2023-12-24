@@ -9,12 +9,13 @@
   overflow-y: auto; /* Enable vertical scrolling */
 }
 
+#chat-history .user-message:last-child {
+  border: 1px solid $primary-color;
+}
+
 /* Base styling for all messages */
 .message {
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 2px;
-  border: 1px solid #BBDEFB; /* Light blue border (100) */
+  padding: 1rem;
   position: relative;
 
   .copy-button {
@@ -28,17 +29,10 @@
 
 /* Styling for user messages */
 .user-message {
-  //color: #0D47A1; /* Dark blue text (900) */
-  background-color: #E3F2FD; /* Light blue background (50) */
-  align-self: flex-start; /* Align to the right */
-  border-radius: 2px;
+  @extend .font-weight-bolder;
 }
 
 /* Styling for system messages */
 .system-message {
-  //background-color: #FFF3E0; /* Light orange background (50) */
-  //color: #BF360C; /* Dark orange text (900) */
-  box-sizing: border-box;
-  //border: 1px solid #FFE0B2; /* Light orange border (100) */
-  border-radius: 2px;
+  margin-bottom: 0.5rem;
 }

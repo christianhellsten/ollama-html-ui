@@ -7,8 +7,8 @@ html {
 }
 
 body {
-  color: #222;
-  background-color: #f5f5f5; /* Light grey background */
+  color: $text-color;
+  background-color: $bg-color;
 }
 
 textarea {
@@ -24,8 +24,8 @@ a {
 
 /* Spinner */
 .spinner {
-  border: 2px solid #f3f3f3; /* Light grey */
-  border-top: 2px solid #3498db; /* Blue color */
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid $primary-color;
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -35,11 +35,4 @@ a {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-#input-models {
-  .list-item {
-    color: blue;
-    cursor: pointer;
-  }
 }

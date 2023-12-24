@@ -1,21 +1,23 @@
+import { Models } from './models/Models.js'
+import { UINotification } from './UINotification.js'
+import { Settings } from './models/Settings.js'
 import { Event } from './Event.js'
 import { Chats } from './models/Chats.js'
-import { LocalStorage } from './models/LocalStorage.js'
 import { Sidebar } from './Sidebar.js'
 import { CopyButton } from './CopyButton.js'
 import { DownloadButton } from './DownloadButton.js'
 import { DropDownMenu } from './DropDownMenu.js'
+// import { MarkdownFormatter } from './MarkdownFormatter.js'
 import { ChatArea } from './ChatArea.js'
-
-// Configuration and DOM elements
-const storage = new LocalStorage()
 
 export class App {
   static run () {
+    UINotification.initialize()
     const app = new App()
     this.downloadButton = new DownloadButton()
     this.copyButton = new CopyButton()
     this.dropDownMenu = new DropDownMenu()
+    Models.load()
     return app
   }
 
@@ -39,8 +41,8 @@ export class App {
 
   logInitialization () {
     const msg = `~~~\nOllama HTML UI\n~~~
-Model: ${storage.get('model')}
-URL:   ${storage.get('url')}
+Model: ${Settings.getModel()}
+URL:   ${Settings.getUrl()}
 Chat:  ${this.chats.getCurrentChat()?.id}
 `
     console.log(msg)
@@ -92,11 +94,11 @@ Chat:  ${this.chats.getCurrentChat()?.id}
   }
 
   show = (element) => {
-    element.style.display = 'block'
+    element.classList.remove('hidden')
   }
 
   hide = (element) => {
-    element.style.display = 'none'
+    element.classList.add('hidden')
   }
 
   enable = (element) => {
@@ -105,10 +107,6 @@ Chat:  ${this.chats.getCurrentChat()?.id}
 
   disable = (element) => {
     element.setAttribute('disabled', 'disabled')
-  }
-
-  getModel = () => {
-    return storage.get('model')
   }
 
   async sendMessage () {
@@ -120,11 +118,13 @@ Chat:  ${this.chats.getCurrentChat()?.id}
       const responseDiv = this.createMessageDiv('', 'system')
       responseDiv.innerHTML = this.getSpinner()
       try {
-        const data = { model: this.getModel(), prompt: message }
+        const data = { model: this.chats.getCurrentChat().model, prompt: message }
         const response = await this.postMessage(data, responseDiv)
         this.handleResponse(response, responseDiv)
       } catch (error) {
-        this.updateResponse(responseDiv, `Error: ${error.message}`, 'system')
+        console.debug(error)
+        console.error(`Please the server settings are correct: ${Settings.getMessageUrl()} ${Settings.getModel()}. Error code: 843947`)
+        this.updateResponse(responseDiv, '', 'system')
       }
     }
   }
@@ -144,6 +144,8 @@ Chat:  ${this.chats.getCurrentChat()?.id}
 
     // Set initialResponse property
     messageDiv.initialResponse = true
+    // Disable built-in spellchecker
+    messageDiv.spellcheck = false
 
     // Append to chatHistory and adjust scroll
     this.chatHistory.appendChild(messageDiv)
@@ -158,7 +160,7 @@ Chat:  ${this.chats.getCurrentChat()?.id}
 
   async postMessage (data, responseDiv) {
     this.controller = new AbortController()
-    const url = `${storage.get('url')}/api/generate`
+    const url = Settings.getMessageUrl()
     const { signal } = this.controller
     const response = await fetch(url, {
       signal,
@@ -181,7 +183,7 @@ Chat:  ${this.chats.getCurrentChat()?.id}
       while (true) {
         const { done, value } = await reader.read()
         if (done) {
-          this.handleDone()
+          this.handleDone(responseDiv)
           break
         }
 
@@ -216,11 +218,12 @@ Chat:  ${this.chats.getCurrentChat()?.id}
   updateResponse = (div, content) => {
     const sanitizedContent = this.sanitizeContent(content)
     if (div.initialResponse) {
-      div.innerHTML = sanitizedContent
+      div.textContent = sanitizedContent
       div.initialResponse = false
     } else {
-      div.innerHTML += sanitizedContent
+      div.textContent += sanitizedContent
     }
+    this.chatArea.scrollToEnd()
   }
 
   sanitizeContent = (content) => {
@@ -228,9 +231,12 @@ Chat:  ${this.chats.getCurrentChat()?.id}
     return content
   }
 
-  handleDone = () => {
+  handleDone = (responseDiv) => {
     const chat = this.chats.getCurrentChat()
     const content = this.chatHistory.innerHTML
+    // TODO:
+    // const formattedContent = MarkdownFormatter.format(responseDiv.textContent)
+    // responseDiv.innerHTML = formattedContent
     if (chat !== null) {
       this.chats.update(chat.id, chat.title, content)
     } else {

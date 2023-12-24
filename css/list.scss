@@ -1,10 +1,21 @@
-.list {
-    display: flex;       /* Enables flexbox */
-    flex-direction: column; /* Arranges children (list items) vertically */
-    list-style-type: none; /* Optional: Removes default list item styling */
-    padding: 0;           /* Optional: Removes default padding */
-}
+/* Styling for lists */
+ul {
+  //background: white;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 
-.list-item {
-    margin-bottom: 10px; /* Optional: Adds space between items */
+  li {
+    @extend .button;
+    @extend .row;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 500;
+    border-bottom: 1px solid #ececec;
+  }
+
+  li.selected {
+    @extend .button, .selected;
+    @extend .font-weight-boldest;
+  }
 }

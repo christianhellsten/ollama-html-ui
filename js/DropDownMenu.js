@@ -7,7 +7,6 @@ export class DropDownMenu {
 
   init () {
     this.dropDownMenus.forEach(menu => {
-      console.log('adf')
       const button = menu.querySelector('button')
       const dropDownMenu = menu.querySelector('.drop-down-menu-items')
 

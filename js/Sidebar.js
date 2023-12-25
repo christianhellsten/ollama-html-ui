@@ -1,18 +1,15 @@
 import { debounce } from './debounce.js'
 import { Event } from './Event.js'
 import { ChatList } from './ChatList.js'
-import { SettingsDialog } from './SettingsDialog.js'
 import { LocalStorage } from './models/LocalStorage.js'
 
 export class Sidebar {
   constructor (chats) {
     this.chats = chats
     this.settings = new LocalStorage()
-    this.settingsDialog = new SettingsDialog()
     this.chatList = new ChatList(this.chats)
     this.element = document.getElementById('sidebar')
     this.newChatButton = this.element.querySelector('#new-chat-button')
-    this.settingsButton = this.element.querySelector('#settings-button')
     this.clearButton = this.element.querySelector('#clear-button')
     this.hamburgerButton = document.getElementById('hamburger-menu')
     this.searchButton = document.getElementById('search-button')
@@ -34,7 +31,6 @@ export class Sidebar {
     this.searchInput.addEventListener('keypress', debounce(this.performSearch.bind(this), 50))
     this.searchInput.addEventListener('keyup', debounce(this.performSearch.bind(this), 50))
     this.newChatButton.addEventListener('click', this.handleNewChat.bind(this))
-    this.settingsButton.addEventListener('click', this.handleSettings.bind(this))
     this.clearButton.addEventListener('click', this.handleClear.bind(this))
     this.hamburgerButton.addEventListener('click', this.toggle.bind(this))
   }
@@ -88,10 +84,6 @@ export class Sidebar {
 
   handleNewChat () {
     this.chats.add(null, '')
-  }
-
-  handleSettings () {
-    this.settingsDialog.show()
   }
 
   handleClear () {

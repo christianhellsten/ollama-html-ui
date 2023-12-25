@@ -6,16 +6,44 @@ ul {
   width: 100%;
 
   li {
-    @extend .button;
     @extend .row;
+    padding: 0.5rem 0.75rem;
     cursor: pointer;
     width: 100%;
     font-weight: 500;
     border-bottom: 1px solid #ececec;
+    white-space: nowrap; /* Prevent text from wrapping */
+
+    .col {
+      overflow: hidden; /* Hide overflowing text */
+      text-overflow: ''; /* Display ellipsis (...) for overflowing text */
+    }
+
+    button {
+      padding: 0 0.5rem;
+      visibility: hidden;
+    }
+    /*
+    .list-item-edit:after {
+      content: "..."; // \00a0 is a non-breaking space
+    }
+    */
   }
 
   li.selected {
-    @extend .button, .selected;
     @extend .font-weight-boldest;
+    color: $button-primary-color;
+    background-color: $light-color;
+    @extend .box-shadow;
+  }
+
+  li.selected:before {
+    //content: "\203A\00a0"; // \00a0 is a non-breaking space
+  }
+
+  li.hover {
+    button {
+      visibility: visible;
+    }
   }
 }

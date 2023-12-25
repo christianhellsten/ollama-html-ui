@@ -1,7 +1,7 @@
-const { test } = require('node:test')
-const { chromium } = require('playwright')
-const { expect } = require('playwright/test')
-const { exec } = require('child_process')
+import { test } from 'node:test'
+import { chromium } from 'playwright'
+import { expect } from 'playwright/test'
+import { exec } from 'node:child_process'
 
 // The Ollama server must be running mistral:latest
 // TODO: Implement dummy server
@@ -29,8 +29,8 @@ class AppTest {
         slowMo: 1000 // Slow motion value in milliseconds
       },
       recordVideo: {
-        dir: 'videos', // Directory to save videos
-        size: { width: 1280, height: 720 } // Optional: set video size
+        dir: 'recordings', // Directory to save videos
+        size: { width: 1280, height: 720 }
       }
     })
     this.page = await this.context.newPage()
@@ -165,7 +165,7 @@ class AppTest {
   }
 }
 
-test.describe('Application tests', () => {
+test.describe('Application tests', { only: true }, () => {
   let app
 
   test.beforeEach(async ({ test }) => {
@@ -196,7 +196,7 @@ test.describe('Application tests', () => {
     await app.newChat('Happy Hamster')
   })
 
-  test('Delete chat', async () => {
+  test('Delete chat', { only: true }, async () => {
     await app.newChat('Happy Hamster')
     await app.deleteChat('Happy Hamster')
   })

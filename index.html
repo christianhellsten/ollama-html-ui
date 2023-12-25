@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
+    <title>Ollama UI</title>
     <!-- TODO: Content Security Policy
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
@@ -15,21 +15,20 @@
 <body>
     <div id="chat-app">
         <header id="chat-header" class="row">
-            <div id="hamburger-menu" class="hamburger-menu col">
+            <button id="hamburger-menu" class="hamburger-menu button" title="Hide sidebar">
                 <div class="bar"></div>
                 <div class="bar"></div>
                 <div class="bar"></div>
-            </div>
+            </button>
             <!-- Chat menu -->
-            <h2 id="chat-title" class="col grw" contenteditable required title="Edit chat title">New chat</h2>
-            <div id="chat-model" class="col"></div>
+            <h1 id="chat-title" class="col grw" contenteditable required title="Edit chat title">New chat</h1>
             <div id="chat-menu" class="drop-down-menu drop-down-menu-right">
                 <button id="chat-menu-button" class="button col" title="Chat menu">
                     <i class="icon-menu"></i>
                 </button>
                 <div class="drop-down-menu-items hidden">
                     <div class="buttons">
-                        <button id="edit-chat-button" class="button col" title="Edit chat">
+                        <button id="edit-chat-button" class="button col" title="Edit chat title">
                             <i class="icon-edit"></i>
                         </button>
                         <button class="button copy-button col" title="Copy chat to clipboard" data-target="chat-history">
@@ -42,6 +41,7 @@
                             <i class="icon-download"></i>
                         </button>
                     </div>
+                    <ul id="chat-model-list"></ul>
                 </div>
             </div>
         </header>
@@ -49,22 +49,24 @@
             <aside id="sidebar">
                 <!-- Buttons -->
                 <div class="row">
-                    <button id="new-chat-button" class="col button" title="New chat"><i class="icon-new"></i></button>
-                    <button id="search-button" class="col button" title="Search chats"><i class="icon-search"></i></button>
-                    <button id="settings-button" class="col button" title="Show settings"><i class="icon-settings"></i></button>
-                    <button id="clear-button" class="col button" title="Clear chats"><i class="icon-clear"></i></button>
+                    <button id="new-chat-button" class="button" title="New chat"><i class="icon-new"></i></button>
+                    <div id="chats-menu" class="drop-down-menu col">
+                        <button id="chats-menu-button" class="button" title="Chats menu">
+                            <i class="icon-menu"></i>
+                        </button>
+                        <div class="drop-down-menu-items hidden">
+                            <button id="search-button" class="button" title="Search chats"><i class="icon-search"></i></button>
+                            <button id="settings-button" class="button" title="Show settings"><i class="icon-settings"></i></button>
+                            <button id="clear-button" class="button" title="Delete all chats"><i class="icon-clear"></i></button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Search -->
-                <div class="row hidden mt-1" id="search-row">
-                    <input type="text" id="search-input" class="col" placeholder="Search chats...">
-                    <!--
-                    <button id="perform-search" class="col button"><i class="icon-search"></i></button>
-                    -->
+                <div class="row hidden" id="search-row">
+                    <input type="text" id="search-input" class="col" placeholder="Search...">
                 </div>
                 <!-- Chats -->
-                <div class="row">
-                    <ul id="chat-list" class="col"></ul>
-                </div>
+                <ul id="chat-list" class="row"></ul>
             </aside>
             <div id="chat-history">
                 <!-- Chat messages -->
@@ -73,7 +75,7 @@
         <div id="chat-form">
             <!-- Chat input and button -->
             <div class="textarea">
-                <textarea id="message-input" type="text" placeholder="Type a message..." contenteditable required title="Type a message..."></textarea>
+                <textarea id="message-input" type="text" placeholder="Message..." contenteditable required title="Type a message..."></textarea>
             </div>
             <div class="buttons">
                 <button id="send-button" class="button button-primary" title="Send"><i class="icon-send"></i></button>
@@ -84,8 +86,9 @@
     <!-- Settings dialog -->
     <div id="settings-dialog" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2>Settings</h2>
+            <div class="modal-header row">
+                <h2 class="col grw">Settings</h2>
+                <button id="button-close-settings" class="button col button-secondary">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="input">
@@ -93,42 +96,37 @@
                     <input id="input-url" class="col" type="url" required class="input" placeholder="Example: http://localhost:11434"/>
                 </div>
                 <div class="input">
+                    <input type="hidden" id="input-model" />
                     <label class="" for="input-model">Model</label>
-                    <input id="input-model" class="col" required disabled class="input" placeholder="Select model"/>
-                    <div class="">
-                        <h4>Available models</h4>
-                        <div id="input-models" class=""></div>
-                    </div>
-                </div>
-                <div class="buttons row">
-                    <button id="button-save-settings" class="button grw col button-primary">Save</button>
-                    <button id="button-close-settings" class="button grw col">Cancel</button>
+                    <ul id="model-list" class="col"></ul>
+                    <button id="refresh-models-button" class="button col" title="Refresh model list">
+                        <i class="icon-refresh"></i>
+                    </button>
+                    <!--
+                    <p>Add more models through Ollama. Example: $ ollama run mistral</p>
+                    -->
                 </div>
             </div>
         </div>
     </div>
     <!-- Chat list item template -->
     <template id="chat-list-item-template">
-      <li class="chat-list-item row button">
-        <i class="icon-selected icon hidden col"></i>
-        <span class="chat-title grw col"></span>
-        <!--
-        <button class="edit-chat-button button hidden col">
-          <i class="icon-edit"></i>
-        </button>
-        <a class="delete-chat-button button hidden col">
-          <i class="icon-delete"></i>
-        </a>
-        -->
-      </li>
+      <li class="chat-list-item chat-title"></li>
     </template>
     <!-- Chat message template -->
     <template id="chat-message-template">
-        <div class="message">
+        <div class="message" contenteditable="false">
             <span class="message-text"></span>
             <!--
             <button class="copy-button button button-mini"><i class="icon-copy"></i></button>
             -->
+        </div>
+    </template>
+    <!-- UI notification template -->
+    <template id="notification-template">
+        <div class="notification row">
+            <span class="notification-message col grw"></span>
+            <button class="close-notification-button button col">&times;</button>
         </div>
     </template>
     <script type="module" src="/js/script.js"></script>

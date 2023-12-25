@@ -1,4 +1,5 @@
 import { Event } from './Event.js'
+import { ModelsList } from './ModelsList.js'
 import { ChatTitle } from './ChatTitle.js'
 import { ChatForm } from './ChatForm.js'
 
@@ -7,17 +8,16 @@ export class ChatArea {
     this.chats = chats
     this.chatTitle = new ChatTitle(this.chats)
     this.chatForm = new ChatForm()
-    this.chatModel = document.getElementById('chat-model')
     this.chatHistory = document.getElementById('chat-history')
     this.messageInput = document.getElementById('message-input')
     this.editChatButton = document.getElementById('edit-chat-button')
     this.deleteChatButton = document.getElementById('delete-chat-button')
+    this.modelList = new ModelsList('chat-model-list')
     this.bindEventListeners()
   }
 
   render () {
     const chat = this.chats.getCurrentChat()
-    this.chatModel.textContent = chat?.model
     this.chatHistory.innerHTML = chat?.content || ''
     this.chatTitle.render()
     this.messageInput.focus()
@@ -30,11 +30,16 @@ export class ChatArea {
     })
     this.editChatButton.addEventListener('click', this.handleEditChat.bind(this))
     this.deleteChatButton.addEventListener('click', this.handleDeleteChat.bind(this))
+    this.modelList.onClick(model => {
+      const chat = this.chats.getCurrentChat()
+      this.chats.updateModel(chat.id, model)
+    })
   }
 
   handleChatSelected () {
     const chat = this.chats.getCurrentChat()
     this.chatTitle.setTitle(chat.title)
+    // this.modelList.setSelected(chat.model)
   }
 
   handleEditChat () {
@@ -50,5 +55,9 @@ export class ChatArea {
       Event.emit('deleteChat', chat.id)
     }
     event.stopPropagation()
+  }
+
+  scrollToEnd () {
+    this.chatHistory.scrollTop = this.chatHistory.scrollHeight
   }
 }

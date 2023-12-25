@@ -3,19 +3,17 @@
 }
 
 i[class^="icon-"] {
-  color: #222;
+  color: $icon-color;
   font-size: 12px;
   vertical-align: middle;
 }
 
 .icon-download:before {
-  content: '\25BC'; /* Unicode character for the download icon followed by a non-breaking space */
+  content: '\1F4BE';
 }
 
 .icon-copy:before {
-  content: '\2398'; /* Unicode character for the copy icon followed by a non-breaking space */
-  //content: '\1F4CB'; /* Unicode character for the copy icon followed by a non-breaking space */
-  font-size: 20px; /* Adjust the size of the icon */
+  content: '\1F4CB';
 }
 
 .icon-selected:before {
@@ -23,13 +21,11 @@ i[class^="icon-"] {
 }
 
 .icon-edit:before {
-  content: "\270E"; // Unicode character for ✎
-  font-size: 16px;
+  content: "\1F58B";
 }
 
 .icon-new:before {
   content: "\002B";
-  //font-weight: 900;
   font-size: 14px;
 }
 
@@ -43,20 +39,24 @@ i[class^="icon-"] {
 
 .icon-settings:before {
   content: "\1F6E0"; /* Unicode for wrench */
+  //content: "\2699"; // Gear
+}
+
+.icon-refresh:before {
+  content: "\21BB";
 }
 
 .icon-send:before {
-  content: "\2192"; /* Unicode for → */
-  //content: '\2B06';
+  content: "\1F4E9";
 }
 
 .icon-delete:before {
-  content: "\00D7"; /* Unicode for ✖ */
-  font-size: 16px;
+  content: "\1F5D1";
 }
 
 .icon-abort:before {
-  content: "\00D7"; /* Unicode for ✖ */
+  //content: "\00D7"; /* Unicode for ✖ */
+  content: "\274C"; // ❌
 }
 
 .icon-save::before {
@@ -67,4 +67,20 @@ i[class^="icon-"] {
   content: '\22EF'; /* Unicode character for the chevron down icon followed by a non-breaking space */
   font-size: 14px; /* Adjust the size of the icon */
   font-weight: 900;
+}
+
+.icon-user:before {
+  content: "\1F464"; /* Unicode for 👤 */
+}
+
+.icon-robot:before {
+  content: "\1F916"; /* Unicode for 🤖 */
+}
+
+.icon-speech:before {
+  content: "\1F4AC";
+}
+
+.icon-speech2:before {
+  content: "\1F5E8"; /* Unicode for 🗨️ */
 }

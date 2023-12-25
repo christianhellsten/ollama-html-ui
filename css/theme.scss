@@ -1,4 +1,5 @@
 @import 'reset';
+@import 'variables';
 @import 'grid';
 @import 'typography';
 @import 'icons';
@@ -7,13 +8,14 @@
 @import 'list';
 @import 'button';
 @import 'utils';
+@import 'style';
+// Components
 @import 'ChatApp';
 @import 'ChatMenu';
-@import 'ChatList';
 @import 'ChatHistory';
 @import 'ChatForm';
 @import 'ChatArea';
 @import 'Sidebar';
 @import 'DropDownMenu';
+@import 'UINotification';
 @import 'CopyButton';
-@import 'style';

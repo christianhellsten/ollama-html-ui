@@ -2,7 +2,6 @@
   flex: 0 0 60px; /* fixed height */
   display: flex;
   align-items: center;
-  padding: 0.5rem;
   background-color: #fff;
   border-top: 1px solid #ccc;
 
@@ -17,34 +16,24 @@
     display: flex;
     position: relative;
     height: 100%;
-    //width: 100%;
-    //right: 1rem;
     .button {
-      //display: flex;
-      //font-size: 2rem;
-      //width: 4rem;
-      //line-height: 2rem;
       border-radius: 3px;
-      i {
-        //font-size: 1.2rem;
-      }
-      //padding: 0.5rem 0.5rem;
+      background: transparent;
     }
   }
 
-
   textarea {
+    padding: 0.5rem;
     resize: none;
     border: 0px;
-    //width: 100%;
-    //border: 1px solid #ccc;
-    //border-radius: 2px;
-    //padding: 0.5rem;
-    //box-sizing: border-box;
   }
 
   textarea:focus {
-    outline:0px none transparent;
+    border: 1px $primary-color;
+  }
+
+  .icon-send {
+    font-size: 18px;
   }
 }
 

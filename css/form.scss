@@ -1,29 +1,27 @@
 label {
-    font-weight: 600;
+    @extend .font-weight-boldest;
     margin-bottom: .5rem;
 }
 
 input {
     width: 100%;
     padding: 0.5rem 0.75rem;
-    display: inline-block; /* Ensures the input does not break into a new line */
-    border: 1px solid #cfcfcf;
-    //border-radius: 4px;
-    box-sizing: border-box; /* Makes sure padding does not affect the overall width */
-    //font-size: 16px; /* Slightly larger font for readability */
-    background-color: #f8f8f8; /* Light background color */
+    display: inline-block;
+    border: 1px solid $border-color;
 }
 
-input:focus {
-    border-color: #4CAF50; /* Changes border color on focus */
-    outline: none; /* Removes the default focus outline */
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Adds a subtle shadow on focus */
+input:focus,
+[contenteditable]:focus {
+    border: 1px solid $border-color;
+    border-color: lighten($secondary-color, 40%);
+    outline: none;
+    @extend .box-shadow;
 }
 
 input:hover {
-    background-color: #e9e9e9; /* Slightly darker background on hover */
+    border: 1px solid lighten($secondary-color, 20%);
 }
 
 .input {
-    margin-bottom: 0.5rem; /* Margin around the input */
+    margin-bottom: 0.5rem;
 }

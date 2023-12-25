@@ -1,13 +1,12 @@
-import { Models } from './Models.js'
-import { LocalStorage } from './models/LocalStorage.js'
-import { List } from './List.js'
+import { ModelsList } from './ModelsList.js'
+import { Models } from './models/Models.js'
+import { Settings } from './models/Settings.js'
 
 export class SettingsDialog {
   constructor () {
-    this.models = new Models()
     this.domId = 'settings-dialog'
-    this.storage = new LocalStorage()
     this.createDialogElements()
+    this.bindEventListeners()
     this.loadSettings()
   }
 
@@ -23,28 +22,29 @@ export class SettingsDialog {
     this.modal = document.getElementById(this.domId)
     this.urlInput = document.getElementById('input-url')
     this.modelInput = document.getElementById('input-model')
-    this.saveButton = document.getElementById('button-save-settings')
-    this.saveButton.onclick = () => this.saveSettings()
+    this.refreshModelsButton = document.getElementById('refresh-models-button')
     this.closeButton = document.getElementById('button-close-settings')
-    this.closeButton.onclick = () => this.hide()
+    this.modelList = new ModelsList('model-list')
   }
 
-  saveSettings () {
-    this.storage.set('url', this.urlInput.value)
-    this.hide()
+  bindEventListeners () {
+    this.urlInput.addEventListener('blur', () => {
+      console.log(this.urlInput.value)
+      Settings.setUrl(this.urlInput.value)
+    })
+    this.closeButton.onclick = () => this.hide()
+    this.modelList.onClick(model => {
+      Settings.setModel(this.modelList.getSelected())
+    })
+    this.refreshModelsButton.onclick = () => this.refreshModels()
+  }
+
+  refreshModels () {
+    Models.load()
   }
 
   loadSettings () {
-    const url = this.storage.get('url', 'http://localhost:11434')
-    const model = this.storage.get('model')
+    const url = Settings.getUrl()
     this.urlInput.value = url
-    this.modelInput.value = model
-    this.models.load().then(() => {
-      const modelList = new List('input-models', this.models.getAllModelNames())
-      modelList.onClick(model => {
-        this.modelInput.value = model
-        this.storage.set('model', model)
-      })
-    })
   }
 }

@@ -9,7 +9,7 @@ export class ChatListItem {
     this.element.classList.add(`chat${this.chat.id}`)
     if (this.chat.id === this.chatList.chats.getCurrentChat()?.id) {
       this.element.classList.add('selected')
-      this.content.querySelector('.icon-selected').classList.remove('hidden')
+      // this.content.querySelector('.icon-selected').classList.remove('hidden')
     }
     this.setTitle()
     this.bindEventListeners()

@@ -1,7 +1,5 @@
 .row {
   display: flex; /* Use flexbox layout */
-  //flex-direction: row;
-  //gap: 0.5rem;
   justify-content: space-between; /* Distribute space evenly between the buttons */
   align-items: center; /* Align items vertically */
   width: 100%; /* Container takes full width */
@@ -20,13 +18,4 @@
 
 .flex-align-end {
   align-self: flex-end;
-}
-
-/* Optional: Style for the primary button */
-.button-primary {
-  /* Add specific styles for primary button if needed */
-}
-
-#chat-input .buttons {
-  height: 100%;
 }

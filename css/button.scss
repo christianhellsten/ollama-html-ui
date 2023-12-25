@@ -1,21 +1,28 @@
 button {
   font-size: 14px;
   font-weight: 600;
-  background-color: white;
+  color: $button-secondary-color;
+  background-color: $button-secondary-bgcolor;
 }
 
 .button {
   padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 2px;
+  border-radius: $border-radius;
   cursor: pointer;
   i {
-    color: #222;
+    color: $button-primary-color;
   }
 }
 
-.button:hover {
-  background-color: #cfcfcf;
+.button.selected:after {
+  content: "\203A\00a0"; // \00a0 is a non-breaking space
+}
+
+.button:hover,
+.button.selected {
+  color: $button-primary-color;
+  background-color: $light-color;
 }
 
 .button-small {
@@ -28,15 +35,14 @@ button {
 
 /* Primary button */
 .button-primary {
-  background-color: #0052cc;
-  color: white;
-  i {
-    color: white;
-  }
+  @extend .font-weight-boldest;
+  color: $button-primary-color;
+  background-color: $button-primary-bgcolor;
 }
 
 .button-primary:hover {
-  background-color: #0041c4;
+  color: $button-primary-color;
+  background-color: $light-color;
 }
 
 .buttons {
@@ -44,5 +50,6 @@ button {
 
   .button {
     border-radius: 0;
+    width: 100%;
   }
 }

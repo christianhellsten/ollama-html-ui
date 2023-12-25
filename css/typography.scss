@@ -12,26 +12,13 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Heading styles */
 h1 {
-  font-size: 2rem; /* Larger size for main headings */
-  font-weight: bold; /* Bold for emphasis */
+  font-size: 2rem;
 }
 
 h2 {
-  font-size: 1.5rem; /* Medium size for secondary headings */
-  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 h3 {
-  font-size: 1.25rem; /* Smaller size for tertiary headings */
-  font-weight: normal; /* Normal weight for less emphasis */
-}
-
-/* Chat message typography */
-.message {
-  font-size: 0.9rem; /* Slightly smaller font for messages */
-  line-height: 1.4;
-}
-
-#chat-input textarea {
-  font-size: 0.9rem; /* Consistent font size in input area */
+  font-size: 1.25rem;
 }

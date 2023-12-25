@@ -1,6 +1,8 @@
 /* Sidebar styling */
 #sidebar {
-  flex: 0 0 250px; /* fixed width */
+  min-width: 200px;
+  max-width: 480px;
+  //flex: 0 0 250px; /* fixed width */
   padding: 0rem;
   //background-color: #E3F2FD;
   //border-right: 1px solid #cfcfcf;
@@ -20,8 +22,9 @@
 }
 
 #sidebar.collapsed {
+  max-width: 0px;
   display: none;
-  flex: 0 0 0px; /* Collapsed state with zero width */
+  //flex: 0 0 0px; /* Collapsed state with zero width */
   padding: 0rem;
 }
 

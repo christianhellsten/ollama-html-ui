@@ -1,7 +1,7 @@
-const { test } = require('node:test')
-const { chromium } = require('playwright')
-const { expect } = require('playwright/test')
-const { exec } = require('child_process')
+import { test } from 'node:test'
+import { chromium } from 'playwright'
+import { expect } from 'playwright/test'
+import { exec } from 'node:child_process'
 
 // The Ollama server must be running mistral:latest
 // TODO: Implement dummy server
@@ -18,21 +18,25 @@ function openScreenshot (filePath) {
 }
 
 const DEBUG = process.env.DEBUG === 'true' || false
+const VIDEO = process.env.VIDEO === 'true' || false
 const MOBILE = process.env.MOBILE === 'true' || false
 const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true' || false
 
 class AppTest {
   async start () {
-    this.browser = await chromium.launch()
-    this.context = await this.browser.newContext({
+    const options = {
       launchOptions: {
         slowMo: 1000 // Slow motion value in milliseconds
-      },
-      recordVideo: {
-        dir: 'videos', // Directory to save videos
-        size: { width: 1280, height: 720 } // Optional: set video size
       }
-    })
+    }
+    if (VIDEO) {
+      options.recordVideo = {
+        dir: 'recordings', // Directory to save videos
+        size: { width: 1280, height: 720 }
+      }
+    }
+    this.browser = await chromium.launch()
+    this.context = await this.browser.newContext(options)
     this.page = await this.context.newPage()
     this.page.on('console', message => {
       if (DEBUG) {
@@ -56,7 +60,7 @@ class AppTest {
   }
 
   async showSettings () {
-    await this.page.click('#chats-menu-button')
+    // await this.page.click('#chats-menu-button')
     await this.screenshot()
     await this.page.click('#settings-button')
     await expect(this.page.locator('#settings-dialog')).toBeVisible()
@@ -69,7 +73,7 @@ class AppTest {
     await urlInput.fill(url)
     if (model && model !== '') {
       // Refresh model list
-      await this.page.locator('#refresh-models-button').click()
+      await this.page.locator('#settings-dialog .refresh-models-button').click()
       // Select model from list
       // await this.screenshot()
       // this.page.locator('#model-list').getByText('mistral:latest').click()
@@ -83,20 +87,23 @@ class AppTest {
     }
 
     // Save settings
-    await this.page.locator('#button-close-settings').click()
+    await this.page.locator('#settings-dialog .button-close').click()
   }
 
   async sendMessage (message) {
     await this.page.fill('#message-input', message)
     await this.page.click('#send-button')
     await expect(this.page.locator('#abort-button')).toBeVisible()
-    await this.page.waitForSelector('#send-button', { timeout: 60000 })
+    // await this.screenshot('1.png');
+    // Wait for response
+    await this.page.waitForSelector('#send-button', { timeout: 180000 })
+    // await this.screenshot('2.png');
   }
 
   async newChat (title) {
     await this.page.click('#new-chat-button')
     const newTitle = /Untitled/
-    await expect(this.page.locator('.chat-list-item.selected')).toHaveText(newTitle)
+    await expect(this.page.locator('.chat-list-item.selected .chat-title')).toHaveText(newTitle)
     await expect(this.page.locator('#chat-title')).toHaveText(newTitle)
     await this.editChatTitle(title)
   }
@@ -106,7 +113,7 @@ class AppTest {
     await this.page.fill('#chat-title', title)
     await this.pressEnter()
     // await this.screenshot();
-    await expect(this.page.locator('.chat-list-item.selected')).toHaveText(title)
+    await expect(this.page.locator('.chat-list-item.selected .chat-title')).toHaveText(title)
     await expect(this.page.locator('#chat-title')).toHaveText(title)
   }
 
@@ -165,7 +172,7 @@ class AppTest {
   }
 }
 
-test.describe('Application tests', () => {
+test.describe('Application tests', { only: true }, () => {
   let app
 
   test.beforeEach(async ({ test }) => {
@@ -196,7 +203,7 @@ test.describe('Application tests', () => {
     await app.newChat('Happy Hamster')
   })
 
-  test('Delete chat', async () => {
+  test('Delete chat', { only: true }, async () => {
     await app.newChat('Happy Hamster')
     await app.deleteChat('Happy Hamster')
   })

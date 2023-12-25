@@ -7,9 +7,12 @@ import { Sidebar } from './Sidebar.js'
 import { CopyButton } from './CopyButton.js'
 import { DownloadButton } from './DownloadButton.js'
 import { DropDownMenu } from './DropDownMenu.js'
+import { SettingsDialog } from './SettingsDialog.js'
+import { ChatSettingsDialog } from './ChatSettingsDialog.js'
 // import { MarkdownFormatter } from './MarkdownFormatter.js'
 import { ChatArea } from './ChatArea.js'
 
+// TODO: Review and refactor
 export class App {
   static run () {
     UINotification.initialize()
@@ -26,6 +29,8 @@ export class App {
     this.chats = new Chats()
     this.sidebar = new Sidebar(this.chats)
     this.chatArea = new ChatArea(this.chats)
+    this.settingsDialog = new SettingsDialog(this.chats)
+    this.chatSettingsDialog = new ChatSettingsDialog(this.chats)
     this.initializeElements()
     this.bindEventListeners()
     this.logInitialization()
@@ -109,6 +114,7 @@ Chat:  ${this.chats.getCurrentChat()?.id}
     element.setAttribute('disabled', 'disabled')
   }
 
+  // https://github.com/jmorganca/ollama/blob/main/docs/api.md#generate-a-completion
   async sendMessage () {
     const message = this.messageInput.value.trim()
     this.messageInput.value = ''
@@ -118,12 +124,16 @@ Chat:  ${this.chats.getCurrentChat()?.id}
       const responseDiv = this.createMessageDiv('', 'system')
       responseDiv.innerHTML = this.getSpinner()
       try {
-        const data = { model: this.chats.getCurrentChat().model, prompt: message }
+        const data = {
+          model: this.chats.getCurrentChat()?.model || Settings.getModel(),
+          prompt: message,
+          system: Settings.getSystemPrompt()
+        }
         const response = await this.postMessage(data, responseDiv)
         this.handleResponse(response, responseDiv)
       } catch (error) {
         console.debug(error)
-        console.error(`Please the server settings are correct: ${Settings.getMessageUrl()} ${Settings.getModel()}. Error code: 843947`)
+        console.error(`Please check the settings: ${Settings.getMessageUrl()} ${Settings.getModel()}. Error code: 843947`)
         this.updateResponse(responseDiv, '', 'system')
       }
     }
@@ -149,7 +159,8 @@ Chat:  ${this.chats.getCurrentChat()?.id}
 
     // Append to chatHistory and adjust scroll
     this.chatHistory.appendChild(messageDiv)
-    this.chatHistory.scrollTop = this.chatHistory.scrollHeight
+    // this.chatHistory.scrollTop = this.chatHistory.scrollHeight
+    this.chatArea.scrollToEnd()
 
     return messageDiv
   }

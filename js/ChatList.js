@@ -16,11 +16,6 @@ export class ChatList {
     this.chats.setCurrentChat(chatId)
   }
 
-  deleteChat (chatId) {
-    this.chats.delete(chatId)
-    this.render()
-  }
-
   render () {
     this.chatListElement.innerHTML = ''
     this.chats.getChats().forEach(chat => {

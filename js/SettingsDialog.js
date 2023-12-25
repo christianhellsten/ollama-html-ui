@@ -1,36 +1,28 @@
+import { Modal } from './Modal.js'
 import { ModelsList } from './ModelsList.js'
 import { Models } from './models/Models.js'
 import { Settings } from './models/Settings.js'
 
-export class SettingsDialog {
+export class SettingsDialog extends Modal {
   constructor () {
-    this.domId = 'settings-dialog'
-    this.createDialogElements()
+    super('settings-dialog')
+    this.showButton = document.getElementById('settings-button')
+    this.urlInput = document.getElementById('input-url')
+    this.modelInput = document.getElementById('input-model')
+    this.systemPromptInput = this.modal.querySelector('#input-system-prompt')
+    this.refreshModelsButton = this.modal.querySelector('.refresh-models-button')
+    this.modelList = new ModelsList('model-list', Settings.getModel())
     this.bindEventListeners()
     this.loadSettings()
   }
 
-  show () {
-    this.modal.classList.add('show')
-  }
-
-  hide () {
-    this.modal.classList.remove('show')
-  }
-
-  createDialogElements () {
-    this.modal = document.getElementById(this.domId)
-    this.urlInput = document.getElementById('input-url')
-    this.modelInput = document.getElementById('input-model')
-    this.refreshModelsButton = document.getElementById('refresh-models-button')
-    this.closeButton = document.getElementById('button-close-settings')
-    this.modelList = new ModelsList('model-list')
-  }
-
   bindEventListeners () {
+    this.showButton.addEventListener('click', this.show.bind(this))
     this.urlInput.addEventListener('blur', () => {
-      console.log(this.urlInput.value)
       Settings.setUrl(this.urlInput.value)
+    })
+    this.systemPromptInput.addEventListener('blur', () => {
+      Settings.setSystemPrompt(this.systemPromptInput.value)
     })
     this.closeButton.onclick = () => this.hide()
     this.modelList.onClick(model => {

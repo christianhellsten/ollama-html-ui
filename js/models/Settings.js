@@ -50,12 +50,20 @@ export class Settings {
     Settings.set('model', model)
   }
 
-  static getCurrentChat () {
+  static getSystemPrompt () {
+    return Settings.get('system-prompt')
+  }
+
+  static setSystemPrompt (systemPrompt) {
+    Settings.set('system-prompt', systemPrompt)
+  }
+
+  static getCurrentChatId () {
     return Settings.get('currentChatId')
   }
 
-  static setCurentChat (chat) {
-    Settings.set('currentChatId', chat.id)
+  static setCurrentChatId (chatId) {
+    Settings.set('currentChatId', chatId)
   }
 
   static getChats () {

@@ -57,15 +57,20 @@ export class Sidebar {
     function escapeRegExp (string) {
       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // Escapes special characters
     }
-
     const query = escapeRegExp(this.searchInput.value.trim()).replace(/\s+/g, '.*')
+    const queryContent = query.length > 2 // Nobody wants to query content based on one character?
     const regex = new RegExp(query, 'i') // 'i' for case-insensitive matching
-    const chatItems = this.element.querySelectorAll('.chat-list-item')
-    chatItems.forEach(function (item) {
-      const title = item.textContent.toLowerCase()
-      const match = regex.test(title)
-      // console.log(`Search ${regex} ${title}`)
-      if (match) {
+    console.log(`${query}`)
+    // TODO: Optimize data model :)
+    const matches = this.chats.chats.filter(chat => {
+      let match = regex.test(chat.title)
+      if (queryContent) {
+        match ||= regex.test(chat.content)
+      }
+      return match
+    }).map(chat => chat.id)
+    this.element.querySelectorAll('.chat-list-item').forEach(item => {
+      if (matches.includes(item.data.id)) { // Now matches the type
         item.classList.remove('hidden')
       } else {
         item.classList.add('hidden')

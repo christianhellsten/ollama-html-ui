@@ -2,9 +2,11 @@ import { Models } from './models/Models.js'
 import { UINotification } from './UINotification.js'
 import { Settings } from './models/Settings.js'
 import { Event } from './Event.js'
+import { DOM } from './Dom.js'
 import { Chats } from './models/Chats.js'
 import { Sidebar } from './Sidebar.js'
 import { CopyButton } from './CopyButton.js'
+import { OllamaApi } from './OllamaApi.js'
 import { DownloadButton } from './DownloadButton.js'
 import { DropDownMenu } from './DropDownMenu.js'
 import { SettingsDialog } from './SettingsDialog.js'
@@ -17,20 +19,20 @@ export class App {
   static run () {
     UINotification.initialize()
     const app = new App()
-    this.downloadButton = new DownloadButton()
-    this.copyButton = new CopyButton()
-    this.dropDownMenu = new DropDownMenu()
     Models.load()
     return app
   }
 
   constructor () {
-    this.controller = null
     this.chats = new Chats()
     this.sidebar = new Sidebar(this.chats)
     this.chatArea = new ChatArea(this.chats)
+    this.ollamaApi = new OllamaApi()
     this.settingsDialog = new SettingsDialog(this.chats)
     this.chatSettingsDialog = new ChatSettingsDialog(this.chats)
+    this.downloadButton = new DownloadButton()
+    this.copyButton = new CopyButton()
+    this.dropDownMenu = new DropDownMenu()
     this.initializeElements()
     this.bindEventListeners()
     this.logInitialization()
@@ -45,7 +47,7 @@ export class App {
   }
 
   logInitialization () {
-    const msg = `~~~\nOllama HTML UI\n~~~
+    const msg = `~~~\nChat UI\n~~~
 Model: ${Settings.getModel()}
 URL:   ${Settings.getUrl()}
 Chat:  ${this.chats.getCurrentChat()?.id}
@@ -72,11 +74,9 @@ Chat:  ${this.chats.getCurrentChat()?.id}
   }
 
   handleAbort = () => {
-    if (this.controller) {
-      this.controller.abort()
-      this.enableInput()
-      console.log('Request aborted')
-    }
+    this.ollamaApi.abort()
+    this.enableForm()
+    console.log('Request aborted')
   }
 
   handleKeyPress = (event) => {
@@ -85,57 +85,53 @@ Chat:  ${this.chats.getCurrentChat()?.id}
     }
   }
 
-  enableInput () {
-    this.show(this.sendButton)
-    this.hide(this.abortButton)
-    this.enable(this.messageInput)
+  enableForm () {
+    DOM.showElement(this.sendButton)
+      .hideElement(this.abortButton)
+      .enableInput(this.messageInput)
     this.messageInput.focus()
   }
 
-  disableInput () {
-    this.hide(this.sendButton)
-    this.show(this.abortButton)
-    this.disable(this.messageInput)
-  }
-
-  show = (element) => {
-    element.classList.remove('hidden')
-  }
-
-  hide = (element) => {
-    element.classList.add('hidden')
-  }
-
-  enable = (element) => {
-    element.removeAttribute('disabled')
-  }
-
-  disable = (element) => {
-    element.setAttribute('disabled', 'disabled')
+  disableForm () {
+    DOM.hideElement(this.sendButton)
+      .showElement(this.abortButton)
+      .disableInput(this.messageInput)
   }
 
   // https://github.com/jmorganca/ollama/blob/main/docs/api.md#generate-a-completion
   async sendMessage () {
     const message = this.messageInput.value.trim()
+    const chat = this.chats.getCurrentChat()
+    const model = chat?.model || Settings.getModel()
     this.messageInput.value = ''
+
     if (message) {
-      this.disableInput()
+      this.disableForm()
       this.createMessageDiv(message, 'user')
+      const systemPrompt = Settings.getSystemPrompt()
+      const modelParameters = Settings.getModelParameters()
       const responseDiv = this.createMessageDiv('', 'system')
-      responseDiv.innerHTML = this.getSpinner()
-      try {
-        const data = {
-          model: this.chats.getCurrentChat()?.model || Settings.getModel(),
-          prompt: message,
-          system: Settings.getSystemPrompt()
-        }
-        const response = await this.postMessage(data, responseDiv)
-        this.handleResponse(response, responseDiv)
-      } catch (error) {
-        console.debug(error)
-        console.error(`Please check the settings: ${Settings.getMessageUrl()} ${Settings.getModel()}. Error code: 843947`)
-        this.updateResponse(responseDiv, '', 'system')
+      const data = {
+        prompt: message,
+        model
       }
+      // Add system prompt
+      if (systemPrompt) {
+        data.system = systemPrompt
+      }
+      // Add model parameters
+      if (modelParameters) {
+        data.options = modelParameters
+      }
+      // Show spinner
+      responseDiv.innerHTML = '<div class="spinner"></div>'
+      // Make request
+      this.ollamaApi.send(
+        data,
+        (response) => this.handleResponse(response, responseDiv),
+        (error) => this.handleResponseError(error, responseDiv),
+        (response) => this.handleDone(response, responseDiv)
+      )
     }
   }
 
@@ -165,95 +161,44 @@ Chat:  ${this.chats.getCurrentChat()?.id}
     return messageDiv
   }
 
-  getSpinner = () => {
-    return '<div class="spinner"></div>'
-  }
-
-  async postMessage (data, responseDiv) {
-    this.controller = new AbortController()
-    const url = Settings.getMessageUrl()
-    const { signal } = this.controller
-    const response = await fetch(url, {
-      signal,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    if (!response.ok) {
-      this.enableInput()
-      throw new Error(`POST ${url} status ${response.status}`)
-    }
-    return response
-  }
-
-  async handleResponse (response, responseDiv) {
-    const reader = response.body.getReader()
-    let partialLine = ''
-
-    try {
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) {
-          this.handleDone(responseDiv)
-          break
-        }
-
-        const textChunk = new TextDecoder().decode(value)
-        const lines = (partialLine + textChunk).split('\n')
-        partialLine = lines.pop()
-
-        lines.forEach(line => {
-          if (line.trim()) {
-            this.updateResponse(responseDiv, JSON.parse(line).response)
-          }
-        })
-      }
-
-      if (partialLine.trim()) {
-        this.updateResponse(responseDiv, partialLine)
-      }
-    } catch (error) {
-      this.handleResponseError(error, responseDiv)
-    } finally {
-      this.enableInput()
-    }
-  }
-
-  handleResponseError = (error, responseDiv) => {
-    // Ignore "Abort" button
-    if (error.name !== 'AbortError') {
-      this.updateResponse(responseDiv, `Error: ${error.message}`, 'system')
-    }
-  }
-
-  updateResponse = (div, content) => {
-    const sanitizedContent = this.sanitizeContent(content)
-    if (div.initialResponse) {
-      div.textContent = sanitizedContent
-      div.initialResponse = false
+  handleResponse (response, responseDiv) {
+    // Update the response div with the received response
+    const sanitizedContent = this.sanitizeContent(response)
+    if (responseDiv.initialResponse) {
+      responseDiv.textContent = sanitizedContent
+      responseDiv.initialResponse = false
     } else {
-      div.textContent += sanitizedContent
+      responseDiv.textContent += sanitizedContent
     }
     this.chatArea.scrollToEnd()
   }
 
-  sanitizeContent = (content) => {
-    // TODO: Sanitization logic here
-    return content
+  handleResponseError (error, responseDiv) {
+    // Ignore "Abort" button
+    if (error.name !== 'AbortError') {
+      console.error(`Error: ${error.message}`)
+      responseDiv.initialResponse = false
+    }
+    this.chatArea.scrollToEnd()
+    this.enableForm()
   }
 
-  handleDone = (responseDiv) => {
+  handleDone (response, responseDiv) {
+    console.log('Done')
     const chat = this.chats.getCurrentChat()
     const content = this.chatHistory.innerHTML
-    // TODO:
-    // const formattedContent = MarkdownFormatter.format(responseDiv.textContent)
-    // responseDiv.innerHTML = formattedContent
     if (chat !== null) {
       this.chats.update(chat.id, chat.title, content)
     } else {
       this.chats.add(null, content)
     }
     this.chats.saveData()
+    this.enableForm()
+  }
+
+  sanitizeContent = (content) => {
+    // TODO: Sanitization logic here
+    return content
   }
 
   getIdParam = () => {

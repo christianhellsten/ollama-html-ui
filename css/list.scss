@@ -6,7 +6,8 @@ ul {
   width: 100%;
 
   li {
-    @extend .row;
+    display: flex; /* Use flexbox layout */
+    justify-content: left;
     padding: 0.5rem 0.75rem;
     cursor: pointer;
     width: 100%;
@@ -32,13 +33,13 @@ ul {
 
   li.selected {
     @extend .font-weight-boldest;
-    color: $button-primary-color;
-    background-color: $light-color;
-    @extend .box-shadow;
+    //color: $button-primary-color;
+    //background-color: $light-color;
+    //@extend .box-shadow;
   }
 
   li.selected:before {
-    //content: "\203A\00a0"; // \00a0 is a non-breaking space
+    content: "\203A\00a0"; // \00a0 is a non-breaking space
   }
 
   li.hover {

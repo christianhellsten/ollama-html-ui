@@ -13,6 +13,11 @@
     padding: 0.5rem;
 }
 
+
+.hamburger-menu:hover {
+    @extend .box-shadow;
+}
+
 .hamburger-menu .bar {
     width: 1.5rem;
     height: 2px;

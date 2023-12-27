@@ -30,11 +30,15 @@ export class Settings {
   }
 
   static getUrl (uri) {
-    const baseUrl = Settings.get('url')
-    if (uri) {
-      return new URL(uri, baseUrl).href
-    } else {
-      return baseUrl
+    try {
+      const baseUrl = Settings.get('url')
+      if (uri) {
+        return new URL(uri, baseUrl).href
+      } else {
+        return baseUrl
+      }
+    } catch (error) {
+      return null
     }
   }
 
@@ -55,7 +59,21 @@ export class Settings {
   }
 
   static setSystemPrompt (systemPrompt) {
+    if (systemPrompt === '') {
+      systemPrompt = null
+    }
     Settings.set('system-prompt', systemPrompt)
+  }
+
+  static getModelParameters () {
+    return Settings.get('model-parameters')
+  }
+
+  static setModelParameters (modelParameters) {
+    if (modelParameters === '') {
+      modelParameters = null
+    }
+    Settings.set('model-parameters', modelParameters)
   }
 
   static getCurrentChatId () {
@@ -72,13 +90,5 @@ export class Settings {
 
   static setChats (chats) {
     Settings.set('chats', chats)
-  }
-
-  static getMessageUrl () {
-    return Settings.getUrl('/api/generate')
-  }
-
-  static getModelsUrl () {
-    return Settings.getUrl('/api/tags')
   }
 }

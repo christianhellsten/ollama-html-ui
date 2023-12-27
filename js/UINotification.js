@@ -8,15 +8,25 @@ function simpleHash (str) {
   return hash
 }
 
+// Show all uncaught errors as UI notifications
+/*
+window.onerror = function (message, source, lineno, colno, error) {
+  const errorDetails = `${message} at ${source}:${lineno}:${colno}`
+  UINotification.show(errorDetails, 'error')
+  return true
+}
+*/
+
 export class UINotification {
-  constructor (message) {
+  constructor (message, type) {
+    this.type = type
     this.domId = simpleHash(JSON.stringify(message))
     this.container = document.body
     this.template = document.getElementById('notification-template').content
   }
 
-  static show (message) {
-    const notification = new UINotification(message)
+  static show (message, type) {
+    const notification = new UINotification(message, type)
     notification.show(message)
   }
 
@@ -55,6 +65,10 @@ export class UINotification {
     // Assign unique ID to the notification
     const notificationId = `notification-${this.domId}`
     notificationElement.id = notificationId // Set ID on the actual element, not the fragment
+    // Add type, for example, error
+    if (this.type) {
+      notificationElement.classList.add(`notification-${this.type}`)
+    }
 
     // Add close functionality
     const closeButton = clone.querySelector('.close-notification-button')

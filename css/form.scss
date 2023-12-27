@@ -3,22 +3,29 @@ label {
     margin-bottom: .5rem;
 }
 
-input {
+input, textarea {
     width: 100%;
     padding: 0.5rem 0.75rem;
     display: inline-block;
     border: 1px solid $border-color;
 }
 
+input.error,
+textarea.error {
+    border: 1px solid $error-color !important;
+}
+
 input:focus,
+textarea:focus,
 [contenteditable]:focus {
     border: 1px solid $border-color;
     border-color: lighten($secondary-color, 40%);
-    outline: none;
+    outline: none !important;
     @extend .box-shadow;
 }
 
-input:hover {
+input:hover,
+textarea:hover {
     border: 1px solid lighten($secondary-color, 20%);
 }
 
@@ -32,4 +39,5 @@ label {
 
 textarea {
     padding: 0.5rem;
+    resize: none;
 }

@@ -3,7 +3,9 @@ $secondary-color: #222831;
 $tertiary-color: #EEEEEE;
 
 $white: #fff;
+$red: #EF4040;
 
+$error-color: $red;
 $text-color: $tertiary-color;
 $bg-color: $tertiary-color;
 
@@ -14,7 +16,7 @@ $button-primary-bgcolor: #EEEEEE;
 $button-secondary-color: lighten($primary-color, 2);
 $button-secondary-bgcolor: #EEEEEE;
 
-$border-radius: 0px;
+$border-radius: 2px;
 $border-color: $primary-color;
 $border: $border-radius $border-color;
 

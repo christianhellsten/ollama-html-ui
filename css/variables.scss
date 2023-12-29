@@ -17,7 +17,9 @@ $button-secondary-color: lighten($primary-color, 2);
 $button-secondary-bgcolor: #EEEEEE;
 
 $border-radius: 2px;
-$border-color: $primary-color;
+$border-color: lighten($primary-color, 60%);
+$border-hover-color: lighten($primary-color, 40%);
+$border-focus-color: lighten($primary-color, 30%);
 $border: $border-radius $border-color;
 
 $light-color: lighten($button-primary-bgcolor, 10);

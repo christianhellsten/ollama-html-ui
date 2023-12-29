@@ -3,7 +3,9 @@ label {
     margin-bottom: .5rem;
 }
 
-input, textarea {
+input,
+textarea,
+{
     width: 100%;
     padding: 0.5rem 0.75rem;
     display: inline-block;
@@ -15,12 +17,16 @@ textarea.error {
     border: 1px solid $error-color !important;
 }
 
+[contenteditable]:focus {
+    outline: 1px solid $border-color;
+}
+
 input:focus,
 textarea:focus,
 [contenteditable]:focus {
     border: 1px solid $border-color;
     border-color: lighten($secondary-color, 40%);
-    outline: none !important;
+    outline: none;
     @extend .box-shadow;
 }
 

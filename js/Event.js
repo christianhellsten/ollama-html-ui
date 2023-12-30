@@ -7,12 +7,12 @@ export class Event {
 
   static emit (eventName, data) {
     let log = `${eventName}`
-    if (data.id !== undefined) {
+    if (data?.id) {
       log += ` id: ${data.id}`
     }
     console.log(log)
     const event = new CustomEvent(eventName, {
-      detail: data,
+      detail: data || {},
       bubbles: true // This makes the event bubble up through the DOM
     })
     window.dispatchEvent(event)

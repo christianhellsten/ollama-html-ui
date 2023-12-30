@@ -1,25 +1,29 @@
+import { AppController } from './AppController.js'
+import { Event } from './Event.js'
 import { Modal } from './Modal.js'
 import { ModelsList } from './ModelsList.js'
 
+// TODO: Review
 export class ChatSettingsDialog extends Modal {
-  constructor (chats) {
+  constructor () {
     super('chat-settings-dialog')
-    this.chats = chats
     this.showButton = document.getElementById('chat-settings-button')
-    this.modelList = new ModelsList('chat-model-list', this.chats.getCurrentChat()?.model)
-    // this.systemPromptInput = this.modal.querySelector('#input-system-prompt')
+    AppController.getCurrentChat().then(chat => {
+      this.modelList = new ModelsList('chat-model-list', chat?.model)
+    })
     this.bindEventListeners()
   }
 
   bindEventListeners () {
     this.showButton.addEventListener('click', this.show.bind(this))
-    this.modelList.onClick(model => {
-      const chatId = this.chats.getCurrentChat()?.id
-      this.chats.updateModel(chatId, model)
+    Event.listen('chatSelected', this.handleChatSelected.bind(this))
+  }
+
+  handleChatSelected (chat) {
+    this.modelList = new ModelsList('chat-model-list', chat.model)
+    this.modelList.onClick(async model => {
+      chat.model = model
+      await chat.save()
     })
-    // this.systemPromptInput.addEventListener('blur', () => {
-    // console.log(this.urlInput.value)
-    // Settings.setUrl(this.urlInput.value)
-    // })
   }
 }

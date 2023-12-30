@@ -3,8 +3,8 @@ import { UINotification } from './UINotification.js'
 import { Settings } from './models/Settings.js'
 import { Event } from './Event.js'
 import { DOM } from './Dom.js'
-import { Chats } from './models/Chats.js'
 import { Sidebar } from './Sidebar.js'
+import { AppController } from './AppController.js'
 import { CopyButton } from './CopyButton.js'
 import { OllamaApi } from './OllamaApi.js'
 import { DownloadButton } from './DownloadButton.js'
@@ -24,12 +24,11 @@ export class App {
   }
 
   constructor () {
-    this.chats = new Chats()
-    this.sidebar = new Sidebar(this.chats)
-    this.chatArea = new ChatArea(this.chats)
+    this.sidebar = new Sidebar()
+    this.chatArea = new ChatArea()
     this.ollamaApi = new OllamaApi()
-    this.settingsDialog = new SettingsDialog(this.chats)
-    this.chatSettingsDialog = new ChatSettingsDialog(this.chats)
+    this.settingsDialog = new SettingsDialog()
+    this.chatSettingsDialog = new ChatSettingsDialog()
     this.downloadButton = new DownloadButton()
     this.copyButton = new CopyButton()
     this.dropDownMenu = new DropDownMenu()
@@ -50,7 +49,7 @@ export class App {
     const msg = `~~~\nChat UI\n~~~
 Model: ${Settings.getModel()}
 URL:   ${Settings.getUrl()}
-Chat:  ${this.chats.getCurrentChat()?.id}
+Chat:  ${Settings.getCurrentChatId()}
 `
     console.log(msg)
   }
@@ -69,8 +68,6 @@ Chat:  ${this.chats.getCurrentChat()?.id}
 
   handleChatSelected = (chat) => {
     window.history.pushState({}, '', `/chats/${chat.id}`)
-    this.chatArea.render()
-    this.sidebar.render()
   }
 
   handleAbort = () => {
@@ -101,7 +98,7 @@ Chat:  ${this.chats.getCurrentChat()?.id}
   // https://github.com/jmorganca/ollama/blob/main/docs/api.md#generate-a-completion
   async sendMessage () {
     const message = this.messageInput.value.trim()
-    const chat = this.chats.getCurrentChat()
+    const chat = AppController.getCurrentChat()
     const model = chat?.model || Settings.getModel()
     this.messageInput.value = ''
 
@@ -183,16 +180,16 @@ Chat:  ${this.chats.getCurrentChat()?.id}
     this.enableForm()
   }
 
-  handleDone (response, responseDiv) {
+  async handleDone (response, responseDiv) {
     console.log('Done')
-    const chat = this.chats.getCurrentChat()
+    const chat = await AppController.getCurrentChat()
     const content = this.chatHistory.innerHTML
+    // Update or create chat
     if (chat !== null) {
-      this.chats.update(chat.id, chat.title, content)
+      await AppController.updateChat(chat, { content })
     } else {
-      this.chats.add(null, content)
+      await AppController.createChat({ content })
     }
-    this.chats.saveData()
     this.enableForm()
   }
 

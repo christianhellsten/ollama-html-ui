@@ -1,16 +1,7 @@
-export class Chat {
-  constructor (id, title, content, model) {
-    this.id = id
-    this.title = title
-    this.model = model
-    this.content = content
-  }
+import { BaseModel } from './BaseModel.js'
 
-  getModel () {
-    return this.model
-  }
-
-  setModel (model) {
-    this.model = model
+export class Chat extends BaseModel {
+  static async initialize () {
+    await this.database('ChatApp', 'chats')
   }
 }

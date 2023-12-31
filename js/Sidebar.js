@@ -1,13 +1,14 @@
 import { debounce } from './debounce.js'
 import { Event } from './Event.js'
+import { Chat } from './models/Chat.js'
+import { AppController } from './AppController.js'
 import { ChatList } from './ChatList.js'
 import { LocalStorage } from './models/LocalStorage.js'
 
 export class Sidebar {
-  constructor (chats) {
-    this.chats = chats
+  constructor () {
     this.settings = new LocalStorage()
-    this.chatList = new ChatList(this.chats)
+    this.chatList = new ChatList()
     this.element = document.getElementById('sidebar')
     this.newChatButton = this.element.querySelector('#new-chat-button')
     this.clearButton = this.element.querySelector('#clear-button')
@@ -60,21 +61,22 @@ export class Sidebar {
     const query = escapeRegExp(this.searchInput.value.trim()).replace(/\s+/g, '.*')
     const queryContent = query.length > 2 // Nobody wants to query content based on one character?
     const regex = new RegExp(query, 'i') // 'i' for case-insensitive matching
-    console.log(`${query}`)
-    // TODO: Optimize data model :)
-    const matches = this.chats.chats.filter(chat => {
-      let match = regex.test(chat.title)
-      if (queryContent) {
-        match ||= regex.test(chat.content)
-      }
-      return match
-    }).map(chat => chat.id)
-    this.element.querySelectorAll('.chat-list-item').forEach(item => {
-      if (matches.includes(item.data.id)) { // Now matches the type
-        item.classList.remove('hidden')
-      } else {
-        item.classList.add('hidden')
-      }
+    console.log(`Search ${query}`)
+    Chat.getAll().then(chats => {
+      const matches = chats.filter(chat => {
+        let match = regex.test(chat.title)
+        if (queryContent) {
+          match ||= regex.test(chat.content)
+        }
+        return match
+      }).map(chat => chat.id)
+      this.element.querySelectorAll('.chat-list-item').forEach(item => {
+        if (matches.includes(item.data.id)) { // Now matches the type
+          item.classList.remove('hidden')
+        } else {
+          item.classList.add('hidden')
+        }
+      })
     })
   }
 
@@ -88,12 +90,11 @@ export class Sidebar {
     }
   }
 
-  handleNewChat () {
-    this.chats.add(null, '')
+  async handleNewChat () {
+    await AppController.createChat()
   }
 
-  handleClear () {
-    this.chats.clearData()
-    this.chatList.render()
+  async handleClear () {
+    await AppController.clearChats()
   }
 }

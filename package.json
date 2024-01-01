@@ -10,8 +10,8 @@
     "test:only": "node  --test --test-reporter=spec --test-only",
     "test:mobile": "MOBILE=true node --test --test-reporter=spec",
     "format": "prettier --write \"**/*.{js,html,scss}\"",
-    "lint-js": "eslint \"**/*.js\"",
-    "lint-css": "stylelint \"**/*.scss\"",
+    "lint-js": "eslint \"**/*.js\" --fix",
+    "lint-css": "stylelint \"**/*.scss\" --fix",
     "build": "parcel build index.html"
   },
   "devDependencies": {
@@ -28,7 +28,7 @@
     "prettier": "^3.1.1",
     "sass": "^1.69.5",
     "stylelint": "^16.1.0",
-    "stylelint-config-standard": "^36.0.0"
+    "stylelint-config-standard-scss": "^12.0.0"
   },
   "author": "Christian Hellsten",
   "license": "MIT"

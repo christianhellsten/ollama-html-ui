@@ -1,5 +1,6 @@
 @import 'reset';
 @import 'variables';
+@import 'placeholders';
 @import 'grid';
 @import 'typography';
 @import 'icons';
@@ -10,10 +11,11 @@
 @import 'utils';
 @import 'spinner';
 @import 'style';
+
 // Components
 @import 'Tabs';
 @import 'ChatApp';
-@import 'ChatMenu';
+@import 'ChatHeader';
 @import 'ChatHistory';
 @import 'ChatForm';
 @import 'ChatArea';

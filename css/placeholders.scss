@@ -1,0 +1,31 @@
+%font-weight-light {
+  font-variation-settings: 'wght' 300;
+}
+
+%font-weight-bold {
+  font-variation-settings: 'wght' 400;
+}
+
+%font-weight-bolder {
+  font-variation-settings: 'wght' 600;
+}
+
+%font-weight-boldest {
+  font-variation-settings: 'wght' 900;
+}
+
+%box-shadow {
+  box-shadow: 0 5px 5px #6262621f;
+}
+
+%box-shadow-small {
+  box-shadow: 0 5px 10px #6262621f;
+}
+
+%text-title {
+  @extend %font-weight-boldest;
+  font-size: 2rem;
+  //margin-top: 0.5em;
+  //margin-bottom: 0.5em;
+}
+

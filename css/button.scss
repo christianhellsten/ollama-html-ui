@@ -6,10 +6,11 @@ button {
 }
 
 button {
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1rem;
   border: none;
   border-radius: $border-radius;
   cursor: pointer;
+
   i {
     color: $button-primary-color;
     width: 1rem; // Center the icon
@@ -21,7 +22,8 @@ button:hover,
 button.selected {
   color: $button-primary-color;
   background-color: $light-color;
-  @extend .box-shadow;
+
+  @extend %box-shadow;
 }
 
 .button-small {
@@ -34,7 +36,8 @@ button.selected {
 
 /* Primary button */
 .button-primary {
-  @extend .font-weight-boldest;
+  @extend %font-weight-boldest;
+
   color: $button-primary-color;
   background-color: $button-primary-bgcolor;
 }

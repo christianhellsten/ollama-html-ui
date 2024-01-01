@@ -1,10 +1,13 @@
 /* Sidebar styling */
 #sidebar {
-  @extend .box-shadow;
+  @extend %box-shadow;
+
   min-width: 200px;
   max-width: 480px;
+
   //flex: 0 0 250px; /* fixed width */
-  padding: 0rem;
+  padding: 0;
+
   //background-color: #E3F2FD;
   //border-right: 1px solid #cfcfcf;
   overflow-y: auto;
@@ -14,6 +17,7 @@
     display: flex;
     flex-grow: 1;
   }
+
   // TODO: Animations
   // transition: display 0.4s;
 }
@@ -23,8 +27,9 @@
 }
 
 #sidebar.collapsed {
-  max-width: 0px;
+  max-width: 0;
   display: none;
+
   //flex: 0 0 0px; /* Collapsed state with zero width */
-  padding: 0rem;
+  padding: 0;
 }

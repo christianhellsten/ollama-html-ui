@@ -1,49 +1,19 @@
 $primary-color: #393e46;
 $secondary-color: #222831;
-$tertiary-color: #eeeeee;
-
+$tertiary-color: #eee;
 $white: #fff;
 $red: #ef4040;
-
 $error-color: $red;
 $text-color: $tertiary-color;
 $bg-color: $tertiary-color;
-
 $icon-color: $primary-color;
-
 $button-primary-color: $primary-color;
-$button-primary-bgcolor: #eeeeee;
+$button-primary-bgcolor: #eee;
 $button-secondary-color: lighten($primary-color, 2);
-$button-secondary-bgcolor: #eeeeee;
-
+$button-secondary-bgcolor: #eee;
 $border-radius: 2px;
 $border-color: lighten($primary-color, 60%);
 $border-hover-color: lighten($primary-color, 40%);
 $border-focus-color: lighten($primary-color, 30%);
 $border: $border-radius $border-color;
-
 $light-color: lighten($button-primary-bgcolor, 10);
-
-.font-weight-light {
-  font-variation-settings: 'wght' 300;
-}
-
-.font-weight-bold {
-  font-variation-settings: 'wght' 400;
-}
-
-.font-weight-bolder {
-  font-variation-settings: 'wght' 600;
-}
-
-.font-weight-boldest {
-  font-variation-settings: 'wght' 900;
-}
-
-.box-shadow {
-  box-shadow: 0px 5px 5px #6262621f;
-}
-
-.box-shadow-small {
-  box-shadow: 0px 5px 10px #6262621f;
-}

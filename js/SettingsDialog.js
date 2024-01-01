@@ -1,4 +1,5 @@
 import { Modal } from './Modal.js';
+import { UINotification } from './UINotification.js';
 import { ModelsList } from './ModelsList.js';
 import { Models } from './models/Models.js';
 import { Settings } from './models/Settings.js';
@@ -56,15 +57,24 @@ export class SettingsDialog extends Modal {
     this.closeButton.onclick = () => this.hide();
   }
 
-  refreshModels() {
+  show() {
     Models.load();
+    this.handleShow();
+  }
+
+  refreshModels() {
+    if (!Models.getUrl()) {
+      UINotification.show('Please update the URL in the settings to continue.');
+    } else {
+      Models.load();
+    }
   }
 
   loadSettings() {
     this.urlInput.value = Settings.getUrl();
-    this.modelParametersInput.value = JSON.stringify(
-      Settings.getModelParameters(),
-      2,
-    );
+    const modelParameters = Settings.getModelParameters();
+    if (modelParameters) {
+      this.modelParametersInput.value = JSON.stringify(modelParameters, 2);
+    }
   }
 }

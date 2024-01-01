@@ -1,24 +1,21 @@
-import { Settings } from './models/Settings.js';
-
 export class OllamaApi {
   constructor() {
     this.abortController = null;
   }
 
-  async send(data, onResponse, onError, onDone) {
+  async send(url, data, onResponse, onError, onDone) {
     const request = { data };
     try {
-      const response = await this.postChatMessage(data);
+      const response = await this.postChatMessage(url, data);
       await this.handleResponse(request, response, onResponse, onDone);
     } catch (error) {
       onError(request, error);
     }
   }
 
-  async postChatMessage(data) {
+  async postChatMessage(url, data) {
     this.abortController = new AbortController();
     const { signal } = this.abortController;
-    const url = OllamaApi.getChatUrl();
     const response = await fetch(url, {
       signal,
       method: 'POST',
@@ -27,7 +24,7 @@ export class OllamaApi {
     });
 
     if (!response.ok) {
-      throw new Error(`POST ${url} status ${response.status}`);
+      throw new Error(`${url} failed with status ${response.status}`);
     }
 
     return response;
@@ -97,10 +94,9 @@ Tokens Per Second: ${tokensPerSecond.toFixed(2)} token/s
     console.log(output);
   }
 
-  static getModels(onResponse) {
-    const url = OllamaApi.getModelsUrl();
+  static getModels(url, onResponse) {
     if (!url) {
-      throw new Error('Invalid URL');
+      return null;
     }
 
     return fetch(url)
@@ -116,21 +112,9 @@ Tokens Per Second: ${tokensPerSecond.toFixed(2)} token/s
       .catch((error) => {
         console.debug(error);
         console.error(
-          `Please ensure the server is running at: ${OllamaApi.getModelsUrl()}. Error code: 39847`,
+          `Please ensure the server is running at: ${url}. Error code: 39847`,
         );
         onResponse([]);
       });
-  }
-
-  static getGenerateUrl() {
-    return Settings.getUrl('/api/generate');
-  }
-
-  static getChatUrl() {
-    return Settings.getUrl('/api/chat');
-  }
-
-  static getModelsUrl() {
-    return Settings.getUrl('/api/tags');
   }
 }

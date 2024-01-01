@@ -15,12 +15,15 @@
   padding-top: 0;
   position: relative;
 
-  .copy-button {
-    background: rgb(255 255 255 / 70%);
-    padding: 0.25rem;
+  .drop-down-menu {
+    z-index: 100;
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
+  }
+
+  .button {
+    //padding: 0.25rem;
   }
 }
 

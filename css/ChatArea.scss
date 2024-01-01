@@ -4,13 +4,3 @@
   flex-direction: row;
   overflow: auto;
 }
-
-#chat-title {
-  @extend %text-title;
-
-  padding-left: 0.5rem;
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}

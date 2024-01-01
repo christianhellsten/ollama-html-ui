@@ -13,12 +13,14 @@
 @import 'style';
 
 // Components
+@import 'Hoverable';
 @import 'Tabs';
 @import 'ChatApp';
 @import 'ChatHeader';
 @import 'ChatHistory';
 @import 'ChatForm';
 @import 'ChatArea';
+@import 'ChatTitle';
 @import 'Sidebar';
 @import 'DropDownMenu';
 @import 'UINotification';

@@ -11,10 +11,10 @@ function simpleHash(str) {
 // Show all uncaught errors as UI notifications
 /*
 window.onerror = function (message, source, lineno, colno, error) {
-  const errorDetails = `${message} at ${source}:${lineno}:${colno}`
-  UINotification.show(errorDetails, 'error')
-  return true
-}
+  const errorDetails = `${message} at ${source}:${lineno}:${colno}`;
+  UINotification.show(errorDetails, 'error');
+  return true;
+};
 */
 
 export class UINotification {

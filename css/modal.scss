@@ -1,49 +1,49 @@
 .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
-    z-index: 1000; /* ensures modal is on top */
-    overflow: scroll;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  z-index: 1000; /* ensures modal is on top */
+  overflow: scroll;
 }
 
 .modal-header {
-    font-weight: 700;
-    background-color: $primary-color;
-    padding: 0rem 1rem;
-    border-bottom: 1px solid $border-color;
+  font-weight: 700;
+  background-color: $primary-color;
+  padding: 0rem 1rem;
+  border-bottom: 1px solid $border-color;
 
-    .button {
-        border-radius: $border-radius;
-        padding: .5rem;
-        line-height: 0.5rem;
-    }
+  .button {
+    border-radius: $border-radius;
+    padding: 0.5rem;
+    line-height: 0.5rem;
+  }
 
-    h2 {
-        color: $light-color;
-        @extend .font-weight-boldest;
-    }
+  h2 {
+    color: $light-color;
+    @extend .font-weight-boldest;
+  }
 }
 
 .modal-content {
-    background: $bg-color;
-    width: 640px;
-    min-width: 320px;
-    max-width: 50vw;
-    margin: auto; /* Center the modal */
-    // border-radius: 2px;
-    // overflow: hidden; /* Ensures the border-radius applies to children */
-    box-shadow: 0 0 15px #444;
+  background: $bg-color;
+  width: 640px;
+  min-width: 320px;
+  max-width: 50vw;
+  margin: auto; /* Center the modal */
+  // border-radius: 2px;
+  // overflow: hidden; /* Ensures the border-radius applies to children */
+  box-shadow: 0 0 15px #444;
 }
 
 .modal-body {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .modal.show {
-    z-index: 20000;
-    display: flex;
+  z-index: 20000;
+  display: flex;
 }

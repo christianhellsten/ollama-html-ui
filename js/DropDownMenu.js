@@ -1,23 +1,23 @@
 export class DropDownMenu {
-  constructor () {
-    const buttonSelector = '.drop-down-menu'
-    this.dropDownMenus = document.querySelectorAll(buttonSelector)
-    this.init()
+  constructor() {
+    const buttonSelector = '.drop-down-menu';
+    this.dropDownMenus = document.querySelectorAll(buttonSelector);
+    this.init();
   }
 
-  init () {
-    this.dropDownMenus.forEach(menu => {
-      const button = menu.querySelector('button')
-      const dropDownMenu = menu.querySelector('.drop-down-menu-items')
+  init() {
+    this.dropDownMenus.forEach((menu) => {
+      const button = menu.querySelector('button');
+      const dropDownMenu = menu.querySelector('.drop-down-menu-items');
 
       if (dropDownMenu) {
-        button.addEventListener('click', () => this.toggleMenu(dropDownMenu))
+        button.addEventListener('click', () => this.toggleMenu(dropDownMenu));
       }
-    })
+    });
   }
 
-  toggleMenu (menu) {
-    menu.classList.toggle('hidden')
-    menu.classList.toggle('visible')
+  toggleMenu(menu) {
+    menu.classList.toggle('hidden');
+    menu.classList.toggle('visible');
   }
 }

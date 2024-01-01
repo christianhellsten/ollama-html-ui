@@ -1,16 +1,16 @@
-const http = require('http')
-const fs = require('fs').promises
-const path = require('path')
+const http = require('http');
+const fs = require('fs').promises;
+const path = require('path');
 
-const hostname = 'localhost'
-const port = 1234
-const distPath = path.join(__dirname, '../dist')
+const hostname = 'localhost';
+const port = 1234;
+const distPath = path.join(__dirname, '../dist');
 
 const server = http.createServer((req, res) => {
-  const uri = req.url === '/' ? '/index.html' : req.url
-  console.log(`${req.method} ${uri}`)
-  const filePath = path.join(distPath, uri)
-  const extname = String(path.extname(filePath)).toLowerCase()
+  const uri = req.url === '/' ? '/index.html' : req.url;
+  console.log(`${req.method} ${uri}`);
+  const filePath = path.join(distPath, uri);
+  const extname = String(path.extname(filePath)).toLowerCase();
   const mimeTypes = {
     '.html': 'text/html',
     '.js': 'text/javascript',
@@ -28,51 +28,51 @@ const server = http.createServer((req, res) => {
     '.ttf': 'application/font-ttf',
     '.eot': 'application/vnd.ms-fontobject',
     '.otf': 'application/font-otf',
-    '.wasm': 'application/wasm'
-  }
-  const contentType = mimeTypes[extname] || 'application/octet-stream'
+    '.wasm': 'application/wasm',
+  };
+  const contentType = mimeTypes[extname] || 'application/octet-stream';
   // Validate mime type exists
-  const invalidMimeType = !mimeTypes.hasOwnProperty(extname)
+  const invalidMimeType = !mimeTypes.hasOwnProperty(extname);
   // Validate URL
   // Allows: alphanumeric characters, hyphens, underscores, and exactly one dot in the extension
-  const isValidUri = /^\/?[a-zA-Z0-9_-]+(\.[a-zA-Z0-9]+)+$/.test(uri)
-  const badRequest = !isValidUri || invalidMimeType
+  const isValidUri = /^\/?[a-zA-Z0-9_-]+(\.[a-zA-Z0-9]+)+$/.test(uri);
+  const badRequest = !isValidUri || invalidMimeType;
   if (badRequest) {
-    res.writeHead(400)
-    res.end('B4d r3qu357')
-    return
+    res.writeHead(400);
+    res.end('B4d r3qu357');
+    return;
   }
 
   // Prevent Content Type Sniffing
-  res.setHeader('X-Content-Type-Options', 'nosniff')
+  res.setHeader('X-Content-Type-Options', 'nosniff');
   // Clickjacking Protection
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN')
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
 
   fs.readFile(filePath)
-    .then(content => {
-      res.writeHead(200, { 'Content-Type': contentType })
-      res.end(content, 'utf-8')
+    .then((content) => {
+      res.writeHead(200, { 'Content-Type': contentType });
+      res.end(content, 'utf-8');
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.code === 'ENOENT') {
-        return fs.readFile(path.join(distPath, '404.html'))
+        return fs.readFile(path.join(distPath, '404.html'));
       } else {
-        res.writeHead(500)
-        res.end(`Server error: ${error.code}`)
-        throw error // Re-throw the error for logging purposes
+        res.writeHead(500);
+        res.end(`Server error: ${error.code}`);
+        throw error; // Re-throw the error for logging purposes
       }
     })
-    .then(content => {
+    .then((content) => {
       if (content) {
-        res.writeHead(404, { 'Content-Type': 'text/html' })
-        res.end(content, 'utf-8')
+        res.writeHead(404, { 'Content-Type': 'text/html' });
+        res.end(content, 'utf-8');
       }
     })
-    .catch(error => {
-      console.error(`Failed to read file: ${error}`)
-    })
-})
+    .catch((error) => {
+      console.error(`Failed to read file: ${error}`);
+    });
+});
 
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`)
-})
+  console.log(`Server running at http://${hostname}:${port}/`);
+});

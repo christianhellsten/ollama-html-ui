@@ -33,11 +33,11 @@ ul {
   }
 
   li.selected {
-    @extend .font-weight-boldest;
+    @extend %font-weight-boldest;
 
     //color: $button-primary-color;
     //background-color: $light-color;
-    //@extend .box-shadow;
+    //@extend %box-shadow;
   }
 
   li.selected::before {

@@ -26,7 +26,7 @@
 
 /* Styling for user messages */
 .user-chat-message {
-  @extend .font-weight-bolder;
+  @extend %font-weight-bolder;
 }
 
 /* Styling for system messages */

@@ -1,0 +1,24 @@
+#chat-header {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.hamburger-menu {
+  display: inline-block;
+  cursor: pointer;
+  padding-left: .75rem;
+  padding-right: .75rem;
+  display: inline-block;
+}
+
+.hamburger-menu:hover {
+  @extend %box-shadow;
+}
+
+.hamburger-menu .bar {
+  width: 1.5rem;
+  height: 2px;
+  background-color: #333;
+  margin: 6px 0;
+  transition: 0.4s;
+}

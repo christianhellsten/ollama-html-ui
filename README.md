@@ -9,8 +9,9 @@ A HTML UI for Ollama.
 ## Goals
 
 - Minimal & responsive UI: mobile & desktop
-- Zero dependencies: HTML, CSS, and JavaScript
-- Simple installation: runs in your browser, hosted on your own server
+- Cross browser: support last 2 versions with more than > 0.5% global use
+- Zero dependencies: HTML, CSS, and JavaScript (less than 10 Kb gzipped)
+- Simple installation: run in your browser, host on your own server
 
 ## Features
 
@@ -69,6 +70,18 @@ $ git clone git@github.com:christianhellsten/ollama-html-ui.git
 ```
 
 ## Running
+
+**Using Docker**
+
+To run the application using Docker, execute the following command:
+
+```bash
+docker run -p 80:80 aktagon/ollama-html-ui
+```
+
+**Using the built-in server**
+
+To run the application using the built-in server, execute the following command:
 
 ```bash
 $ cd ollama-html-ui

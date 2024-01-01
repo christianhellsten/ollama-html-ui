@@ -57,7 +57,7 @@ export class SettingsDialog extends Modal {
   }
 
   loadSettings () {
-    const url = Settings.getUrl()
-    this.urlInput.value = url
+    this.urlInput.value = Settings.getUrl()
+    this.modelParametersInput.value = JSON.stringify(Settings.getModelParameters(), 2)
   }
 }

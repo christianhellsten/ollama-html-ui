@@ -24,6 +24,7 @@ export class AppController {
     Settings.setCurrentChatId(chat.id)
     Event.emit('chatCreated', chat)
     Event.emit('chatSelected', chat)
+    return chat
   }
 
   static async deleteChat (chat) {

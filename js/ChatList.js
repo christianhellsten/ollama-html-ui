@@ -81,5 +81,6 @@ export class ChatList {
   appendChat(chat, selected) {
     const chatListItem = new ChatListItem(chat, this, selected);
     this.element.appendChild(chatListItem.element);
+    return chatListItem;
   }
 }

@@ -1,5 +1,6 @@
 import { Event } from './Event.js';
 import { Chat } from './models/Chat.js';
+import { ChatMessage } from './models/ChatMessage.js';
 import { Settings } from './models/Settings.js';
 
 export class AppController {
@@ -25,6 +26,11 @@ export class AppController {
     Event.emit('chatCreated', chat);
     Event.emit('chatSelected', chat);
     return chat;
+  }
+
+  static async deleteChatMessage(messageId) {
+    const message = await ChatMessage.get(messageId);
+    message.delete();
   }
 
   static async deleteChat(chat) {

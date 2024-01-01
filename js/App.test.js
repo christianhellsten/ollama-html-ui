@@ -311,6 +311,10 @@ test.describe('Application tests', { only: true }, () => {
       // Create chat
       await app.editChatTitle('What is the meaning of life?');
       await app.sendMessage('What is the meaning of life?');
+      await app.sendMessage(
+        'What would Immanuel Kant say about the meaning of life?',
+      );
+      await app.sendMessage('Are you sure about that?');
       await app.screenshot('chat.png');
       // Collapse
       await app.page.click('#hamburger-menu');

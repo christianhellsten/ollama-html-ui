@@ -1,5 +1,6 @@
 import { AppController } from './AppController.js';
 import { Event } from './Event.js';
+import { Hoverable } from './Hoverable.js';
 import { ChatTitle } from './ChatTitle.js';
 import { ChatForm } from './ChatForm.js';
 
@@ -26,9 +27,10 @@ export class ChatArea {
     // Render chat history
     this.chat?.getMessages()?.then((messages) => {
       messages.forEach((message) => {
-        this.createMessageDiv(message.content, message.role);
+        this.createMessageDiv(message);
       });
     });
+    this.scrollToEnd();
     this.messageInput.focus();
   }
 
@@ -53,24 +55,32 @@ export class ChatArea {
     );
   }
 
-  createMessageDiv(text, role) {
+  createMessageDiv(message) {
+    const role = message.role;
+    const content = message.content;
     // Get the template and its content
     const template = document.getElementById('chat-message-template');
     const messageClone = template.content.cloneNode(true);
-
     // Find the div and span elements within the cloned template
     const messageDiv = messageClone.querySelector('.chat-message');
     const textSpan = messageClone.querySelector('.chat-message-text');
+    const deleteButton = messageClone.querySelector(
+      '.delete-chat-message-button',
+    );
 
     // Set the class for role and text content
     messageDiv.classList.add(`${role}-chat-message`);
-    textSpan.textContent = text;
+    textSpan.textContent = content;
     messageDiv.spellcheck = false;
 
     // Append to chatHistory and adjust scroll
     this.chatHistory.appendChild(messageDiv);
-    this.scrollToEnd();
-
+    messageDiv.dataset['id'] = message.id;
+    new Hoverable(messageDiv);
+    deleteButton.addEventListener('click', async () => {
+      await AppController.deleteChatMessage(message.id);
+      messageDiv.remove();
+    });
     return messageDiv;
   }
 

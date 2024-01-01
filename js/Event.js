@@ -1,20 +1,20 @@
 export class Event {
-  static listen (eventName, handler) {
+  static listen(eventName, handler) {
     window.addEventListener(eventName, (event) => {
-      handler(event.detail)
-    })
+      handler(event.detail);
+    });
   }
 
-  static emit (eventName, data) {
-    let log = `${eventName}`
+  static emit(eventName, data) {
+    let log = `${eventName}`;
     if (data?.id) {
-      log += ` id: ${data.id}`
+      log += ` id: ${data.id}`;
     }
-    console.log(log)
+    console.log(log);
     const event = new CustomEvent(eventName, {
       detail: data || {},
-      bubbles: true // This makes the event bubble up through the DOM
-    })
-    window.dispatchEvent(event)
+      bubbles: true, // This makes the event bubble up through the DOM
+    });
+    window.dispatchEvent(event);
   }
 }

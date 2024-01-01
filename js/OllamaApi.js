@@ -1,86 +1,88 @@
-import { Settings } from './models/Settings.js'
+import { Settings } from './models/Settings.js';
 
 export class OllamaApi {
-  constructor () {
-    this.abortController = null
+  constructor() {
+    this.abortController = null;
   }
 
-  async send (data, onResponse, onError, onDone) {
-    const request = { data }
+  async send(data, onResponse, onError, onDone) {
+    const request = { data };
     try {
-      const response = await this.postChatMessage(data)
-      await this.handleResponse(request, response, onResponse, onDone)
+      const response = await this.postChatMessage(data);
+      await this.handleResponse(request, response, onResponse, onDone);
     } catch (error) {
-      onError(request, error)
+      onError(request, error);
     }
   }
 
-  async postChatMessage (data) {
-    this.abortController = new AbortController()
-    const { signal } = this.abortController
-    const url = OllamaApi.getChatUrl()
+  async postChatMessage(data) {
+    this.abortController = new AbortController();
+    const { signal } = this.abortController;
+    const url = OllamaApi.getChatUrl();
     const response = await fetch(url, {
       signal,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
+      body: JSON.stringify(data),
+    });
 
     if (!response.ok) {
-      throw new Error(`POST ${url} status ${response.status}`)
+      throw new Error(`POST ${url} status ${response.status}`);
     }
 
-    return response
+    return response;
   }
 
-  async handleResponse (request, response, onResponse, onDone) {
-    const reader = response.body.getReader()
-    let partialLine = ''
+  async handleResponse(request, response, onResponse, onDone) {
+    const reader = response.body.getReader();
+    let partialLine = '';
+    var isRequestDone = false;
 
-    while (true) {
-      const { done, value } = await reader.read()
+    while (!isRequestDone) {
+      const { done, value } = await reader.read();
       if (done) {
-        onDone(request, response)
-        break
+        onDone(request, response);
+        isRequestDone = true;
+        continue;
       }
 
-      const textChunk = new TextDecoder().decode(value)
-      const lines = (partialLine + textChunk).split('\n')
-      partialLine = lines.pop()
+      const textChunk = new TextDecoder().decode(value);
+      const lines = (partialLine + textChunk).split('\n');
+      partialLine = lines.pop();
 
-      lines.forEach(line => {
-        const responseData = JSON.parse(line)
+      lines.forEach((line) => {
+        const responseData = JSON.parse(line);
         if (line.trim()) {
           // TODO: Move this line:
-          this.printResponseStats(responseData)
-          onResponse(request, responseData.message.content)
+          this.printResponseStats(responseData);
+          onResponse(request, responseData.message.content);
         }
-      })
+      });
     }
 
     if (partialLine.trim()) {
-      onResponse(request, partialLine)
+      onResponse(request, partialLine);
     }
   }
 
-  abort () {
+  abort() {
     if (this.abortController) {
-      this.abortController.abort()
+      this.abortController.abort();
     }
   }
 
-  printResponseStats (data) {
+  printResponseStats(data) {
     if (!data.total_duration) {
-      return
+      return;
     }
     // Convert nanoseconds to seconds for durations
-    const totalDurationInSeconds = data.total_duration / 1e9
-    const loadDurationInSeconds = data.load_duration / 1e9
-    const promptEvalDurationInSeconds = data.prompt_eval_duration / 1e9
-    const responseEvalDurationInSeconds = data.eval_duration / 1e9
+    const totalDurationInSeconds = data.total_duration / 1e9;
+    const loadDurationInSeconds = data.load_duration / 1e9;
+    const promptEvalDurationInSeconds = data.prompt_eval_duration / 1e9;
+    const responseEvalDurationInSeconds = data.eval_duration / 1e9;
 
     // Calculate tokens per second (token/s)
-    const tokensPerSecond = data.eval_count / responseEvalDurationInSeconds
+    const tokensPerSecond = data.eval_count / responseEvalDurationInSeconds;
     const output = `
 Model: ${data.model}
 Created At: ${data.created_at}
@@ -91,41 +93,44 @@ Prompt Evaluation Duration (s): ${promptEvalDurationInSeconds.toFixed(2)}
 Response Evaluation Count: ${data.eval_count}
 Response Evaluation Duration (s): ${responseEvalDurationInSeconds.toFixed(2)}
 Tokens Per Second: ${tokensPerSecond.toFixed(2)} token/s
-    `
-    console.log(output)
+    `;
+    console.log(output);
   }
 
-  static getModels (onResponse) {
-    const url = OllamaApi.getModelsUrl()
+  static getModels(onResponse) {
+    const url = OllamaApi.getModelsUrl();
     if (!url) {
-      throw new Error('Invalid URL')
+      throw new Error('Invalid URL');
     }
 
     return fetch(url)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          throw new Error(`Unable to fetch models from ${url}`)
+          throw new Error(`Unable to fetch models from ${url}`);
         }
-        return response.json()
+        return response.json();
       })
-      .then(data => {
-        onResponse(data.models)
+      .then((data) => {
+        onResponse(data.models);
       })
-      .catch(_ => {
-        console.error(`Please ensure the server is running at: ${OllamaApi.getModelsUrl()}. Error code: 39847`)
-        onResponse([])
-      })
+      .catch((error) => {
+        console.debug(error);
+        console.error(
+          `Please ensure the server is running at: ${OllamaApi.getModelsUrl()}. Error code: 39847`,
+        );
+        onResponse([]);
+      });
   }
 
-  static getGenerateUrl () {
-    return Settings.getUrl('/api/generate')
+  static getGenerateUrl() {
+    return Settings.getUrl('/api/generate');
   }
 
-  static getChatUrl () {
-    return Settings.getUrl('/api/chat')
+  static getChatUrl() {
+    return Settings.getUrl('/api/chat');
   }
 
-  static getModelsUrl () {
-    return Settings.getUrl('/api/tags')
+  static getModelsUrl() {
+    return Settings.getUrl('/api/tags');
   }
 }

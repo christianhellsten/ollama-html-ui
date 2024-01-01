@@ -1,25 +1,25 @@
 // Modal base class
 export class Modal {
-  constructor (domId) {
-    this.domId = domId
-    this.modal = document.getElementById(this.domId)
-    this.closeButton = this.modal.querySelector('.button-close')
-    this.closeButton.onclick = () => this.hide()
+  constructor(domId) {
+    this.domId = domId;
+    this.modal = document.getElementById(this.domId);
+    this.closeButton = this.modal.querySelector('.button-close');
+    this.closeButton.onclick = () => this.hide();
   }
 
-  show () {
-    this.handleShow()
+  show() {
+    this.handleShow();
   }
 
-  hide () {
-    this.handleHide()
+  hide() {
+    this.handleHide();
   }
 
-  handleShow () {
-    this.modal.classList.add('show')
+  handleShow() {
+    this.modal.classList.add('show');
   }
 
-  handleHide () {
-    this.modal.classList.remove('show')
+  handleHide() {
+    this.modal.classList.remove('show');
   }
 }

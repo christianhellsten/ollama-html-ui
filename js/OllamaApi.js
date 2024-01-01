@@ -6,18 +6,19 @@ export class OllamaApi {
   }
 
   async send (data, onResponse, onError, onDone) {
+    const request = { data }
     try {
       const response = await this.postChatMessage(data)
-      await this.handleResponse(response, onResponse, onDone)
+      await this.handleResponse(request, response, onResponse, onDone)
     } catch (error) {
-      onError(error)
+      onError(request, error)
     }
   }
 
   async postChatMessage (data) {
     this.abortController = new AbortController()
     const { signal } = this.abortController
-    const url = OllamaApi.getGenerateUrl()
+    const url = OllamaApi.getChatUrl()
     const response = await fetch(url, {
       signal,
       method: 'POST',
@@ -32,14 +33,14 @@ export class OllamaApi {
     return response
   }
 
-  async handleResponse (response, onResponse, onDone) {
+  async handleResponse (request, response, onResponse, onDone) {
     const reader = response.body.getReader()
     let partialLine = ''
 
     while (true) {
       const { done, value } = await reader.read()
       if (done) {
-        onDone(response)
+        onDone(request, response)
         break
       }
 
@@ -50,14 +51,15 @@ export class OllamaApi {
       lines.forEach(line => {
         const responseData = JSON.parse(line)
         if (line.trim()) {
+          // TODO: Move this line:
           this.printResponseStats(responseData)
-          onResponse(responseData.response)
+          onResponse(request, responseData.message.content)
         }
       })
     }
 
     if (partialLine.trim()) {
-      onResponse(partialLine)
+      onResponse(request, partialLine)
     }
   }
 

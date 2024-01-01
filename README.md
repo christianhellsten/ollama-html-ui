@@ -9,8 +9,8 @@ A HTML UI for Ollama.
 ## Goals
 
 - Minimal & responsive UI: mobile & desktop
-- Zero dependencies: vanilla HTML, CSS, and Javascript
-- Simple installation
+- Zero dependencies: HTML, CSS, and JavaScript
+- Simple installation: runs in your browser, hosted on your own server
 
 ## Features
 
@@ -29,7 +29,7 @@ A HTML UI for Ollama.
 
 - Search chats
 - Clear chats
-- Chat history (local storage)
+- Chat history
 
 **Settings**
 
@@ -104,21 +104,21 @@ $ ollama run dolphin-phi
 $ node test
 ```
 
-## Todo
+## TODO
 
-- [ ] Ollama Chat API
 - [ ] Edit message / response
 - [ ] Delete message / response
 - [ ] Clear chat
 - [ ] CSP
 - [ ] Speech recognition
-- [ ] Uploads
-- [ ] Use IndexedDB instead of local storage
+- [ ] Image upload / multi-modal
 - [ ] Markdown support
 - [ ] Keyboard shortcuts
 
 ## Done
 
+- [x] Ollama chat API / chat memory
+- [x] IndexedDB persistence
 - [x] Model parameters
 - [x] System prompt
 - [x] Copy message to clipboard

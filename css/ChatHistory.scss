@@ -10,7 +10,7 @@
 }
 
 /* Base styling for all messages */
-.message {
+.chat-message {
   padding: 0.5rem;
   padding-top: 0rem;
   position: relative;
@@ -25,11 +25,11 @@
 }
 
 /* Styling for user messages */
-.user-message {
+.user-chat-message {
   @extend .font-weight-bolder;
 }
 
 /* Styling for system messages */
-.system-message {
+.system-chat-message {
   margin-bottom: 0.5rem;
 }

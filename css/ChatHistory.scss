@@ -34,6 +34,9 @@
 }
 
 /* Styling for system messages */
-.system-chat-message {
+.assistant-chat-message {
+  .chat-message-text {
+    color: #444;
+  }
   margin-bottom: 0.5rem;
 }

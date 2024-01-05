@@ -5,7 +5,8 @@ aside {
 /* Sidebar styling */
 #sidebar {
   @extend %box-shadow;
-  border-right: 1px solid #ccc;
+  // NOTE: This should be the same as chat-header border-bottom
+  border-right: 1px solid #cccccc5e;
 
   min-width: 200px;
   max-width: 480px;

@@ -101,11 +101,14 @@ class AppTest {
 
   async sendMessage(message) {
     await this.page.fill('#message-input', message);
-    await this.page.click('#send-button');
+    // await this.page.click('#send-button');
+    await this.page.keyboard.press('Enter');
     await expect(this.page.locator('#abort-button')).toBeVisible();
     // await this.screenshot('1.png');
     // Wait for response
-    await this.page.waitForSelector('#send-button', { timeout: 180000 });
+    // await this.page.waitForTimeout(3000);
+    await this.page.waitForSelector('#message-input', { state: 'visible' })
+    //await this.page.waitForSelector('#send-button', { timeout: 180000 });
     // await this.screenshot('2.png');
   }
 

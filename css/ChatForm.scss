@@ -2,7 +2,6 @@
   flex: 0 0 60px; /* fixed height */
   display: flex;
   align-items: center;
-  background-color: #fff;
   border-top: 1px solid #ccc;
 
   .textarea {
@@ -16,21 +15,12 @@
     display: flex;
     position: relative;
     height: 100%;
-
-    .button {
-      border-radius: 3px;
-      background: transparent;
-    }
   }
 
   textarea {
-    padding: 0.5rem;
+    padding: 1rem;
     resize: none;
     border: 0;
-  }
-
-  textarea:focus {
-    border: 1px $primary-color;
   }
 
   .icon-send {

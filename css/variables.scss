@@ -1,19 +1,31 @@
+// Colors
+$black: #32325D; // dark indigo
+$white: #FAFAFA; // off-white
+$grey: #8898AA; // slate-grey
+$blue: #5E72E4; // royal blue
+$red: #ef4040;
+
+// Theme colors
 $primary-color: #393e46;
 $secondary-color: #222831;
 $tertiary-color: #eee;
-$white: #fff;
-$red: #ef4040;
 $error-color: $red;
-$text-color: $tertiary-color;
-$bg-color: $tertiary-color;
 $icon-color: $primary-color;
+$light-color: $grey;
+
+$text-color: $tertiary-color;
+$light-text-color: $white;
+$bg-color: $white;
+
+// Button colors
 $button-primary-color: $primary-color;
-$button-primary-bgcolor: #eee;
-$button-secondary-color: lighten($primary-color, 2);
-$button-secondary-bgcolor: #eee;
+$button-primary-bgcolor: $white;
+$button-secondary-color: $text-color;
+$button-secondary-bgcolor: $white;
+
+// Borders
 $border-radius: 2px;
 $border-color: lighten($primary-color, 60%);
 $border-hover-color: lighten($primary-color, 40%);
 $border-focus-color: lighten($primary-color, 30%);
 $border: $border-radius $border-color;
-$light-color: lighten($button-primary-bgcolor, 10);

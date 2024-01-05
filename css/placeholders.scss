@@ -15,11 +15,19 @@
 }
 
 %box-shadow {
-  box-shadow: 0 5px 5px #6262621f;
+  box-shadow: 0 0px 3px #c4ccd5bf;
+}
+
+%box-shadow-hover {
+  box-shadow: 2px 0px 6px #c4ccd55e inset;
 }
 
 %box-shadow-small {
-  box-shadow: 0 5px 10px #6262621f;
+  box-shadow: 0 5px 10px #c4ccd563;
+}
+
+%box-shadow-modal {
+  box-shadow: 0 0 15px #444;
 }
 
 %text-title {

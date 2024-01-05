@@ -1,7 +1,7 @@
 #chat-title {
-  @extend %text-title;
-
-  padding-left: 0.5rem;
+  @extend %font-weight-boldest;
+  padding: 0.5rem 0.25rem;
+  font-size: 1.2rem;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

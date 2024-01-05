@@ -1,9 +1,10 @@
 /* Chat history */
 #chat-history {
+  mask-image: linear-gradient(180deg, $white 95%, transparent);
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  padding: 0 0.5rem;
+  padding: 1rem;
   max-width: 1024px;
   width: 100%; /* Full width of its parent */
   overflow-y: auto; /* Enable vertical scrolling */

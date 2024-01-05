@@ -2,12 +2,14 @@
   position: fixed;
   top: 0;
   left: 0;
+  color: $bg-color;
+  background-color: $text-color;
   width: calc(100vw - 2rem);
   z-index: 30000;
-  background-color: $primary-color;
+  background-color: $bg-color;
   padding: 1rem;
   margin: 1rem;
-  @extend %box-shadow;
+  @extend %box-shadow-modal;
   border-radius: $border-radius;
 
   .button {
@@ -18,7 +20,6 @@
 }
 
 .notification-message {
-  color: $white;
 }
 
 .notification-error {

@@ -23,7 +23,7 @@
   }
 
   h2 {
-    color: $light-color;
+    color: $light-text-color;
 
     @extend %font-weight-boldest;
   }
@@ -37,7 +37,7 @@
   margin: auto; /* Center the modal */
   // border-radius: 2px;
   // overflow: hidden; /* Ensures the border-radius applies to children */
-  box-shadow: 0 0 15px #444;
+  @extend %box-shadow-modal;
 }
 
 .modal-body {

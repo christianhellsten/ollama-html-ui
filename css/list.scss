@@ -6,12 +6,13 @@ ul {
   width: 100%;
 
   li {
+    position: relative;
     display: flex; /* Use flexbox layout */
     justify-content: left;
     padding: 0.5rem 0.75rem;
     cursor: pointer;
     width: 100%;
-    font-weight: 500;
+    // font-weight: 500;
     border-bottom: 1px solid #ececec;
     white-space: nowrap; /* Prevent text from wrapping */
 
@@ -34,13 +35,17 @@ ul {
 
   li.selected {
     @extend %font-weight-boldest;
+    border-bottom: 1px solid #ccc;
 
     //color: $button-primary-color;
     //background-color: $light-color;
     //@extend %box-shadow;
   }
 
-  li.selected::before {
+  li.selected::after {
+    position: absolute;
+    right: 1rem;
+    padding-left: 0.5rem;
     content: '\203A\00a0'; // \00a0 is a non-breaking space
   }
 
@@ -48,5 +53,9 @@ ul {
     button {
       visibility: visible;
     }
+  }
+
+  li.hover::after {
+    display: none;
   }
 }

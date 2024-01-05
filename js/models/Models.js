@@ -13,7 +13,7 @@ export class Models {
     if (!this.getUrl()) {
       return null;
     }
-    OllamaApi.getModels(this.getUrl(), (models) => {
+    return OllamaApi.getModels(this.getUrl(), (models) => {
       Models.models = models;
       Settings.set('models', Models.models);
       Event.emit('modelsLoaded', Models.models);

@@ -1,6 +1,7 @@
 import { AppController } from './AppController.js';
 import { Event } from './Event.js';
 import { Modal } from './Modal.js';
+import { Models } from './models/Models.js';
 import { ModelsList } from './ModelsList.js';
 
 export class ChatSettingsDialog extends Modal {
@@ -16,9 +17,11 @@ export class ChatSettingsDialog extends Modal {
   }
 
   show() {
-    AppController.getCurrentChat().then((chat) => {
-      this.handleChatSelected(chat);
-      this.handleShow();
+    Models.load().then(() => {
+      AppController.getCurrentChat().then((chat) => {
+        this.handleChatSelected(chat);
+        this.handleShow();
+      });
     });
   }
 

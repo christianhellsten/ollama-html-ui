@@ -37,7 +37,7 @@ export class App {
   }
 
   initializeElements() {
-    this.sendButton = document.getElementById('send-button');
+    // this.sendButton = document.getElementById('send-button');
     this.abortButton = document.getElementById('abort-button');
     this.messageInput = document.getElementById('message-input');
     this.chatHistory = document.getElementById('chat-history');
@@ -60,7 +60,7 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
 
   bindEventListeners() {
     Event.listen('chatSelected', this.handleChatSelected);
-    this.sendButton.addEventListener('click', this.sendMessage.bind(this));
+    // this.sendButton.addEventListener('click', this.sendMessage.bind(this));
     this.abortButton.addEventListener('click', this.handleAbort.bind(this));
     this.messageInput.addEventListener(
       'keypress',
@@ -85,15 +85,13 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
   };
 
   enableForm() {
-    DOM.showElement(this.sendButton)
-      .hideElement(this.abortButton)
+    DOM.hideElement(this.abortButton)
       .enableInput(this.messageInput);
     this.messageInput.focus();
   }
 
   disableForm() {
-    DOM.hideElement(this.sendButton)
-      .showElement(this.abortButton)
+    DOM.showElement(this.abortButton)
       .disableInput(this.messageInput);
   }
 

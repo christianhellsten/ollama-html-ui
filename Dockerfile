@@ -5,7 +5,7 @@ FROM caddy:2-alpine
 WORKDIR /srv
 
 # Copy Caddyfile and content from the local 'dist' folder to the working directory
-COPY Caddyfile /etc/caddy/Caddyfile
+COPY Caddyfile.docker /etc/caddy/Caddyfile
 COPY dist /srv
 
 # Expose port 80 and 443 for HTTP and HTTPS traffic

@@ -29,6 +29,7 @@ const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true' || false;
 
 class AppTest {
   async start() {
+    const viewportSize = { width: 1280, height: 720 }
     const options = {
       launchOptions: {
         slowMo: 1000, // Slow motion value in milliseconds
@@ -37,7 +38,7 @@ class AppTest {
     if (VIDEO) {
       options.recordVideo = {
         dir: 'recordings', // Directory to save videos
-        size: { width: 1280, height: 720 },
+        size: viewportSize,
       };
     }
     this.browser = await chromium.launch();
@@ -59,8 +60,8 @@ class AppTest {
   }
 
   async mobileDevice() {
-    const width = 375;
-    const height = 667;
+    const height = 375;
+    const width = 667;
     await this.page.setViewportSize({ width, height });
   }
 
@@ -291,12 +292,14 @@ test.describe('Application tests', { only: true }, () => {
   });
 
   test('Collapse sidebar', async () => {
-    // Create chats for each country
     for (const name of [
       'History of Finland',
       'History of Sweden',
       'History of Norway',
       'History of Denmark',
+      'History of Germany',
+      'History of Ukraine',
+      'History of France',
     ]) {
       await app.newChat(name);
     }
@@ -312,12 +315,10 @@ test.describe('Application tests', { only: true }, () => {
     test('Send message', async () => {
       await app.updateSettings(url, model);
       // Create chat
-      await app.editChatTitle('What is the meaning of life?');
-      await app.sendMessage('What is the meaning of life?');
-      await app.sendMessage(
-        'What would Immanuel Kant say about the meaning of life?',
-      );
-      await app.sendMessage('Are you sure about that?');
+      await app.editChatTitle('Tell me a joke');
+      await app.sendMessage('Tell me a joke');
+      await app.sendMessage('Make it more ridiculous');
+      await app.sendMessage('Make it even more ridiculous');
       await app.screenshot('chat.png');
       // Collapse
       await app.page.click('#hamburger-menu');
@@ -325,6 +326,7 @@ test.describe('Application tests', { only: true }, () => {
     });
 
     test('Show settings', async () => {
+      await app.updateSettings(url, model);
       await app.showSettings();
       await app.screenshot('settings.png');
     });

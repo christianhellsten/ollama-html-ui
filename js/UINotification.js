@@ -19,10 +19,21 @@ window.onerror = function (message, source, lineno, colno, error) {
 
 export class UINotification {
   constructor(message, type) {
+    const id = simpleHash(JSON.stringify(message));
     this.type = type;
-    this.domId = simpleHash(JSON.stringify(message));
+    this.domId = `notification-${id}`;
     this.container = document.body;
     this.template = document.getElementById('notification-template').content;
+    this._bindEventListeners();
+  }
+
+  _bindEventListeners() {
+    window.addEventListener('keydown', (event) => {
+      console.log('adfadsf')
+      if (event.key === 'Escape') {
+        this.hide();
+      }
+    });
   }
 
   static show(message, type) {
@@ -62,9 +73,7 @@ export class UINotification {
     // Set the message
     clone.querySelector('.notification-message').textContent = message;
 
-    // Assign unique ID to the notification
-    const notificationId = `notification-${this.domId}`;
-    notificationElement.id = notificationId; // Set ID on the actual element, not the fragment
+    notificationElement.id = this.domId; // Set ID on the actual element, not the fragment
     // Add type, for example, error
     if (this.type) {
       notificationElement.classList.add(`notification-${this.type}`);
@@ -72,16 +81,16 @@ export class UINotification {
 
     // Add close functionality
     const closeButton = clone.querySelector('.close-notification-button');
-    closeButton.onclick = () => this.hide(notificationId);
+    closeButton.onclick = () => this.hide();
 
     // Don't show the same notification twice
-    if (!document.getElementById(notificationId)) {
+    if (!document.getElementById(this.domId)) {
       // Append to the container and display
       this.container.appendChild(clone);
     }
   }
 
-  hide(notificationId) {
-    document.getElementById(notificationId)?.remove();
+  hide() {
+    document.getElementById(this.domId)?.remove();
   }
 }

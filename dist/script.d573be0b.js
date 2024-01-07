@@ -154,7 +154,6 @@ class UINotification {
   }
   _bindEventListeners() {
     window.addEventListener('keydown', event => {
-      console.log('adfadsf');
       if (event.key === 'Escape') {
         this.hide();
       }
@@ -1689,6 +1688,34 @@ class ChatArea {
     this.scrollToEndButton.addEventListener('click', this.scrollToEnd.bind(this));
     this.editChatButton.addEventListener('click', this.handleEditChat.bind(this));
     this.deleteChatButton.addEventListener('click', this.handleDeleteChat.bind(this));
+    this.currentMessage = this.chatHistory.querySelector('.selected');
+    // Select chat message with arrow up and arrow down keys
+    document.addEventListener('keydown', event => {
+      let next, previous;
+      if (event.key === 'ArrowDown') {
+        next = this.currentMessage ? this.currentMessage.nextElementSibling : this.chatHistory.firstElementChild;
+        if (next) {
+          if (this.currentMessage) this.currentMessage.classList.remove('hover');
+          next.classList.add('hover');
+          this.currentMessage = next; // Update currentMessage
+          this.currentMessage.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest'
+          }); // Scroll into view
+        }
+      } else if (event.key === 'ArrowUp') {
+        previous = this.currentMessage ? this.currentMessage.previousElementSibling : this.chatHistory.lastElementChild;
+        if (previous) {
+          if (this.currentMessage) this.currentMessage.classList.remove('hover');
+          previous.classList.add('hover');
+        }
+        this.currentMessage = previous; // Update currentMessage
+        this.currentMessage.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest'
+        }); // Scroll into view
+      }
+    });
   }
   createMessageDiv(message) {
     const role = message.role;
@@ -1978,7 +2005,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55613" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63383" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

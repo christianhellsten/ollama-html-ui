@@ -53,6 +53,29 @@ export class ChatArea {
       'click',
       this.handleDeleteChat.bind(this),
     );
+    this.currentMessage = this.chatHistory.querySelector('.selected');
+    // Select chat message with arrow up and arrow down keys
+    document.addEventListener('keydown', (event) => {
+      let next, previous;
+
+      if (event.key === 'ArrowDown') {
+        next = this.currentMessage ? this.currentMessage.nextElementSibling : this.chatHistory.firstElementChild;
+        if (next) {
+          if (this.currentMessage) this.currentMessage.classList.remove('hover');
+          next.classList.add('hover');
+          this.currentMessage = next; // Update currentMessage
+          this.currentMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); // Scroll into view
+        }
+      } else if (event.key === 'ArrowUp') {
+        previous = this.currentMessage ? this.currentMessage.previousElementSibling : this.chatHistory.lastElementChild;
+        if (previous) {
+          if (this.currentMessage) this.currentMessage.classList.remove('hover');
+          previous.classList.add('hover');
+        }
+        this.currentMessage = previous; // Update currentMessage
+        this.currentMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); // Scroll into view
+      }
+    });
   }
 
   createMessageDiv(message) {

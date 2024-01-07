@@ -15,19 +15,19 @@
 }
 
 %box-shadow {
-  box-shadow: 0 2px 5px rgba(196, 204, 213, 0.7490196078);
+  box-shadow: 0 2px 5px var(--box-shadow-color);
 }
 
 %box-shadow-hover {
-  box-shadow: 2px 0px 6px #c4ccd55e inset;
+  box-shadow: 2px 0 6px var(--box-shadow-color) inset;
 }
 
 %box-shadow-small {
-  box-shadow: 0 5px 10px #c4ccd563;
+  box-shadow: 0 5px 10px var(--box-shadow-color);
 }
 
 %box-shadow-modal {
-  box-shadow: 0 0 15px #444;
+  box-shadow: 0 0 15px var(--box-shadow-modal-color);
 }
 
 %text-title {

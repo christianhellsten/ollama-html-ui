@@ -7,8 +7,8 @@ html {
 }
 
 body {
-  color: $text-color;
-  background-color: $bg-color;
+  color: var(--text-color);
+  background-color: var(--bg-color);
 }
 
 .chat-link {

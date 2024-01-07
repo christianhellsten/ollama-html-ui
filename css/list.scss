@@ -38,8 +38,8 @@ ul {
     // NOTE: Should match #chat-header border-bottom
     border-top: 1px solid #cccccc5e;
 
-    //color: $button-primary-color;
-    //background-color: $light-color;
+    //color: var(--button-primary-color);
+    //background-color: var(--light-color);
     //@extend %box-shadow;
   }
 

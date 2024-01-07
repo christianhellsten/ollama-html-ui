@@ -1,12 +1,12 @@
 button {
-  background-color: $button-secondary-bgcolor;
+  background-color: var(--button-secondary-bgcolor);
   z-index: 1;
 }
 
 button {
   padding: 0.75rem 1rem;
   border: none;
-  // border-radius: $border-radius;
+  // border-radius: var(--border-radius);
   cursor: pointer;
 
   i {
@@ -18,8 +18,8 @@ button {
 button:hover,
 button.selected {
   @extend %box-shadow-hover;
-  //color: $button-primary-color;
-  //background-color: $light-color;
+  //color: var(--button-primary-color);
+  //background-color: var(--light-color);
 
   // @extend %box-shadow;
 }
@@ -37,13 +37,13 @@ button.selected {
   @extend %font-weight-boldest;
   @extend %box-shadow;
 
-  //color: $button-primary-color;
-  //background-color: $button-primary-bgcolor;
+  //color: var(--button-primary-color);
+  //background-color: var(--button-primary-bgcolor);
 }
 
 .button-primary:hover {
-  //color: $button-primary-color;
-  //background-color: $light-color;
+  //color: var(--button-primary-color);
+  //background-color: var(--light-color);
 }
 
 .buttons {

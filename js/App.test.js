@@ -23,6 +23,7 @@ function openScreenshot(filePath) {
 }
 
 const DEBUG = process.env.DEBUG === 'true' || false;
+const DARK_MODE = process.env.DARK_MODE === 'true' || false;
 const VIDEO = process.env.VIDEO === 'true' || false;
 const MOBILE = process.env.MOBILE === 'true' || false;
 const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true' || false;
@@ -30,19 +31,22 @@ const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true' || false;
 class AppTest {
   async start() {
     const viewportSize = { width: 1280, height: 720 }
-    const options = {
-      launchOptions: {
-        slowMo: 1000, // Slow motion value in milliseconds
-      },
-    };
+    const contextOptions = {};
+    const launchOptions = {
+      slowMo: 500, // Video slow motion value in milliseconds
+    }
+    if (DARK_MODE) {
+      contextOptions.forcedColors = 'active' // Enable forced colors mode
+      contextOptions.colorScheme = 'dark' // Set color scheme to dark
+    }
     if (VIDEO) {
-      options.recordVideo = {
+      contextOptions.recordVideo = {
         dir: 'recordings', // Directory to save videos
         size: viewportSize,
       };
     }
-    this.browser = await chromium.launch();
-    this.context = await this.browser.newContext(options);
+    this.browser = await chromium.launch(launchOptions);
+    this.context = await this.browser.newContext(contextOptions);
     this.page = await this.context.newPage();
     this.page.on('console', (message) => {
       if (DEBUG) {
@@ -152,6 +156,9 @@ class AppTest {
     }
     if (MOBILE) {
       path = `mobile-${path}`;
+    }
+    if (DARK_MODE) {
+      path = `darkmode-${path}`;
     }
     path = `screenshots/${path}`;
     await this.page.screenshot({ path });

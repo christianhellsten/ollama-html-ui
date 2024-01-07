@@ -1,6 +1,5 @@
 /* Styling for lists */
 ul {
-  //background: white;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -12,8 +11,6 @@ ul {
     padding: 0.5rem 0.75rem;
     cursor: pointer;
     width: 100%;
-    // font-weight: 500;
-    //border-bottom: 1px solid #ececec;
     white-space: nowrap; /* Prevent text from wrapping */
 
     .col {
@@ -35,12 +32,9 @@ ul {
 
   li.selected {
     @extend %font-weight-boldest;
+
     // NOTE: Should match #chat-header border-bottom
     border-top: 1px solid #cccccc5e;
-
-    //color: var(--button-primary-color);
-    //background-color: var(--light-color);
-    //@extend %box-shadow;
   }
 
   li.selected::after {

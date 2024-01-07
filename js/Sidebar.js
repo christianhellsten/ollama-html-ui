@@ -3,6 +3,7 @@ import { Event } from './Event.js';
 import { Chat } from './models/Chat.js';
 import { AppController } from './AppController.js';
 import { ChatList } from './ChatList.js';
+import { DownloadChatsButton } from './DownloadChatsButton.js';
 import { LocalStorage } from './models/LocalStorage.js';
 
 export class Sidebar {
@@ -14,6 +15,7 @@ export class Sidebar {
     this.clearButton = this.element.querySelector('#clear-button');
     this.hamburgerButton = document.getElementById('hamburger-menu');
     this.searchButton = document.getElementById('search-button');
+    this.downloadChatsButton = new DownloadChatsButton();
     this.searchRow = document.getElementById('search-row');
     this.searchInput = document.getElementById('search-input');
     if (this.settings.get('sidebar-collapsed') === true) {

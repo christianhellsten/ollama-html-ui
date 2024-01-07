@@ -80,4 +80,11 @@ export class BaseModel {
       };
     });
   }
+
+  // Exports the whole store
+  static async export() {
+    let transaction = await this.db.transaction(this.storeName, 'readonly');
+    let store = await transaction.transaction.objectStore(this.storeName);
+    return store.getAll();
+  }
 }

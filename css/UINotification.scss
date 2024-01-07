@@ -3,13 +3,14 @@
   top: 0;
   left: 0;
   color: var(--bg-color);
-  background-color: var(--text-color);
   width: calc(100vw - 2rem);
   z-index: 30000;
   background-color: var(--bg-color);
   padding: 1rem;
   margin: 1rem;
+
   @extend %box-shadow-modal;
+
   border-radius: var(--border-radius);
 
   .button {
@@ -17,9 +18,6 @@
     padding: 0.5rem;
     line-height: 0.5rem;
   }
-}
-
-.notification-message {
 }
 
 .notification-error {

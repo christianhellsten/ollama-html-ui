@@ -30,14 +30,14 @@ const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true' || false;
 
 class AppTest {
   async start() {
-    const viewportSize = { width: 1280, height: 720 }
+    const viewportSize = { width: 1280, height: 720 };
     const contextOptions = {};
     const launchOptions = {
       slowMo: 500, // Video slow motion value in milliseconds
-    }
+    };
     if (DARK_MODE) {
-      contextOptions.forcedColors = 'active' // Enable forced colors mode
-      contextOptions.colorScheme = 'dark' // Set color scheme to dark
+      contextOptions.forcedColors = 'active'; // Enable forced colors mode
+      contextOptions.colorScheme = 'dark'; // Set color scheme to dark
     }
     if (VIDEO) {
       contextOptions.recordVideo = {
@@ -112,7 +112,7 @@ class AppTest {
     // await this.screenshot('1.png');
     // Wait for response
     // await this.page.waitForTimeout(3000);
-    await this.page.waitForSelector('#message-input', { state: 'visible' })
+    await this.page.waitForSelector('#message-input', { state: 'visible' });
     //await this.page.waitForSelector('#send-button', { timeout: 180000 });
     // await this.screenshot('2.png');
   }

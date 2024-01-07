@@ -564,6 +564,13 @@ class BaseModel {
       };
     });
   }
+
+  // Exports the whole store
+  static async export() {
+    let transaction = await this.db.transaction(this.storeName, 'readonly');
+    let store = await transaction.transaction.objectStore(this.storeName);
+    return store.getAll();
+  }
 }
 exports.BaseModel = BaseModel;
 },{"../Database.js":"js/Database.js","../Migrations.js":"js/Migrations.js"}],"js/models/ChatMessage.js":[function(require,module,exports) {
@@ -611,11 +618,15 @@ class Chat extends _BaseModel.BaseModel {
   }
   static async get(id) {
     const chat = await super.get(id);
+
+    /*
     if (chat) {
       // Fetch all messages for this chat
-      const messages = await _ChatMessage.ChatMessage.getAllByChatId(id);
+      const messages = await ChatMessage.getAllByChatId(id);
       chat.messages = messages;
     }
+    */
+
     return chat;
   }
   static async delete(id) {
@@ -876,7 +887,75 @@ class ChatList {
   }
 }
 exports.ChatList = ChatList;
-},{"./Event.js":"js/Event.js","./ChatListItem.js":"js/ChatListItem.js","./DragAndDrop.js":"js/DragAndDrop.js","./models/Chat.js":"js/models/Chat.js","./AppController.js":"js/AppController.js"}],"js/models/LocalStorage.js":[function(require,module,exports) {
+},{"./Event.js":"js/Event.js","./ChatListItem.js":"js/ChatListItem.js","./DragAndDrop.js":"js/DragAndDrop.js","./models/Chat.js":"js/models/Chat.js","./AppController.js":"js/AppController.js"}],"js/DownloadChatsButton.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DownloadChatsButton = void 0;
+var _Chat = require("./models/Chat.js");
+var _ChatMessage = require("./models/ChatMessage.js");
+class DownloadChatsButton {
+  constructor() {
+    this.button = document.querySelector('#export-button');
+    this.bindEventListeners();
+  }
+  bindEventListeners() {
+    this.button.addEventListener('click', () => {
+      this.exportChat();
+      this.exportChatMessages();
+    });
+  }
+  async exportChat() {
+    const request = await _Chat.Chat.export();
+    request.onsuccess = function () {
+      let data = request.result;
+
+      // Convert the data to JSON format
+      let jsonData = JSON.stringify(data, 2);
+
+      // Export the JSON data by creating a file to download
+      let blob = new Blob([jsonData], {
+        type: 'application/json'
+      });
+      let url = URL.createObjectURL(blob);
+      let a = document.createElement('a');
+      a.href = url;
+      a.download = 'chats.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+    request.onerror = function (event) {
+      console.error('Error reading data: ', event.target.errorCode);
+    };
+  }
+  async exportChatMessages() {
+    const request = await _ChatMessage.ChatMessage.export();
+    request.onsuccess = function () {
+      let data = request.result;
+
+      // Convert the data to JSON format
+      let jsonData = JSON.stringify(data, 2);
+
+      // Export the JSON data by creating a file to download
+      let blob = new Blob([jsonData], {
+        type: 'application/json'
+      });
+      let url = URL.createObjectURL(blob);
+      let a = document.createElement('a');
+      a.href = url;
+      a.download = 'chat_messages.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+    request.onerror = function (event) {
+      console.error('Error reading data: ', event.target.errorCode);
+    };
+  }
+}
+exports.DownloadChatsButton = DownloadChatsButton;
+},{"./models/Chat.js":"js/models/Chat.js","./models/ChatMessage.js":"js/models/ChatMessage.js"}],"js/models/LocalStorage.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -928,6 +1007,7 @@ var _Event = require("./Event.js");
 var _Chat = require("./models/Chat.js");
 var _AppController = require("./AppController.js");
 var _ChatList = require("./ChatList.js");
+var _DownloadChatsButton = require("./DownloadChatsButton.js");
 var _LocalStorage = require("./models/LocalStorage.js");
 class Sidebar {
   constructor() {
@@ -938,6 +1018,7 @@ class Sidebar {
     this.clearButton = this.element.querySelector('#clear-button');
     this.hamburgerButton = document.getElementById('hamburger-menu');
     this.searchButton = document.getElementById('search-button');
+    this.downloadChatsButton = new _DownloadChatsButton.DownloadChatsButton();
     this.searchRow = document.getElementById('search-row');
     this.searchInput = document.getElementById('search-input');
     if (this.settings.get('sidebar-collapsed') === true) {
@@ -1018,7 +1099,7 @@ class Sidebar {
   }
 }
 exports.Sidebar = Sidebar;
-},{"./debounce.js":"js/debounce.js","./Event.js":"js/Event.js","./models/Chat.js":"js/models/Chat.js","./AppController.js":"js/AppController.js","./ChatList.js":"js/ChatList.js","./models/LocalStorage.js":"js/models/LocalStorage.js"}],"js/CopyButton.js":[function(require,module,exports) {
+},{"./debounce.js":"js/debounce.js","./Event.js":"js/Event.js","./models/Chat.js":"js/models/Chat.js","./AppController.js":"js/AppController.js","./ChatList.js":"js/ChatList.js","./DownloadChatsButton.js":"js/DownloadChatsButton.js","./models/LocalStorage.js":"js/models/LocalStorage.js"}],"js/CopyButton.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2005,7 +2086,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63383" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49208" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

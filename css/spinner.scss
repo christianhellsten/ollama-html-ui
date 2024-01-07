@@ -36,7 +36,7 @@
   }
   100% {
     transform: scale(0.9);
-    opacity: .8;
+    opacity: 0.8;
   }
 }
 
@@ -45,11 +45,14 @@
   height: 24px;
   background-color: blue;
   border-radius: 50%;
-  animation: pulse 2s infinite, changeColor 4s infinite;
+  animation:
+    pulse 2s infinite,
+    changeColor 4s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -60,10 +63,18 @@
 }
 
 @keyframes changeColor {
-  0% { background-color: blue; }
-  33% { background-color: red; }
-  67% { background-color: green; }
-  100% { background-color: blue; }
+  0% {
+    background-color: blue;
+  }
+  33% {
+    background-color: red;
+  }
+  67% {
+    background-color: green;
+  }
+  100% {
+    background-color: blue;
+  }
 }
 
 .waiting {

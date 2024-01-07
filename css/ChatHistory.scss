@@ -22,10 +22,6 @@
     top: 0;
     right: 0;
   }
-
-  .button {
-    //padding: 0.25rem;
-  }
 }
 
 /* Styling for user messages */
@@ -35,8 +31,5 @@
 
 /* Styling for system messages */
 .assistant-chat-message {
-  .chat-message-text {
-    // color: var(--text-color-lighten-20);
-  }
   margin-bottom: 0.5rem;
 }

@@ -5,16 +5,11 @@ aside {
 /* Sidebar styling */
 #sidebar {
   @extend %box-shadow;
+
   // NOTE: This should be the same as chat-header border-bottom
   border-right: 1px solid #cccccc5e;
-
   min-width: 200px;
   max-width: 480px;
-
-  //flex: 0 0 250px; /* fixed width */
-
-  //background-color: #E3F2FD;
-  //border-right: 1px solid #cfcfcf;
   overflow-y: auto;
 
   .buttons {
@@ -22,9 +17,6 @@ aside {
     display: flex;
     flex-grow: 1;
   }
-
-  // TODO: Animations
-  // transition: display 0.4s;
 }
 
 #search-input {
@@ -34,7 +26,5 @@ aside {
 #sidebar.collapsed {
   max-width: 0;
   display: none;
-
-  //flex: 0 0 0px; /* Collapsed state with zero width */
   padding: 0;
 }

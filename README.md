@@ -1,6 +1,9 @@
 # ollama-html-ui
 
-![cover](/screenshots/chat-collapsed.png)
+<video controls>
+  <source src="videos/video.webm" type="video/webm">
+  ![cover](/screenshots/chat-collapsed.png)
+</video>
 
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
 
@@ -125,6 +128,9 @@ $ parcel build index.html
   - [ ] Image upload / multi-modal
   - [ ] Markdown support
   - [ ] Keyboard shortcuts
+  - [ ] Dark & light theme
+  - [ ] Vote up / down
+  - [ ] Export chat messages to JSON
 
   ## Done
 

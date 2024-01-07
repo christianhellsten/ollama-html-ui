@@ -12,25 +12,25 @@
 
 .modal-header {
   font-weight: 700;
-  background-color: $primary-color;
+  background-color: var(--modal-header-bg-color);
   padding: 0 1rem;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid var(--border-color);
 
   .button {
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     padding: 0.5rem;
     line-height: 0.5rem;
   }
 
   h2 {
-    color: $light-text-color;
+    color: var(--light-text-color);
 
     @extend %font-weight-boldest;
   }
 }
 
 .modal-content {
-  background: $bg-color;
+  background: var(--bg-color);
   width: 640px;
   min-width: 320px;
   max-width: 50vw;

@@ -1,0 +1,51 @@
+// Light theme as default
+:root {
+  --primary-color: #393E46;
+  --secondary-color: #222831;
+  --secondary-color-lighten-20: #{lighten(#222831, 20%)};
+  --secondary-color-lighten-40: #{lighten(#222831, 40%)};
+  --tertiary-color: #EEE;
+  --error-color: #EF4040;
+  --bg-color: #FAFAFA;
+  --text-color: #333;
+  --text-color-lighten-20: #{lighten(#eee, 20%)};
+  --icon-color: var(--primary-color);
+  --light-text-color: #FFFFFF;
+  --button-primary-color: var(--primary-color);
+  --button-primary-bgcolor: #FFFFFF;
+  --button-secondary-color: var(--text-color);
+  --button-secondary-bgcolor: $bg-color;
+  --border-color: #{lighten(#393e46, 60%)};
+  --border-hover-color: #{lighten(#393e46, 40%)};
+  --border-focus-color: #{lighten(#393e46, 30%)};
+  --box-shadow-color: rgba(196, 204, 213, 0.7490196078);
+  --box-shadow-modal-color: #444;
+  --modal-header-bg-color: var(--primary-color);
+}
+
+// Dark theme for users who prefer dark mode
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: #4f5b66;
+    --secondary-color: #1c2025;
+    --secondary-color-lighten-20: #{lighten(#1c2025, 20%)};
+    --secondary-color-lighten-40: #{lighten(#1c2025, 40%)};
+    --tertiary-color: #d1d1d1;
+    --error-color: #ff6b6b;
+    --bg-color: #121212;
+    --text-color: #FAFAFA;
+    --text-color-lighten-20: #{lighten(#FAFAFA, 20%)};
+    --icon-color: var(--text-color);
+    --light-text-color: #FFFFFF;
+    --button-primary-color: #ffffff;
+    --button-primary-bgcolor: var(--primary-color);
+    --button-secondary-color: var(--text-color);
+    --button-secondary-bgcolor: var(--bg-color);
+    --border-color: #{lighten(#4f5b66, 30%)};
+    --border-hover-color: #{lighten(#4f5b66, 50%)};
+    --border-focus-color: #{lighten(#4f5b66, 60%)};
+    --box-shadow-color: rgba(40, 48, 57, 0.7490196078);
+    --box-shadow-modal-color: #444;
+    --modal-header-bg-color: var(--bg-color);
+  }
+}

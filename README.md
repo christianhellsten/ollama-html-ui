@@ -1,6 +1,6 @@
 # ollama-html-ui
 
-![cover](/screenshots/chat-collapsed.png)
+![cover](/videos/video.gif)
 
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
 
@@ -21,6 +21,13 @@ A HTML UI for [Ollama](https://ollama.ai).
 ![Chat](/screenshots/chat.png)
 ![Settings screen](/screenshots/settings.png)
 ![Search](/screenshots/search.png)
+
+**Dark mode**
+
+![Chat (fullscreen)](/screenshots/darkmode-chat-collapsed.png)
+![Chat](/screenshots/darkmode-chat.png)
+![Settings screen](/screenshots/darkmode-settings.png)
+![Search](/screenshots/darkmode-search.png)
 
 **Mobile**
 
@@ -125,6 +132,9 @@ $ parcel build index.html
   - [ ] Image upload / multi-modal
   - [ ] Markdown support
   - [ ] Keyboard shortcuts
+  - [ ] Dark & light theme
+  - [ ] Vote up / down
+  - [ ] Export chat messages to JSON
 
   ## Done
 

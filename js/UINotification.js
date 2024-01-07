@@ -29,7 +29,6 @@ export class UINotification {
 
   _bindEventListeners() {
     window.addEventListener('keydown', (event) => {
-      console.log('adfadsf')
       if (event.key === 'Escape') {
         this.hide();
       }

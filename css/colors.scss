@@ -9,6 +9,7 @@
   --tertiary-color: #eee;
   --error-color: #ef4040;
   --bg-color: #fafafa;
+  --secondary-bg-color: #f0f0f0;
   --text-color: #333;
   --text-color-lighten-20: #{color.adjust(#eee, $lightness:20%)};
   --icon-color: var(--primary-color);
@@ -20,7 +21,7 @@
   --border-color: #{color.adjust(#393e46, $lightness:60%)};
   --border-hover-color: #{color.adjust(#393e46, $lightness:40%)};
   --border-focus-color: #{color.adjust(#393e46, $lightness:30%)};
-  --box-shadow-color: rgb(196 204 213 / 74.9%);
+  --box-shadow-color: rgb(196 204 213 / 37%);
   --box-shadow-modal-color: #444;
   --modal-header-bg-color: var(--primary-color);
 }
@@ -35,6 +36,7 @@
     --tertiary-color: #d1d1d1;
     --error-color: #ff6b6b;
     --bg-color: #121212;
+    --secondary-bg-color: #222;
     --text-color: #fafafa;
     --text-color-lighten-20: #{color.adjust(#fafafa, $lightness:20%)};
     --icon-color: var(--text-color);
@@ -46,7 +48,7 @@
     --border-color: #{color.adjust(#4f5b66, $lightness:30%)};
     --border-hover-color: #{color.adjust(#4f5b66, $lightness:50%)};
     --border-focus-color: #{color.adjust(#4f5b66, $lightness:60%)};
-    --box-shadow-color: rgb(40 48 57 / 74.9%);
+    --box-shadow-color: rgb(40 48 57 / 30%);
     --box-shadow-modal-color: #444;
     --modal-header-bg-color: var(--bg-color);
   }

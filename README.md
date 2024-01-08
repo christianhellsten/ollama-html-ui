@@ -126,6 +126,7 @@ $ parcel build index.html
 <details>
   <summary>Tasks</summary>
 
+  - [ ] Ollama authentication
   - [ ] Edit message / response
   - [ ] Clear chat
   - [ ] CSP

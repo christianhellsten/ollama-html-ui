@@ -128,9 +128,17 @@ table {
   border-spacing: 0;
 }
 
+input, button, textarea, select {
+  font: inherit;
+}
+
+// Remove padding of everything and make border-box the default
 html * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-size: 16px; /* Standard font size for body */
+}
+
+html {
+  font-size: 16px; /* Standard font size for body, use rem to modify font-size */
 }

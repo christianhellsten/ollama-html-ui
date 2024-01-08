@@ -17,9 +17,16 @@
   border-bottom: 1px solid var(--border-color);
 
   .button {
+    background-color: var(--light-text-color);
     border-radius: var(--border-radius);
-    padding: 0.5rem;
+    padding: 0.35rem;
     line-height: 0.5rem;
+    border-radius: 1rem;
+  }
+
+  .button:hover {
+    position: relative;
+    top: -1px;
   }
 
   h2 {

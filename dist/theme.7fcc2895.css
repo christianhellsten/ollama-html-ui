@@ -439,14 +439,13 @@ svg {
 }
 .modal-header .button {
   background-color: var(--light-text-color);
-  border-radius: var(--border-radius);
   padding: 0.35rem;
   line-height: 0.5rem;
-  border-radius: 1rem;
+  border-radius: 0.1rem;
 }
 .modal-header .button:hover {
   position: relative;
-  top: -1px;
+  top: 1px;
 }
 .modal-header h2 {
   color: var(--light-text-color);
@@ -691,12 +690,12 @@ a {
   text-align: right;
 }
 
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   html {
     font-size: 0.875rem;
   }
 }
-@media (max-width: 768px) {
+@media (width <= 768px) {
   html {
     font-size: 0.75rem;
   }
@@ -803,6 +802,9 @@ a {
   display: flex;
   position: relative;
   height: 100%;
+}
+#chat-form button {
+  background-color: var(--bg-color);
 }
 #chat-form textarea {
   padding: 1rem;

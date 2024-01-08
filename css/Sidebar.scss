@@ -5,6 +5,7 @@ aside {
 /* Sidebar styling */
 #sidebar {
   @extend %box-shadow;
+
   background-color: var(--secondary-bg-color);
 
   // NOTE: This should be the same as chat-header border-bottom

@@ -329,6 +329,7 @@ test.describe('Application tests', { only: true }, () => {
       await app.screenshot('chat.png');
       // Collapse
       await app.page.click('#hamburger-menu');
+      await app.page.waitForTimeout(500); // Wait for 500 milliseconds to allow animation to complete
       await app.screenshot('chat-collapsed.png');
     });
 

@@ -19,6 +19,10 @@
     height: 100%;
   }
 
+  button {
+    background-color: var(--bg-color);
+  }
+
   textarea {
     padding: 1rem;
     resize: none;

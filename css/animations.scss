@@ -1,0 +1,28 @@
+// Lists
+ul {
+    li {
+        transition: all 0.3s;
+    }
+}
+
+// Sidebar
+#sidebar {
+    transition: min-width  0.5s ease-out, max-width 1s ease-out;
+}
+
+#sidebar.collapsed {
+    transition: min-width 0.5s ease-in, max-width 1s ease-in;
+}
+
+// Modal dialogs
+.modal {
+  transform: scale(0.9); /* Start slightly scaled down */
+  transition: opacity 0.5s ease, transform 0.5s ease-in; /* Transition effect */
+}
+
+.modal.show {
+  transition: opacity 0.5s ease, transform 1s ease-out; /* Transition effect */
+  transform: scale(1); /* Scale to original size */
+  pointer-events: auto; /* Allow interactions */
+}
+

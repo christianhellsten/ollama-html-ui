@@ -13,7 +13,6 @@ export class ChatListItem {
     this.element.classList.add(`chat${this.chat.id}`);
     if (selected === true) {
       this.element.classList.add('selected');
-      // this.content.querySelector('.icon-selected').classList.remove('hidden')
     }
     this.setTitle();
     this.bindEventListeners();

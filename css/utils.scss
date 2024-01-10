@@ -3,6 +3,10 @@
   display: none;
 }
 
+.visible {
+  animation: fadeIn 0.5s ease;
+}
+
 .float-right {
   float: right;
 }

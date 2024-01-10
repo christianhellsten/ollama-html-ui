@@ -1,5 +1,6 @@
 import { debounce } from './debounce.js';
 import { Event } from './Event.js';
+import { DOM } from './Dom.js';
 import { Chat } from './models/Chat.js';
 import { AppController } from './AppController.js';
 import { ChatList } from './ChatList.js';
@@ -58,7 +59,7 @@ export class Sidebar {
 
   toggleSearch() {
     const searchRow = document.getElementById('search-row');
-    searchRow.classList.toggle('hidden');
+    DOM.toggle(searchRow);
     this.searchInput.focus();
   }
 
@@ -85,10 +86,9 @@ export class Sidebar {
         .map((chat) => chat.id);
       this.element.querySelectorAll('.chat-list-item').forEach((item) => {
         if (matches.includes(item.data.id)) {
-          // Now matches the type
-          item.classList.remove('hidden');
+          DOM.showElement(item);
         } else {
-          item.classList.add('hidden');
+          DOM.hideElement(item);
         }
       });
     });

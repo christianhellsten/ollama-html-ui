@@ -339,12 +339,30 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DOM = void 0;
 class DOM {
+  static toggle(element) {
+    if (element.classList.contains('hidden')) {
+      element.classList.remove('hidden');
+      element.classList.add('visible');
+    } else {
+      element.classList.remove('visible');
+      // Trigger fadeOut animation, then set display to none after the animation completes
+      element.classList.add('fade-out');
+      // Fade-out animation duration is 0.5s
+      setTimeout(() => {
+        element.classList.remove('fade-out');
+        element.classList.add('hidden');
+      }, 500);
+    }
+    return this;
+  }
   static showElement(element) {
     element.classList.remove('hidden');
+    element.classList.add('visible');
     return this;
   }
   static hideElement(element) {
     element.classList.add('hidden');
+    element.classList.remove('visible');
     return this;
   }
   static enableInput(element) {
@@ -734,7 +752,6 @@ class ChatListItem {
     this.element.classList.add(`chat${this.chat.id}`);
     if (selected === true) {
       this.element.classList.add('selected');
-      // this.content.querySelector('.icon-selected').classList.remove('hidden')
     }
     this.setTitle();
     this.bindEventListeners();
@@ -1004,6 +1021,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.Sidebar = void 0;
 var _debounce = require("./debounce.js");
 var _Event = require("./Event.js");
+var _Dom = require("./Dom.js");
 var _Chat = require("./models/Chat.js");
 var _AppController = require("./AppController.js");
 var _ChatList = require("./ChatList.js");
@@ -1053,7 +1071,7 @@ class Sidebar {
   };
   toggleSearch() {
     const searchRow = document.getElementById('search-row');
-    searchRow.classList.toggle('hidden');
+    _Dom.DOM.toggle(searchRow);
     this.searchInput.focus();
   }
   performSearch() {
@@ -1074,10 +1092,9 @@ class Sidebar {
       }).map(chat => chat.id);
       this.element.querySelectorAll('.chat-list-item').forEach(item => {
         if (matches.includes(item.data.id)) {
-          // Now matches the type
-          item.classList.remove('hidden');
+          _Dom.DOM.showElement(item);
         } else {
-          item.classList.add('hidden');
+          _Dom.DOM.hideElement(item);
         }
       });
     });
@@ -1099,7 +1116,7 @@ class Sidebar {
   }
 }
 exports.Sidebar = Sidebar;
-},{"./debounce.js":"js/debounce.js","./Event.js":"js/Event.js","./models/Chat.js":"js/models/Chat.js","./AppController.js":"js/AppController.js","./ChatList.js":"js/ChatList.js","./DownloadChatsButton.js":"js/DownloadChatsButton.js","./models/LocalStorage.js":"js/models/LocalStorage.js"}],"js/CopyButton.js":[function(require,module,exports) {
+},{"./debounce.js":"js/debounce.js","./Event.js":"js/Event.js","./Dom.js":"js/Dom.js","./models/Chat.js":"js/models/Chat.js","./AppController.js":"js/AppController.js","./ChatList.js":"js/ChatList.js","./DownloadChatsButton.js":"js/DownloadChatsButton.js","./models/LocalStorage.js":"js/models/LocalStorage.js"}],"js/CopyButton.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1245,7 +1262,7 @@ Tokens Per Second: ${tokensPerSecond.toFixed(2)} token/s
       onResponse(data.models);
     }).catch(error => {
       console.debug(error);
-      console.error(`Please ensure the server is running at: ${url}. Error code: 39847`);
+      console.error(`Oops! It seems there's a problem with the connection to the server. Make sure the server is running: ${url}`);
       onResponse([]);
     });
   }
@@ -1307,6 +1324,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.DropDownMenu = void 0;
+var _Dom = require("./Dom.js");
 class DropDownMenu {
   constructor() {
     this.buttonSelector = '.drop-down-menu';
@@ -1321,18 +1339,14 @@ class DropDownMenu {
       if (menuElement) {
         const dropDownMenu = menuElement.querySelector('.drop-down-menu-items');
         if (dropDownMenu) {
-          this.toggleMenu(dropDownMenu);
+          _Dom.DOM.toggle(dropDownMenu);
         }
       }
     });
   }
-  toggleMenu(menu) {
-    menu.classList.toggle('hidden');
-    menu.classList.toggle('visible');
-  }
 }
 exports.DropDownMenu = DropDownMenu;
-},{}],"js/Modal.js":[function(require,module,exports) {
+},{"./Dom.js":"js/Dom.js"}],"js/Modal.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2024,7 +2038,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
   handleResponseError(request, error) {
     // Ignore "Abort" button
     if (error.name !== 'AbortError') {
-      console.error(`Error: ${error.message}`);
+      console.error(`Oops! It seems there's a problem with the connection to the server. Make sure the server is running: ${_Settings.Settings.getUrl()}`);
     }
     this.chatArea.scrollToEnd();
     this.enableForm();
@@ -2086,7 +2100,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61771" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56895" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

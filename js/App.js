@@ -183,7 +183,9 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
   handleResponseError(request, error) {
     // Ignore "Abort" button
     if (error.name !== 'AbortError') {
-      console.error(`Error: ${error.message}`);
+      console.error(
+        `Oops! It seems there's a problem with the connection to the server. Make sure the server is running: ${Settings.getUrl()}`,
+      );
     }
     this.chatArea.scrollToEnd();
     this.enableForm();

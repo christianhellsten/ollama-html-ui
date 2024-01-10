@@ -112,7 +112,7 @@ Tokens Per Second: ${tokensPerSecond.toFixed(2)} token/s
       .catch((error) => {
         console.debug(error);
         console.error(
-          `Please ensure the server is running at: ${url}. Error code: 39847`,
+          `Oops! It seems there's a problem with the connection to the server. Make sure the server is running: ${url}`,
         );
         onResponse([]);
       });

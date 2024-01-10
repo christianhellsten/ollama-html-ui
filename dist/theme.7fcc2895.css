@@ -525,18 +525,13 @@ ul li {
   cursor: pointer;
   width: 100%;
   white-space: nowrap; /* Prevent text from wrapping */
-  /*
-  .list-item-edit:after {
-    content: "..."; // \00a0 is a non-breaking space
-  }
-  */
 }
 ul li .col {
   overflow: hidden; /* Hide overflowing text */
   text-overflow: ""; /* Display ellipsis (...) for overflowing text */
 }
 ul li button {
-  padding: 0 0.5rem;
+  padding: 0 0.25rem;
   visibility: hidden;
 }
 ul li.selected {
@@ -594,6 +589,10 @@ button i {
 /* Utilities */
 .hidden {
   display: none;
+}
+
+.visible {
+  animation: fadeIn 0.5s ease;
 }
 
 .float-right {
@@ -705,18 +704,43 @@ ul li {
 }
 
 #sidebar.collapsed {
-  transition: min-width 0.5s ease-in, max-width 1s ease-in;
+  transition: min-width 0.5s ease-in, max-width 0.5s ease-in;
 }
 
 .modal {
   transform: scale(0.9); /* Start slightly scaled down */
-  transition: opacity 0.5s ease, transform 0.5s ease-in; /* Transition effect */
+  transition: opacity 0.25s ease-in, transform 0.25s ease-in; /* Transition effect */
 }
 
 .modal.show {
-  transition: opacity 0.5s ease, transform 1s ease-out; /* Transition effect */
+  transition: opacity 0.25s ease, transform 0.5s ease-out; /* Transition effect */
   transform: scale(1); /* Scale to original size */
   pointer-events: auto; /* Allow interactions */
+}
+
+.notification {
+  transform: scale(0.9); /* Start slightly scaled down */
+  transition: opacity 0.25s ease-in, transform 0.25s ease-in; /* Transition effect */
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.fade-out {
+  animation: fade-out 0.25s ease;
 }
 
 @media (width <= 1024px) {
@@ -936,9 +960,9 @@ ul li {
   position: fixed;
   top: 0;
   left: 0;
-  color: var(--bg-color);
   width: calc(100vw - 2rem);
   z-index: 30000;
+  color: var(--text-color);
   background-color: var(--bg-color);
   padding: 1rem;
   margin: 1rem;

@@ -1,3 +1,5 @@
+import { DOM } from './Dom.js';
+
 export class DropDownMenu {
   constructor() {
     this.buttonSelector = '.drop-down-menu';
@@ -13,14 +15,9 @@ export class DropDownMenu {
       if (menuElement) {
         const dropDownMenu = menuElement.querySelector('.drop-down-menu-items');
         if (dropDownMenu) {
-          this.toggleMenu(dropDownMenu);
+          DOM.toggle(dropDownMenu);
         }
       }
     });
-  }
-
-  toggleMenu(menu) {
-    menu.classList.toggle('hidden');
-    menu.classList.toggle('visible');
   }
 }

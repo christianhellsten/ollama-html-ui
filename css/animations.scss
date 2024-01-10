@@ -11,18 +11,37 @@ ul {
 }
 
 #sidebar.collapsed {
-    transition: min-width 0.5s ease-in, max-width 1s ease-in;
+    transition: min-width 0.5s ease-in, max-width 0.5s ease-in;
 }
 
 // Modal dialogs
 .modal {
   transform: scale(0.9); /* Start slightly scaled down */
-  transition: opacity 0.5s ease, transform 0.5s ease-in; /* Transition effect */
+  transition: opacity 0.25s ease-in, transform 0.25s ease-in; /* Transition effect */
 }
 
 .modal.show {
-  transition: opacity 0.5s ease, transform 1s ease-out; /* Transition effect */
+  transition: opacity 0.25s ease, transform 0.5s ease-out; /* Transition effect */
   transform: scale(1); /* Scale to original size */
   pointer-events: auto; /* Allow interactions */
 }
 
+.notification {
+  transform: scale(0.9); /* Start slightly scaled down */
+  transition: opacity 0.25s ease-in, transform 0.25s ease-in; /* Transition effect */
+}
+
+// Hidden / visible
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.fade-out {
+  animation: fade-out 0.25s ease;
+}

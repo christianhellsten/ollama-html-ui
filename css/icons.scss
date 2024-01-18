@@ -6,6 +6,7 @@ i[class^='icon-'] {
   color: var(--icon-color);
   font-size: 0.75rem;
   vertical-align: middle;
+  filter: grayscale(100%); // Make icons grayscale
 }
 
 svg {

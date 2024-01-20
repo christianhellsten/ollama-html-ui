@@ -605,7 +605,7 @@ var _ChatMessage = require("./ChatMessage.js");
 class Chat extends _BaseModel.BaseModel {
   async addMessage(data) {
     data.chatId = this.id;
-    await new _ChatMessage.ChatMessage(data).create();
+    return await new _ChatMessage.ChatMessage(data).create();
   }
   async getMessages() {
     const messages = await _ChatMessage.ChatMessage.getAllByChatId(this.id);
@@ -1895,7 +1895,10 @@ class ChatArea {
       message.quality = 'bad';
       await message.save();
     });
-    return messageDiv;
+    return {
+      element: messageDiv,
+      textElement: textSpan
+    };
   }
   handleChatDeleted(chat) {
     if (chat.id === this.chat?.id) {
@@ -2018,7 +2021,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
 
   // https://github.com/jmorganca/ollama/blob/main/docs/api.md#generate-a-completion
   async sendMessage() {
-    const userMessage = this.messageInput.value.trim();
+    const userPrompt = this.messageInput.value.trim();
     // Get the current chat
     let chat = await _AppController.AppController.getCurrentChat();
     const url = _Settings.Settings.getUrl('/api/chat');
@@ -2026,7 +2029,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
       _UINotification.UINotification.show('Please update the URL in the settings to continue. ');
       return null;
     }
-    if (userMessage) {
+    if (userPrompt) {
       // Reset input
       this.messageInput.value = '';
       // Create new chat
@@ -2037,28 +2040,26 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
         });
       }
       // Store user message
-      await chat.addMessage({
+      const userMessage = await chat.addMessage({
         role: 'user',
-        content: userMessage
+        content: userPrompt
+      });
+      const systemMessage = await chat.addMessage({
+        role: 'assistant',
+        content: ''
       });
       const systemPrompt = _Settings.Settings.getSystemPrompt();
       const modelParameters = _Settings.Settings.getModelParameters();
       // Disable form
       this.disableForm();
       // Create user message
-      this.createChatMessage({
-        content: userMessage,
-        role: 'user'
-      });
+      this.createChatMessage(userMessage);
       // Create system message container
-      const responseElement = this.createChatMessage({
-        content: '',
-        role: 'system'
-      });
+      const responseElement = this.createChatMessage(systemMessage);
       const requestContext = {
         chat,
-        content: '',
-        // TODO: Move this to the response?
+        userMessage,
+        systemMessage,
         responseElement
       };
       const requestData = {
@@ -2078,7 +2079,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
         requestData.options = modelParameters;
       }
       // Show spinner
-      responseElement.innerHTML = '<div class="waiting"></div>';
+      responseElement.textElement.innerHTML = '<div class="waiting"></div>';
       // Make request
       this.ollamaApi.send(url, requestData, (request, response) => this.handleResponse(request, response, requestContext), (request, error) => this.handleResponseError(request, error), (request, response) => this.handleDone(request, response, requestContext));
     }
@@ -2090,8 +2091,8 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
     const responseElement = context.responseElement;
     const sanitizedContent = this.sanitizeContent(response);
     // Remember original response
-    context.content += sanitizedContent;
-    responseElement.textContent += sanitizedContent;
+    context.systemMessage.content += sanitizedContent;
+    responseElement.textElement.textContent += sanitizedContent;
     this.chatArea.scrollToEnd();
   }
   handleResponseError(request, error) {
@@ -2105,10 +2106,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
   async handleDone(request, response, context) {
     const chat = context.chat;
     console.log(`Chat ${chat.id} done`);
-    await chat.addMessage({
-      role: 'assistant',
-      content: context.content
-    });
+    await context.systemMessage.save();
     this.enableForm();
   }
   sanitizeContent = content => {
@@ -2159,7 +2157,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61698" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63070" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

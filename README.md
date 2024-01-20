@@ -134,10 +134,10 @@ $ parcel build index.html
   - [ ] Speech recognition
   - [ ] Image upload / multi-modal
   - [ ] Markdown support
-  - [ ] Vote up / down
 
   ## Done
 
+  - [x] Mark message as good, bad, flagged
   - [x] Export chat messages to JSON
   - [x] Keyboard shortcuts
   - [x] Dark & light theme

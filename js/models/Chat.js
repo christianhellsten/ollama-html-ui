@@ -4,7 +4,7 @@ import { ChatMessage } from './ChatMessage.js';
 export class Chat extends BaseModel {
   async addMessage(data) {
     data.chatId = this.id;
-    await new ChatMessage(data).create();
+    return await new ChatMessage(data).create();
   }
 
   async getMessages() {

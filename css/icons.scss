@@ -6,12 +6,29 @@ i[class^='icon-'] {
   color: var(--icon-color);
   font-size: 0.75rem;
   vertical-align: middle;
+  filter: grayscale(100%); // Make icons grayscale
 }
 
 svg {
   width: 1.5rem;
   height: 1.5rem;
   vertical-align: middle;
+}
+
+.icon-export::before {
+  content: "\1F5E8 \2B07";  /* Speech Bubble and Downward Arrow */
+}
+
+.icon-flag::before {  /* Triangular Flag on Post */
+  content: "\26A0";
+}
+
+.icon-bad::before {
+  content: "\1F44E";
+}
+
+.icon-good::before {
+  content: "\1F44D";
 }
 
 .icon-close::before {
@@ -59,8 +76,12 @@ svg {
   content: '\1F4E9';
 }
 
-.icon-delete::before {
+.icon-delete-alt::before {
   content: '\274C';
+}
+
+.icon-delete::before {
+  content: '\2716';
 }
 
 .icon-abort::before {

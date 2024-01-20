@@ -6,21 +6,6 @@ export class BaseModel {
     Object.assign(this, data);
   }
 
-  static async database(name, store) {
-    this.dbName = name;
-    this.storeName = store;
-    this.db = new Database(name, [store], Migrations);
-    await this.db.open();
-  }
-
-  static async transaction(mode) {
-    return await this.db.transaction(this.storeName, mode);
-  }
-
-  async transaction(mode) {
-    return await this.constructor.transaction(mode);
-  }
-
   async create() {
     const key = await this.constructor.db.add(this.constructor.storeName, this);
     if (!this.id) {
@@ -38,6 +23,25 @@ export class BaseModel {
       this.constructor.storeName,
       this.id,
     );
+  }
+
+  jsonify() {
+    return JSON.stringify(this);
+  }
+
+  static async database(name, store) {
+    this.dbName = name;
+    this.storeName = store;
+    this.db = new Database(name, [store], Migrations);
+    await this.db.open();
+  }
+
+  static async transaction(mode) {
+    return await this.db.transaction(this.storeName, mode);
+  }
+
+  async transaction(mode) {
+    return await this.constructor.transaction(mode);
   }
 
   static async get(id) {

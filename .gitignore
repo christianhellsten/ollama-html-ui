@@ -1,5 +1,7 @@
 tmp
 
+.envrc
+
 # Logs
 logs
 *.log

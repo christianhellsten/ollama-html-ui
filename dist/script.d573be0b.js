@@ -501,18 +501,6 @@ class BaseModel {
   constructor(data) {
     Object.assign(this, data);
   }
-  static async database(name, store) {
-    this.dbName = name;
-    this.storeName = store;
-    this.db = new _Database.Database(name, [store], _Migrations.Migrations);
-    await this.db.open();
-  }
-  static async transaction(mode) {
-    return await this.db.transaction(this.storeName, mode);
-  }
-  async transaction(mode) {
-    return await this.constructor.transaction(mode);
-  }
   async create() {
     const key = await this.constructor.db.add(this.constructor.storeName, this);
     if (!this.id) {
@@ -525,6 +513,21 @@ class BaseModel {
   }
   async delete() {
     return await this.constructor.db.delete(this.constructor.storeName, this.id);
+  }
+  jsonify() {
+    return JSON.stringify(this);
+  }
+  static async database(name, store) {
+    this.dbName = name;
+    this.storeName = store;
+    this.db = new _Database.Database(name, [store], _Migrations.Migrations);
+    await this.db.open();
+  }
+  static async transaction(mode) {
+    return await this.db.transaction(this.storeName, mode);
+  }
+  async transaction(mode) {
+    return await this.constructor.transaction(mode);
   }
   static async get(id) {
     const data = await this.db.get(this.storeName, id);
@@ -602,7 +605,7 @@ var _ChatMessage = require("./ChatMessage.js");
 class Chat extends _BaseModel.BaseModel {
   async addMessage(data) {
     data.chatId = this.id;
-    await new _ChatMessage.ChatMessage(data).create();
+    return await new _ChatMessage.ChatMessage(data).create();
   }
   async getMessages() {
     const messages = await _ChatMessage.ChatMessage.getAllByChatId(this.id);
@@ -1108,10 +1111,14 @@ Object.defineProperty(exports, "__esModule", {
 exports.CopyButton = void 0;
 class CopyButton {
   constructor() {
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', event => {
       // Check if the clicked element has the class 'copy-button'
       if (event.target.classList.contains('copy-button')) {
         const targetSelector = event.target.getAttribute('data-target');
+        if (!targetSelector) {
+          console.error('The data-target attribute is not set');
+          return;
+        }
         const textToCopy = document.getElementById(targetSelector).innerText;
         // Create a temporary textarea element
         const textarea = document.createElement('textarea');
@@ -1608,7 +1615,39 @@ class ChatSettingsDialog extends _Modal.Modal {
   }
 }
 exports.ChatSettingsDialog = ChatSettingsDialog;
-},{"./AppController.js":"js/AppController.js","./Event.js":"js/Event.js","./Modal.js":"js/Modal.js","./models/Models.js":"js/models/Models.js","./ModelsList.js":"js/ModelsList.js"}],"js/Hoverable.js":[function(require,module,exports) {
+},{"./AppController.js":"js/AppController.js","./Event.js":"js/Event.js","./Modal.js":"js/Modal.js","./models/Models.js":"js/models/Models.js","./ModelsList.js":"js/ModelsList.js"}],"js/ExportChat.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ExportChat = void 0;
+class ExportChat {
+  static exportChat(chat, filename) {
+    // Get the contents of the element
+    const content = chat.jsonify();
+
+    // Create a Blob with the content
+    const blob = new Blob([content], {
+      type: 'application/json'
+    });
+
+    // Create an anchor element and set the href to the blob
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+
+    // Append the anchor to the document, trigger a click, and then remove it
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Revoke the blob URL
+    URL.revokeObjectURL(a.href);
+  }
+}
+exports.ExportChat = ExportChat;
+},{}],"js/Hoverable.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1730,6 +1769,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ChatArea = void 0;
 var _AppController = require("./AppController.js");
+var _ExportChat = require("./ExportChat.js");
 var _Event = require("./Event.js");
 var _Hoverable = require("./Hoverable.js");
 var _ChatTitle = require("./ChatTitle.js");
@@ -1744,6 +1784,7 @@ class ChatArea {
     this.scrollToTopButton = document.getElementById('scroll-to-top-button');
     this.scrollToEndButton = document.getElementById('scroll-to-end-button');
     this.deleteChatButton = document.getElementById('delete-chat-button');
+    this.exportChatButton = document.getElementById('export-chat-button');
     _AppController.AppController.getCurrentChat().then(chat => {
       this.chat = chat;
       this.render();
@@ -1769,6 +1810,9 @@ class ChatArea {
     this.scrollToEndButton.addEventListener('click', this.scrollToEnd.bind(this));
     this.editChatButton.addEventListener('click', this.handleEditChat.bind(this));
     this.deleteChatButton.addEventListener('click', this.handleDeleteChat.bind(this));
+    this.exportChatButton.addEventListener('click', () => {
+      _ExportChat.ExportChat.exportChat(this.chat, `chat-${this.chat.id}.json`);
+    });
     this.currentMessage = this.chatHistory.querySelector('.selected');
     // Select chat message with arrow up and arrow down keys
     document.addEventListener('keydown', event => {
@@ -1799,6 +1843,7 @@ class ChatArea {
     });
   }
   createMessageDiv(message) {
+    const domId = `chat-message-${message.id}`;
     const role = message.role;
     const content = message.content;
     // Get the template and its content
@@ -1808,9 +1853,21 @@ class ChatArea {
     const messageDiv = messageClone.querySelector('.chat-message');
     const textSpan = messageClone.querySelector('.chat-message-text');
     const deleteButton = messageClone.querySelector('.delete-chat-message-button');
+    const copyButton = messageClone.querySelector('.copy-chat-message-button .copy-button');
+    const goodButton = messageClone.querySelector('.good-chat-message-button');
+    const badButton = messageClone.querySelector('.bad-chat-message-button');
+    const flagButton = messageClone.querySelector('.flag-chat-message-button');
+    if (message.quality == 'bad') {
+      badButton.classList.add('selected');
+    } else if (message.quality == 'good') {
+      goodButton.classList.add('selected');
+    } else if (message.quality == 'flagged') {
+      flagButton.classList.add('selected');
+    }
 
     // Set the class for role and text content
     messageDiv.classList.add(`${role}-chat-message`);
+    messageDiv.id = domId;
     textSpan.textContent = content;
     messageDiv.spellcheck = false;
 
@@ -1822,7 +1879,26 @@ class ChatArea {
       await _AppController.AppController.deleteChatMessage(message.id);
       messageDiv.remove();
     });
-    return messageDiv;
+    copyButton.dataset['target'] = domId;
+    flagButton.addEventListener('click', async () => {
+      console.log('flagged');
+      message.quality = 'flagged';
+      await message.save();
+    });
+    goodButton.addEventListener('click', async () => {
+      console.log('good');
+      message.quality = 'good';
+      await message.save();
+    });
+    badButton.addEventListener('click', async () => {
+      console.log('bad');
+      message.quality = 'bad';
+      await message.save();
+    });
+    return {
+      element: messageDiv,
+      textElement: textSpan
+    };
   }
   handleChatDeleted(chat) {
     if (chat.id === this.chat?.id) {
@@ -1854,7 +1930,7 @@ class ChatArea {
   }
 }
 exports.ChatArea = ChatArea;
-},{"./AppController.js":"js/AppController.js","./Event.js":"js/Event.js","./Hoverable.js":"js/Hoverable.js","./ChatTitle.js":"js/ChatTitle.js","./ChatForm.js":"js/ChatForm.js"}],"js/App.js":[function(require,module,exports) {
+},{"./AppController.js":"js/AppController.js","./ExportChat.js":"js/ExportChat.js","./Event.js":"js/Event.js","./Hoverable.js":"js/Hoverable.js","./ChatTitle.js":"js/ChatTitle.js","./ChatForm.js":"js/ChatForm.js"}],"js/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1945,7 +2021,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
 
   // https://github.com/jmorganca/ollama/blob/main/docs/api.md#generate-a-completion
   async sendMessage() {
-    const userMessage = this.messageInput.value.trim();
+    const userPrompt = this.messageInput.value.trim();
     // Get the current chat
     let chat = await _AppController.AppController.getCurrentChat();
     const url = _Settings.Settings.getUrl('/api/chat');
@@ -1953,7 +2029,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
       _UINotification.UINotification.show('Please update the URL in the settings to continue. ');
       return null;
     }
-    if (userMessage) {
+    if (userPrompt) {
       // Reset input
       this.messageInput.value = '';
       // Create new chat
@@ -1964,28 +2040,26 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
         });
       }
       // Store user message
-      await chat.addMessage({
+      const userMessage = await chat.addMessage({
         role: 'user',
-        content: userMessage
+        content: userPrompt
+      });
+      const systemMessage = await chat.addMessage({
+        role: 'assistant',
+        content: ''
       });
       const systemPrompt = _Settings.Settings.getSystemPrompt();
       const modelParameters = _Settings.Settings.getModelParameters();
       // Disable form
       this.disableForm();
       // Create user message
-      this.createChatMessage({
-        content: userMessage,
-        role: 'user'
-      });
+      this.createChatMessage(userMessage);
       // Create system message container
-      const responseElement = this.createChatMessage({
-        content: '',
-        role: 'system'
-      });
+      const responseElement = this.createChatMessage(systemMessage);
       const requestContext = {
         chat,
-        content: '',
-        // TODO: Move this to the response?
+        userMessage,
+        systemMessage,
         responseElement
       };
       const requestData = {
@@ -2005,7 +2079,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
         requestData.options = modelParameters;
       }
       // Show spinner
-      responseElement.innerHTML = '<div class="waiting"></div>';
+      responseElement.textElement.innerHTML = '<div class="waiting"></div>';
       // Make request
       this.ollamaApi.send(url, requestData, (request, response) => this.handleResponse(request, response, requestContext), (request, error) => this.handleResponseError(request, error), (request, response) => this.handleDone(request, response, requestContext));
     }
@@ -2017,8 +2091,8 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
     const responseElement = context.responseElement;
     const sanitizedContent = this.sanitizeContent(response);
     // Remember original response
-    context.content += sanitizedContent;
-    responseElement.textContent += sanitizedContent;
+    context.systemMessage.content += sanitizedContent;
+    responseElement.textElement.textContent += sanitizedContent;
     this.chatArea.scrollToEnd();
   }
   handleResponseError(request, error) {
@@ -2032,10 +2106,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
   async handleDone(request, response, context) {
     const chat = context.chat;
     console.log(`Chat ${chat.id} done`);
-    await chat.addMessage({
-      role: 'assistant',
-      content: context.content
-    });
+    await context.systemMessage.save();
     this.enableForm();
   }
   sanitizeContent = content => {
@@ -2086,7 +2157,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61771" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63070" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

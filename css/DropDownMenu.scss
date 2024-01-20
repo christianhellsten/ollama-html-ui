@@ -7,6 +7,12 @@
   position: absolute;
   top: 100%; /* Position below the button */
   display: none; /* Hide initially */
+  font-size: 0.75rem;
+  white-space: nowrap;
+
+  i[class^='icon-']::before {
+    padding-right: 0.5rem;
+  }
 
   @extend %box-shadow;
 

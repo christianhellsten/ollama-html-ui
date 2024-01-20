@@ -15,6 +15,19 @@ svg {
   vertical-align: middle;
 }
 
+.icon-flag::before {
+  content: "\1F6A9";  /* Triangular Flag on Post */
+  content: "\26A0";
+}
+
+.icon-good::before {
+  content: "\1F44E"; /* Thumbs Down */
+}
+
+.icon-bad::before {
+  content: "\1F44D"; /* Thumbs Up */
+}
+
 .icon-close::before {
   content: '\00D7';
 }
@@ -60,8 +73,12 @@ svg {
   content: '\1F4E9';
 }
 
-.icon-delete::before {
+.icon-delete-alt::before {
   content: '\274C';
+}
+
+.icon-delete::before {
+  content: '\2716';
 }
 
 .icon-abort::before {

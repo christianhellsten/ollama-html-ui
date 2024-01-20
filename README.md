@@ -126,6 +126,7 @@ $ parcel build index.html
 <details>
   <summary>Tasks</summary>
 
+  - [ ] Personas / Characters / Custom GPTs
   - [ ] Ollama authentication
   - [ ] Edit message / response
   - [ ] Clear chat

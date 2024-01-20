@@ -1108,10 +1108,14 @@ Object.defineProperty(exports, "__esModule", {
 exports.CopyButton = void 0;
 class CopyButton {
   constructor() {
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', event => {
       // Check if the clicked element has the class 'copy-button'
       if (event.target.classList.contains('copy-button')) {
         const targetSelector = event.target.getAttribute('data-target');
+        if (!targetSelector) {
+          console.error('The data-target attribute is not set');
+          return;
+        }
         const textToCopy = document.getElementById(targetSelector).innerText;
         // Create a temporary textarea element
         const textarea = document.createElement('textarea');
@@ -1799,6 +1803,7 @@ class ChatArea {
     });
   }
   createMessageDiv(message) {
+    const domId = `chat-message-${message.id}`;
     const role = message.role;
     const content = message.content;
     // Get the template and its content
@@ -1808,9 +1813,14 @@ class ChatArea {
     const messageDiv = messageClone.querySelector('.chat-message');
     const textSpan = messageClone.querySelector('.chat-message-text');
     const deleteButton = messageClone.querySelector('.delete-chat-message-button');
+    const copyButton = messageClone.querySelector('.copy-chat-message-button .copy-button');
+    const goodButton = messageClone.querySelector('.good-chat-message-button');
+    const badButton = messageClone.querySelector('.bad-chat-message-button');
+    const flagButton = messageClone.querySelector('.flag-chat-message-button');
 
     // Set the class for role and text content
     messageDiv.classList.add(`${role}-chat-message`);
+    messageDiv.id = domId;
     textSpan.textContent = content;
     messageDiv.spellcheck = false;
 
@@ -1821,6 +1831,22 @@ class ChatArea {
     deleteButton.addEventListener('click', async () => {
       await _AppController.AppController.deleteChatMessage(message.id);
       messageDiv.remove();
+    });
+    copyButton.dataset['target'] = domId;
+    flagButton.addEventListener('click', async () => {
+      console.log('flagged');
+      message.quality = 'flagged';
+      await message.save();
+    });
+    goodButton.addEventListener('click', async () => {
+      console.log('good');
+      message.quality = 'good';
+      await message.save();
+    });
+    badButton.addEventListener('click', async () => {
+      console.log('bad');
+      message.quality = 'bad';
+      await message.save();
     });
     return messageDiv;
   }
@@ -2086,7 +2112,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63542" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60773" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

@@ -84,6 +84,9 @@
               <button data-target="chat-history" class="button download-button row" title="Download chat">
                 <i class="icon-download">Download chat</i>
               </button>
+              <button id="export-chat-button" class="button row" title="Export chat to JSON">
+                <i class="icon-export">Export chat</i>
+              </button>
               <button id="chat-settings-button" class="button" title="Chat settings">
                 <i class="icon-settings">Chat settings</i>
               </button>
@@ -169,20 +172,20 @@
     <template id="chat-message-template">
       <div class="chat-message">
         <span class="chat-message-text"></span>
-        <div id="chat-message-menu" class="col hoverable">
-          <button class="delete-chat-message-button" title="Delete chat message">
+        <div class="col hoverable">
+          <button class="delete-chat-message-button button-sm" title="Delete chat message">
               <i class="icon-delete"></i>
           </button>
-          <button class="copy-chat-message-button" title="Copy chat message to clipboard">
+          <button class="copy-chat-message-button button-sm" title="Copy chat message to clipboard">
               <i class="icon-copy copy-button"></i>
           </button>
-          <button class="good-chat-message-button copy-button" title="Good chat message">
-              <i class="icon-bad"></i>
-          </button>
-          <button class="bad-chat-message-button" title="Bad chat message">
+          <button class="good-chat-message-button copy-button button-sm" title="Good chat message">
               <i class="icon-good"></i>
           </button>
-          <button class="flag-chat-message-button" title="Flag chat message">
+          <button class="bad-chat-message-button button-sm" title="Bad chat message">
+              <i class="icon-bad"></i>
+          </button>
+          <button class="flag-chat-message-button button-sm" title="Flag chat message">
               <i class="icon-flag"></i>
           </button>
       </div>

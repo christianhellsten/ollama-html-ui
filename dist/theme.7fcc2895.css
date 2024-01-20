@@ -287,17 +287,20 @@ svg {
   vertical-align: middle;
 }
 
-.icon-flag::before {
-  content: "🚩"; /* Triangular Flag on Post */
+.icon-export::before {
+  content: "🗨⬇"; /* Speech Bubble and Downward Arrow */
+}
+
+.icon-flag::before { /* Triangular Flag on Post */
   content: "⚠";
 }
 
-.icon-good::before {
-  content: "👎"; /* Thumbs Down */
+.icon-bad::before {
+  content: "👎";
 }
 
-.icon-bad::before {
-  content: "👍"; /* Thumbs Up */
+.icon-good::before {
+  content: "👍";
 }
 
 .icon-close::before {
@@ -590,6 +593,13 @@ button {
 .button i {
   display: inline-block;
 }
+.button i[class^=icon-].selected {
+  filter: grayscale(0%);
+}
+
+.button-sm {
+  padding: 0.25rem;
+}
 
 .button-small {
   padding: 0.25rem 1rem;
@@ -819,7 +829,6 @@ ul li {
 
 /* Base styling for all messages */
 .chat-message {
-  padding: 0.5rem;
   padding-top: 0;
   position: relative;
 }

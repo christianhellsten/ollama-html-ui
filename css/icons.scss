@@ -15,17 +15,20 @@ svg {
   vertical-align: middle;
 }
 
-.icon-flag::before {
-  content: "\1F6A9";  /* Triangular Flag on Post */
+.icon-export::before {
+  content: "\1F5E8 \2B07";  /* Speech Bubble and Downward Arrow */
+}
+
+.icon-flag::before {  /* Triangular Flag on Post */
   content: "\26A0";
 }
 
-.icon-good::before {
-  content: "\1F44E"; /* Thumbs Down */
+.icon-bad::before {
+  content: "\1F44E";
 }
 
-.icon-bad::before {
-  content: "\1F44D"; /* Thumbs Up */
+.icon-good::before {
+  content: "\1F44D";
 }
 
 .icon-close::before {

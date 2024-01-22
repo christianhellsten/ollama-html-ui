@@ -24,7 +24,7 @@
     "eslint-plugin-import": "^2.29",
     "eslint-plugin-n": "^16.6",
     "eslint-plugin-promise": "^6.1",
-    "playwright": "^1.40.1",
+    "playwright": "^1.41.1",
     "postcss": "^8.4.32",
     "prettier": "^3.2.4",
     "sass": "^1.69.6",

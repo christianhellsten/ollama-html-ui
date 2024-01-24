@@ -170,24 +170,30 @@
     </div>
     <!-- Chat message template -->
     <template id="chat-message-template">
-      <div class="chat-message">
-        <span class="chat-message-text"></span>
-        <div class="col hoverable">
-          <button class="delete-chat-message-button button-sm" title="Delete chat message">
-              <i class="icon-delete"></i>
-          </button>
-          <button class="copy-chat-message-button button-sm" title="Copy chat message to clipboard">
-              <i class="icon-copy copy-button"></i>
-          </button>
-          <button class="good-chat-message-button copy-button button-sm" title="Good chat message">
-              <i class="icon-good"></i>
-          </button>
-          <button class="bad-chat-message-button button-sm" title="Bad chat message">
-              <i class="icon-bad"></i>
-          </button>
-          <button class="flag-chat-message-button button-sm" title="Flag chat message">
-              <i class="icon-flag"></i>
-          </button>
+      <div class="chat-message row">
+        <div class="col height-100">
+          <div class="user-icon system-icon">&#x25A0;</div>
+          <div class="user-icon you-icon">You</div>
+          <div class="hoverable chat-message-menu">
+            <button class="copy-chat-message-button button-sm" title="Copy chat message to clipboard">
+                <i class="icon-copy copy-button"></i>
+            </button>
+            <button class="good-chat-message-button copy-button button-sm" title="Good chat message">
+                <i class="icon-good"></i>
+            </button>
+            <button class="bad-chat-message-button button-sm" title="Bad chat message">
+                <i class="icon-bad"></i>
+            </button>
+            <button class="flag-chat-message-button button-sm" title="Flag chat message">
+                <i class="icon-flag"></i>
+            </button>
+            <button class="delete-chat-message-button button-sm" title="Delete chat message">
+                <i class="icon-delete"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col grw">
+          <span class="chat-message-text"></span>
       </div>
     </div></template>
     <!-- Chat list item template -->

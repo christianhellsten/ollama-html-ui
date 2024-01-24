@@ -4,7 +4,7 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0.5rem;
   max-width: 1024px;
   width: 100%; /* Full width of its parent */
   overflow-y: auto; /* Enable vertical scrolling */
@@ -27,9 +27,26 @@
 /* Styling for user messages */
 .user-chat-message {
   @extend %font-weight-bolder;
+
+  .system-icon {
+    display: none;
+  }
 }
 
 /* Styling for system messages */
 .assistant-chat-message {
   margin-bottom: 0.5rem;
+
+  .you-icon {
+    display: none;
+  }
+}
+
+.chat-message-menu {
+  @extend %box-shadow;
+
+  position: absolute;
+  padding: 0.5rem;
+  background: var(--bg-color);
+  z-index: 300;
 }

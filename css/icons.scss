@@ -15,12 +15,33 @@ svg {
   vertical-align: middle;
 }
 
+.user-icon {
+  margin: 0.25rem 0.75rem 0 0;
+  width: 2.5rem; /* Adjust the size as needed */
+  height: 2.5rem; /* Should be equal to the width for a perfect circle */
+  border-radius: 50%; /* This makes the shape a circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.system-icon {
+  color: var(--text-color);
+  background-color: var(--tertiary-color);
+}
+
+.you-icon {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
+
 .icon-export::before {
   content: "\1F5E8 \2B07";  /* Speech Bubble and Downward Arrow */
 }
 
 .icon-flag::before {  /* Triangular Flag on Post */
-  content: "\26A0";
+  content: "\2757";
 }
 
 .icon-bad::before {

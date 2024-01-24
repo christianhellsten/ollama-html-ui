@@ -1,3 +1,5 @@
+import { UINotification } from './UINotification.js';
+
 export class CopyButton {
   constructor() {
     document.addEventListener('click', (event) => {
@@ -22,7 +24,7 @@ export class CopyButton {
         document.body.removeChild(textarea);
 
         // Optional: Display a message or change the button text/content
-        alert('Text copied to clipboard');
+        UINotification.show('Text copied to clipboard').autoDismiss();
       }
     });
   }

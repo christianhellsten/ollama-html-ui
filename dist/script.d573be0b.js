@@ -144,13 +144,16 @@ window.onerror = function (message, source, lineno, colno, error) {
 */
 
 class UINotification {
-  constructor(message, type) {
+  constructor(message, type, autoDismiss) {
     const id = simpleHash(JSON.stringify(message));
     this.type = type;
     this.domId = `notification-${id}`;
     this.container = document.body;
     this.template = document.getElementById('notification-template').content;
     this._bindEventListeners();
+    if (autoDismiss) {
+      this.autoDismiss();
+    }
   }
   _bindEventListeners() {
     window.addEventListener('keydown', event => {
@@ -159,9 +162,15 @@ class UINotification {
       }
     });
   }
+  autoDismiss() {
+    setTimeout(() => {
+      this.hide();
+    }, 2000); // 2000 milliseconds (2 seconds)
+  }
   static show(message, type) {
     const notification = new UINotification(message, type);
     notification.show(message);
+    return notification;
   }
   static initialize() {
     // Store the original console.error function
@@ -651,10 +660,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.AppController = void 0;
+var _UINotification = require("./UINotification.js");
 var _Event = require("./Event.js");
 var _Chat = require("./models/Chat.js");
 var _ChatMessage = require("./models/ChatMessage.js");
 var _Settings = require("./models/Settings.js");
+// TODO: Move all actions here?
 class AppController {
   static async updateChat(chat, data) {
     Object.assign(chat, data);
@@ -679,6 +690,7 @@ class AppController {
     return chat;
   }
   static async deleteChatMessage(messageId) {
+    _UINotification.UINotification.show('Deleted message').autoDismiss();
     const message = await _ChatMessage.ChatMessage.get(messageId);
     message.delete();
   }
@@ -716,7 +728,7 @@ class AppController {
   }
 }
 exports.AppController = AppController;
-},{"./Event.js":"js/Event.js","./models/Chat.js":"js/models/Chat.js","./models/ChatMessage.js":"js/models/ChatMessage.js","./models/Settings.js":"js/models/Settings.js"}],"js/ChatListItem.js":[function(require,module,exports) {
+},{"./UINotification.js":"js/UINotification.js","./Event.js":"js/Event.js","./models/Chat.js":"js/models/Chat.js","./models/ChatMessage.js":"js/models/ChatMessage.js","./models/Settings.js":"js/models/Settings.js"}],"js/ChatListItem.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1109,6 +1121,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.CopyButton = void 0;
+var _UINotification = require("./UINotification.js");
 class CopyButton {
   constructor() {
     document.addEventListener('click', event => {
@@ -1133,13 +1146,13 @@ class CopyButton {
         document.body.removeChild(textarea);
 
         // Optional: Display a message or change the button text/content
-        alert('Text copied to clipboard');
+        _UINotification.UINotification.show('Text copied to clipboard').autoDismiss();
       }
     });
   }
 }
 exports.CopyButton = CopyButton;
-},{}],"js/OllamaApi.js":[function(require,module,exports) {
+},{"./UINotification.js":"js/UINotification.js"}],"js/OllamaApi.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1768,6 +1781,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ChatArea = void 0;
+var _UINotification = require("./UINotification.js");
 var _AppController = require("./AppController.js");
 var _ExportChat = require("./ExportChat.js");
 var _Event = require("./Event.js");
@@ -1881,17 +1895,17 @@ class ChatArea {
     });
     copyButton.dataset['target'] = domId;
     flagButton.addEventListener('click', async () => {
-      console.log('flagged');
+      _UINotification.UINotification.show('Flagged message').autoDismiss();
       message.quality = 'flagged';
       await message.save();
     });
     goodButton.addEventListener('click', async () => {
-      console.log('good');
+      _UINotification.UINotification.show('Marked message as good').autoDismiss();
       message.quality = 'good';
       await message.save();
     });
     badButton.addEventListener('click', async () => {
-      console.log('bad');
+      _UINotification.UINotification.show('Marked message as bad').autoDismiss();
       message.quality = 'bad';
       await message.save();
     });
@@ -1930,7 +1944,7 @@ class ChatArea {
   }
 }
 exports.ChatArea = ChatArea;
-},{"./AppController.js":"js/AppController.js","./ExportChat.js":"js/ExportChat.js","./Event.js":"js/Event.js","./Hoverable.js":"js/Hoverable.js","./ChatTitle.js":"js/ChatTitle.js","./ChatForm.js":"js/ChatForm.js"}],"js/App.js":[function(require,module,exports) {
+},{"./UINotification.js":"js/UINotification.js","./AppController.js":"js/AppController.js","./ExportChat.js":"js/ExportChat.js","./Event.js":"js/Event.js","./Hoverable.js":"js/Hoverable.js","./ChatTitle.js":"js/ChatTitle.js","./ChatForm.js":"js/ChatForm.js"}],"js/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2157,7 +2171,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63070" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61420" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

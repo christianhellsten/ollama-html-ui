@@ -4,6 +4,14 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+
+  /* For Mozilla Firefox */
+  -moz-osx-font-smoothing: grayscale;
+  /* Modern browsers (WebKit-based) */
+  -webkit-font-smoothing: antialiased;
+  /* Fallback for other browsers */
+  /* stylelint-disable-next-line property-no-unknown */
+  font-smoothing: antialiased;
 }
 
 body {

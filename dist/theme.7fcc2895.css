@@ -202,7 +202,7 @@ html {
   font-variation-settings: "wght" 900;
 }
 
-.drop-down-menu-items, #sidebar, .list-item.selected, .hamburger-menu:hover, #chat-header, .active-tab-button, .button-primary {
+.drop-down-menu-items, #sidebar, .list-item.selected, .chat-message-menu, .hamburger-menu:hover, #chat-header, .active-tab-button, .button-primary {
   box-shadow: 0 2px 5px var(--box-shadow-color);
 }
 
@@ -238,6 +238,10 @@ textarea:focus,
 
 .justify-left {
   justify-content: left;
+}
+
+.height-100 {
+  height: 100%;
 }
 
 /* Basic Typography */
@@ -287,12 +291,33 @@ svg {
   vertical-align: middle;
 }
 
+.user-icon {
+  margin: 0.25rem 0.75rem 0 0;
+  width: 2.5rem; /* Adjust the size as needed */
+  height: 2.5rem; /* Should be equal to the width for a perfect circle */
+  border-radius: 50%; /* This makes the shape a circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.system-icon {
+  color: var(--text-color);
+  background-color: var(--tertiary-color);
+}
+
+.you-icon {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
+
 .icon-export::before {
   content: "🗨⬇"; /* Speech Bubble and Downward Arrow */
 }
 
 .icon-flag::before { /* Triangular Flag on Post */
-  content: "⚠";
+  content: "❗";
 }
 
 .icon-bad::before {
@@ -537,6 +562,14 @@ ul {
   display: flex;
   flex-direction: column;
   width: 100%;
+  /*
+  li.selected::after {
+    position: absolute;
+    right: 1.5rem;
+    padding-left: 0.5rem;
+    content: '\203A'; // \00a0 is a non-breaking space
+  }
+  */
 }
 ul li {
   border: 1px solid transparent; /* Invisible border by default */
@@ -563,12 +596,6 @@ ul li button {
 }
 ul li.selected {
   border-top-color: rgba(204, 204, 204, 0.368627451);
-}
-ul li.selected::after {
-  position: absolute;
-  right: 1rem;
-  padding-left: 0.5rem;
-  content: "› ";
 }
 ul li.hover {
   border-top-color: rgba(204, 204, 204, 0.368627451);
@@ -704,6 +731,8 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  /* stylelint-disable-next-line property-no-unknown */
+  font-smoothing: antialiased;
 }
 
 body {
@@ -762,10 +791,12 @@ ul li {
 }
 .hoverable {
   visibility: collapse;
+  transition: visibility 0s; /* Add a transition for smooth animation */
 }
 
 .hover .hoverable {
   visibility: visible;
+  transition: visibility 0.7s ease-in-out; /* Add a transition for smooth animation */
 }
 
 .tab-container {
@@ -821,7 +852,7 @@ ul li {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0.5rem;
   max-width: 1024px;
   width: 100%; /* Full width of its parent */
   overflow-y: auto; /* Enable vertical scrolling */
@@ -841,9 +872,23 @@ ul li {
 }
 
 /* Styling for user messages */
+.user-chat-message .system-icon {
+  display: none;
+}
+
 /* Styling for system messages */
 .assistant-chat-message {
   margin-bottom: 0.5rem;
+}
+.assistant-chat-message .you-icon {
+  display: none;
+}
+
+.chat-message-menu {
+  position: absolute;
+  padding: 0.5rem;
+  background: var(--bg-color);
+  z-index: 300;
 }
 
 #chat-form {
@@ -975,9 +1020,9 @@ ul li {
   position: fixed;
   top: 0;
   left: 0;
-  color: var(--bg-color);
   width: calc(100vw - 2rem);
   z-index: 30000;
+  color: var(--text-color);
   background-color: var(--bg-color);
   padding: 1rem;
   margin: 1rem;

@@ -1,3 +1,4 @@
+import { UINotification } from './UINotification.js';
 import { AppController } from './AppController.js';
 import { ExportChat } from './ExportChat.js';
 import { Event } from './Event.js';
@@ -139,17 +140,17 @@ export class ChatArea {
     });
     copyButton.dataset['target'] = domId;
     flagButton.addEventListener('click', async () => {
-      console.log('flagged');
+      UINotification.show('Flagged message').autoDismiss();
       message.quality = 'flagged';
       await message.save();
     });
     goodButton.addEventListener('click', async () => {
-      console.log('good');
+      UINotification.show('Marked message as good').autoDismiss();
       message.quality = 'good';
       await message.save();
     });
     badButton.addEventListener('click', async () => {
-      console.log('bad');
+      UINotification.show('Marked message as bad').autoDismiss();
       message.quality = 'bad';
       await message.save();
     });

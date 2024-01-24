@@ -18,13 +18,16 @@ window.onerror = function (message, source, lineno, colno, error) {
 */
 
 export class UINotification {
-  constructor(message, type) {
+  constructor(message, type, autoDismiss) {
     const id = simpleHash(JSON.stringify(message));
     this.type = type;
     this.domId = `notification-${id}`;
     this.container = document.body;
     this.template = document.getElementById('notification-template').content;
     this._bindEventListeners();
+    if (autoDismiss) {
+      this.autoDismiss();
+    }
   }
 
   _bindEventListeners() {
@@ -35,9 +38,16 @@ export class UINotification {
     });
   }
 
+  autoDismiss() {
+    setTimeout(() => {
+      this.hide();
+    }, 2000); // 2000 milliseconds (2 seconds)
+  }
+
   static show(message, type) {
     const notification = new UINotification(message, type);
     notification.show(message);
+    return notification;
   }
 
   static initialize() {

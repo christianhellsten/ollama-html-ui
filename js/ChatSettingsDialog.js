@@ -1,35 +1,46 @@
 import { AppController } from './AppController.js';
-import { Event } from './Event.js';
-import { Modal } from './Modal.js';
-import { Models } from './models/Models.js';
-import { ModelsList } from './ModelsList.js';
+import { SettingsDialog } from './SettingsDialog.js';
+import { Settings } from './models/Settings.js';
 
-export class ChatSettingsDialog extends Modal {
-  constructor() {
-    super('chat-settings-dialog');
-    this.showButton = document.getElementById('chat-settings-button');
-    this.bindEventListeners();
+export class ChatSettingsDialog extends SettingsDialog {
+  constructor(options) {
+    super(options);
   }
 
-  bindEventListeners() {
-    this.showButton.addEventListener('click', this.show.bind(this));
-    Event.listen('chatSelected', this.handleChatSelected.bind(this));
+  getSelected() {
+    return this.chat?.model;
   }
 
-  show() {
-    Models.load().then(() => {
-      AppController.getCurrentChat().then((chat) => {
-        this.handleChatSelected(chat);
-        this.handleShow();
-      });
-    });
+  async handleSystemPromptUpdated() {
+    this.chat.systemPrompt = this.systemPromptInput.value.trim();
+    await this.chat.save();
   }
 
-  handleChatSelected(chat) {
-    this.modelList = new ModelsList('chat-model-list', chat.model);
-    this.modelList.onClick(async (model) => {
-      chat.model = model;
-      await chat.save();
+  async handleModelUpdated() {
+    this.chat.model = this.modelList.getSelected();
+    await this.chat.save();
+  }
+
+  async handleModelParametersUpdated() {
+    this.chat.modelParameters = this.modelParametersInput.value.trim();
+    await this.chat.save();
+  }
+
+  async handleUrlUpdated() {
+    this.chat.url = this.urlInput.value.trim();
+    await this.chat.save();
+  }
+
+  loadSettings() {
+    AppController.getCurrentChat().then((chat) => {
+      this.modelList.setSelected(chat.model);
+      this.chat = chat;
+      this.urlInput.value = this.chat.url || Settings.getUrl();
+      const modelParameters =
+        this.chat.modelParameters || Settings.getModelParameters();
+      if (modelParameters) {
+        this.modelParametersInput.value = JSON.stringify(modelParameters, 2);
+      }
     });
   }
 }

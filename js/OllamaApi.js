@@ -3,6 +3,26 @@ export class OllamaApi {
     this.abortController = null;
   }
 
+  async makeRequest(chat, userMessage, systemPrompt, modelParameters) {
+    const requestData = {
+      prompt: userMessage,
+      model: chat.model,
+      messages: (await chat.getMessages()).map((message) => ({
+        role: message.role,
+        content: message.content,
+      })),
+    };
+    // Add system prompt
+    if (systemPrompt) {
+      requestData.system = systemPrompt;
+    }
+    // Add model parameters
+    if (modelParameters) {
+      requestData.options = modelParameters;
+    }
+    return requestData;
+  }
+
   async send(url, data, onResponse, onError, onDone) {
     const request = { data };
     try {

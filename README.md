@@ -134,6 +134,8 @@ $ parcel build index.html
   - [ ] Speech recognition
   - [ ] Image upload / multi-modal
   - [ ] Markdown support
+  - [ ] Fork chat
+  - [ ] Fork chat before / after message
 
   ## Done
 
@@ -180,7 +182,13 @@ $ parcel build index.html
     - Delete chat
     - Download chat
     - Scroll to top/bottom
-    - Copy chat to clipboard
+    - Copy to clipboard
+
+    **Chat message**
+
+    - Delete chat message
+    - Copy to clipboard
+    - Mark as good, bad, or flagged
 
     **Chats**
 
@@ -219,4 +227,9 @@ This project is available under two licensing options:
 We value and support both our open source community and commercial users. By providing dual licensing options, we aim to make this project accessible to a wide range of users while offering customized solutions for commercial projects.
 
   </summary>
+</details>
+
+<details>
+  <summary>Built with</summary>
+  HTML, CSS, and JavaScript
 </details>

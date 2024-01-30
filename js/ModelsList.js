@@ -2,9 +2,9 @@ import { List } from './List.js';
 import { Event } from './Event.js';
 import { Models } from './models/Models.js';
 
-export class ModelsList {
-  constructor(selector, selectedModel) {
-    this.modelList = new List(selector, Models.getNames(), selectedModel);
+export class ModelsList extends List {
+  constructor(container) {
+    super(container, Models.getNames());
     this.bindEventListeners();
   }
 
@@ -13,15 +13,6 @@ export class ModelsList {
   }
 
   handleModelsLoaded() {
-    this.modelList.setItems(Models.getNames());
-  }
-
-  onClick(handler) {
-    this.modelList.clickHandler = handler;
-    return this.modelList; // Allow chaining
-  }
-
-  getSelected() {
-    return this.modelList.selected;
+    this.setItems(Models.getNames());
   }
 }

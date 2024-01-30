@@ -27,13 +27,16 @@ export class ChatArea {
   render() {
     // Clear history view
     this.chatHistory.innerText = '';
-    // Render chat history
-    this.chat?.getMessages()?.then((messages) => {
-      messages.forEach((message) => {
-        this.createMessageDiv(message);
-      });
-    });
-    this.scrollToEnd();
+    if (this.chat) {
+      this.chat // Render chat history
+        .getMessages()
+        .then((messages) => {
+          messages.forEach((message) => {
+            this.createMessageDiv(message);
+          });
+        });
+      this.scrollToEnd();
+    }
     this.messageInput.focus();
   }
 

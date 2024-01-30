@@ -79,7 +79,7 @@ class AppTest {
   async updateSettings(url, model) {
     await this.showSettings();
     // Fill in URL
-    const urlInput = this.page.locator('#input-url');
+    const urlInput = this.page.locator('#settings-dialog #input-url');
     await urlInput.fill(url);
     if (model && model !== '') {
       // Refresh model list
@@ -91,9 +91,12 @@ class AppTest {
       // this.page.locator('#model-list').getByText('mistral:latest').click()
 
       // Wait for the element to be visible
-      const listItem = this.page.locator('#model-list .list-item', {
-        hasText: model,
-      });
+      const listItem = this.page.locator(
+        '#settings-dialog #model-list .list-item',
+        {
+          hasText: model,
+        },
+      );
       await listItem.waitFor({ state: 'visible' });
 
       // Click the element

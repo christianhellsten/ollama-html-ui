@@ -1,8 +1,7 @@
 export class List {
-  constructor(containerId, items, selected) {
-    this.container = document.getElementById(containerId);
+  constructor(container, items) {
+    this.container = container;
     this.items = items;
-    this.selected = selected;
     this.render();
     this.clickHandler = null;
   }

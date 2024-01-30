@@ -10,13 +10,13 @@
         child-src 'none';
         connect-src 'self' ws://localhost:11434;">
     -->
-    <link rel="stylesheet" href="/theme.7fcc2895.css">
-  <script src="/theme.7fcc2895.js"></script></head>
+    <link rel="stylesheet" href="/index.7388f1a7.css">
+  </head>
   <body>
     <div id="chat-app">
       <header id="chat-header" class="row">
         <button id="hamburger-menu" class="hamburger-menu button" title="Collapse or expand the sidebar">
-          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <svg width="24" height="24" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <rect x="4" y="6" width="16" height="2" fill="black"></rect>
             <rect x="4" y="11" width="16" height="2" fill="black"></rect>
             <rect x="4" y="16" width="16" height="2" fill="black"></rect>
@@ -25,7 +25,7 @@
         <!-- Chat menu -->
         <span id="chat-title" class="col grw" contenteditable="" title="Edit chat title"></span>
         <button id="settings-button" class="button" title="Application settings">
-          <svg class="icon-settings" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg class="icon-settings" width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="4.25" y="4.25" width="5" height="5" stroke="currentColor" stroke-width="2"></rect>
             <rect x="14.75" y="4.25" width="5" height="5" stroke="currentColor" stroke-width="2"></rect>
             <rect x="4.25" y="14.75" width="5" height="5" stroke="currentColor" stroke-width="2"></rect>
@@ -87,7 +87,7 @@
               <button id="export-chat-button" class="button row" title="Export chat to JSON">
                 <i class="icon-export">Export chat</i>
               </button>
-              <button id="chat-settings-button" class="button" title="Chat settings">
+              <button id="chat-settings-button" class="button row" title="Chat settings">
                 <i class="icon-settings">Chat settings</i>
               </button>
             </div>
@@ -100,6 +100,7 @@
           </button>
         </aside>
       </div>
+      <div id="chat-model-info">Talking to: <span class="chat-model-name"></span></div>
       <div id="chat-form">
         <!-- Chat input and button -->
         <div class="textarea">
@@ -118,61 +119,46 @@
       </div>
     </div>
     <!-- Settings dialog -->
-    <div id="settings-dialog" class="modal">
-      <div class="modal-content">
-        <div class="modal-header row">
-          <h2 class="col grw">Settings</h2>
-          <button class="button col button-close button-secondary">
-            <i class="icon-close"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="input">
-            <label class="" for="input-url">URL</label>
-            <input id="input-url" autofocus="" class="col" type="url" required="" placeholder="Example: http://localhost:11434">
+    <template id="settings-dialog-template">
+      <div class="settings-dialog modal">
+        <div class="modal-content">
+          <div class="modal-header row">
+            <h2 class="modal-title col grw">Settings</h2>
+            <button class="button col button-close button-secondary">
+              <i class="icon-close"></i>
+            </button>
           </div>
-          <div class="input">
-            <label class="" for="model-list">Model</label>
-            <div class="row">
-              <ul id="model-list" class="col"></ul>
-              <button class="refresh-models-button button col" title="Refresh model list">
-                <i class="icon-refresh"></i>
-              </button>
+          <div class="modal-body">
+            <div class="input">
+              <label class="" for="input-url">URL</label>
+              <input id="input-url" autofocus="" class="col" type="url" required="" placeholder="Example: http://localhost:11434">
+            </div>
+            <div class="input">
+              <label class="" for="model-list">Model</label>
+              <div class="row">
+                <ul id="model-list" class="col"></ul>
+                <button class="refresh-models-button button col" title="Refresh model list">
+                    <i class="icon-refresh"></i>
+                </button>
+              </div>
+            </div>
+            <div class="input">
+              <label class="" for="input-system-prompt">System prompt</label>
+              <textarea id="input-system-prompt" class="row" rows="3" placeholder="You are a helpful assistant."></textarea>
+            </div>
+            <div class="input">
+              <label class="" for="input-model-parameters">Model parameters</label>
+                            <textarea id="input-model-parameters" class="row" rows="3" placeholder="{ 'temperature': 0, 'stop': 'AI assistant:', 'num_ctx': 4096 }"></textarea>
             </div>
           </div>
-          <div class="input">
-            <label class="" for="input-system-prompt">System prompt</label>
-            <textarea id="input-system-prompt" class="row" rows="3" placeholder="You are a helpful assistant."></textarea>
-          </div>
-          <div class="input">
-            <label class="" for="input-model-parameters">Model parameters</label>
-            <textarea id="input-model-parameters" class="row" rows="3" placeholder="{ 'temperature': 0, 'stop': 'AI assistant:', 'num_ctx': 4096 }"></textarea>
-          </div>
         </div>
       </div>
-    </div>
-    <!-- Chat settings dialog -->
-    <div id="chat-settings-dialog" class="modal">
-      <div class="modal-content">
-        <div class="modal-header row">
-          <h2 class="col grw chat-title">Chat settings</h2>
-          <button class="button button-close col button-secondary">
-            <i class="icon-close"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="input">
-            <label class="" for="chat-model-list">Model</label>
-            <ul id="chat-model-list"></ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    </template>
     <!-- Chat message template -->
     <template id="chat-message-template">
       <div class="chat-message row">
         <div class="col height-100">
-          <div class="user-icon system-icon">&#x25A0;</div>
+          <div class="user-icon system-icon">AI</div>
           <div class="user-icon you-icon">You</div>
           <div class="hoverable chat-message-menu">
             <button class="copy-chat-message-button button-sm" title="Copy chat message to clipboard">
@@ -215,6 +201,6 @@
         </button>
       </div>
     </template>
-    <script type="module" src="/script.d573be0b.js"></script>
+    <script src="/index.4de9b498.js" defer=""></script>
   </body>
 </html>

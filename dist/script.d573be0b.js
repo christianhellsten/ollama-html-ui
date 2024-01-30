@@ -666,6 +666,7 @@ var _Chat = require("./models/Chat.js");
 var _ChatMessage = require("./models/ChatMessage.js");
 var _Settings = require("./models/Settings.js");
 // TODO: Move all actions here?
+// TODO: Cache current chat here
 class AppController {
   static async updateChat(chat, data) {
     Object.assign(chat, data);
@@ -1040,6 +1041,7 @@ class Sidebar {
       this.element.classList.add('collapsed');
     }
     this.bindEventListeners();
+    this.render();
   }
   render() {
     this.chatList.render();
@@ -1162,6 +1164,25 @@ exports.OllamaApi = void 0;
 class OllamaApi {
   constructor() {
     this.abortController = null;
+  }
+  async makeRequest(chat, userMessage, systemPrompt, modelParameters) {
+    const requestData = {
+      prompt: userMessage,
+      model: chat.model,
+      messages: (await chat.getMessages()).map(message => ({
+        role: message.role,
+        content: message.content
+      }))
+    };
+    // Add system prompt
+    if (systemPrompt) {
+      requestData.system = systemPrompt;
+    }
+    // Add model parameters
+    if (modelParameters) {
+      requestData.options = modelParameters;
+    }
+    return requestData;
   }
   async send(url, data, onResponse, onError, onDone) {
     const request = {
@@ -1361,19 +1382,44 @@ Object.defineProperty(exports, "__esModule", {
 exports.Modal = void 0;
 // Modal base class
 class Modal {
-  constructor(domId) {
-    this.domId = domId;
-    this.modal = document.getElementById(this.domId);
+  constructor(templateId, title) {
+    this.templateId = templateId;
+    this.modal = this.createDialogElement();
+    this.titleElement = this.modal.querySelector('.modal-title');
     this.closeButton = this.modal.querySelector('.button-close');
     this.closeButton.onclick = () => this.hide();
     this._bindEventListeners();
+    this.setTitle(title);
+  }
+  setTitle(title) {
+    this.titleElement.textContent = title;
   }
   _bindEventListeners() {
+    this.modal.addEventListener('click', event => {
+      if (event.target == this.modal) {
+        this.hide();
+      }
+    });
     window.addEventListener('keydown', event => {
       if (event.key === 'Escape') {
         this.hide();
       }
     });
+  }
+  createDialogElement() {
+    const template = document.getElementById(this.templateId);
+    if (!template) {
+      console.error(`Template with ID ${this.templateId} not found.`);
+      return;
+    }
+    const clone = template.content.cloneNode(true);
+    const modalElement = clone.firstElementChild;
+    if (!modalElement) {
+      console.error(`No modal element found in the template with ID ${this.templateId}.`);
+      return;
+    }
+    document.body.appendChild(modalElement);
+    return modalElement;
   }
   show() {
     this.handleShow();
@@ -1397,10 +1443,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.List = void 0;
 class List {
-  constructor(containerId, items, selected) {
-    this.container = document.getElementById(containerId);
+  constructor(container, items) {
+    this.container = container;
     this.items = items;
-    this.selected = selected;
     this.render();
     this.clickHandler = null;
   }
@@ -1490,23 +1535,16 @@ exports.ModelsList = void 0;
 var _List = require("./List.js");
 var _Event = require("./Event.js");
 var _Models = require("./models/Models.js");
-class ModelsList {
-  constructor(selector, selectedModel) {
-    this.modelList = new _List.List(selector, _Models.Models.getNames(), selectedModel);
+class ModelsList extends _List.List {
+  constructor(container) {
+    super(container, _Models.Models.getNames());
     this.bindEventListeners();
   }
   bindEventListeners() {
     _Event.Event.listen('modelsLoaded', this.handleModelsLoaded.bind(this));
   }
   handleModelsLoaded() {
-    this.modelList.setItems(_Models.Models.getNames());
-  }
-  onClick(handler) {
-    this.modelList.clickHandler = handler;
-    return this.modelList; // Allow chaining
-  }
-  getSelected() {
-    return this.modelList.selected;
+    this.setItems(_Models.Models.getNames());
   }
 }
 exports.ModelsList = ModelsList;
@@ -1523,53 +1561,61 @@ var _ModelsList = require("./ModelsList.js");
 var _Models = require("./models/Models.js");
 var _Settings = require("./models/Settings.js");
 class SettingsDialog extends _Modal.Modal {
-  constructor() {
-    super('settings-dialog');
-    this.showButton = document.getElementById('settings-button');
-    this.urlInput = document.getElementById('input-url');
-    this.modelInput = document.getElementById('input-model');
+  static templateId = 'settings-dialog-template';
+  constructor(showButtonId, title) {
+    super(SettingsDialog.templateId, title);
+    this.showButton = document.getElementById(showButtonId);
+    this.urlInput = this.modal.querySelector('#input-url');
+    this.modelInput = this.modal.querySelector('#input-model');
     this.systemPromptInput = this.modal.querySelector('#input-system-prompt');
     this.modelParametersInput = this.modal.querySelector('#input-model-parameters');
     this.refreshModelsButton = this.modal.querySelector('.refresh-models-button');
-    this.modelList = new _ModelsList.ModelsList('model-list', _Settings.Settings.getModel());
+    this.modelList = new _ModelsList.ModelsList(this.modal.querySelector('#model-list'));
     this.bindEventListeners();
-    this.loadSettings();
+  }
+  getSelected() {
+    return _Settings.Settings.getModel();
   }
   bindEventListeners() {
-    this.urlInput.addEventListener('blur', () => {
-      const value = this.urlInput.value.trim();
-      _Settings.Settings.setUrl(value);
-    });
-    this.systemPromptInput.addEventListener('blur', () => {
-      _Settings.Settings.setSystemPrompt(this.systemPromptInput.value.trim());
-    });
-    this.modelParametersInput.addEventListener('blur', () => {
-      const value = this.modelParametersInput.value.trim();
-      if (value === '') {
-        return;
-      }
-      try {
-        const parsedValue = JSON.parse(value);
-        const prettyJSON = JSON.stringify(parsedValue, 2);
-        _Settings.Settings.setModelParameters(parsedValue);
-        this.modelParametersInput.value = prettyJSON;
-        this.modelParametersInput.classList.remove('error');
-      } catch (error) {
-        if (error.name === 'SyntaxError') {
-          this.modelParametersInput.classList.add('error');
-        } else {
-          console.error(error);
-        }
-      }
-    });
-    this.modelList.onClick(() => {
-      _Settings.Settings.setModel(this.modelList.getSelected());
-    });
+    this.urlInput.addEventListener('blur', this.handleUrlUpdated.bind(this));
+    this.systemPromptInput.addEventListener('blur', this.handleSystemPromptUpdated.bind(this));
+    this.modelParametersInput.addEventListener('blur', () => this.handleModelParametersUpdated.bind(this));
+    this.modelList.onClick(this.handleModelUpdated.bind(this));
     this.showButton.addEventListener('click', this.show.bind(this));
-    this.refreshModelsButton.onclick = () => this.refreshModels();
-    this.closeButton.onclick = () => this.hide();
+    this.refreshModelsButton.addEventListener('click', this.refreshModels.bind(this));
+    this.closeButton.addEventListener('click', this.hide.bind(this));
+  }
+  handleSystemPromptUpdated() {
+    _Settings.Settings.setSystemPrompt(this.systemPromptInput.value.trim());
+  }
+  handleModelUpdated() {
+    _Settings.Settings.setModel(this.modelList.getSelected());
+  }
+  handleModelParametersUpdated() {
+    const value = this.modelParametersInput.value.trim();
+    if (value === '') {
+      return;
+    }
+    try {
+      const parsedValue = JSON.parse(value);
+      const prettyJSON = JSON.stringify(parsedValue, 2);
+      _Settings.Settings.setModelParameters(parsedValue);
+      this.modelParametersInput.value = prettyJSON;
+      this.modelParametersInput.classList.remove('error');
+    } catch (error) {
+      if (error.name === 'SyntaxError') {
+        this.modelParametersInput.classList.add('error');
+      } else {
+        console.error(error);
+      }
+    }
+  }
+  handleUrlUpdated() {
+    const value = this.urlInput.value.trim();
+    _Settings.Settings.setUrl(value);
   }
   show() {
+    this.loadSettings();
     _Models.Models.load();
     this.handleShow();
   }
@@ -1581,6 +1627,7 @@ class SettingsDialog extends _Modal.Modal {
     }
   }
   loadSettings() {
+    this.modelList.setSelected(this.getSelected());
     this.urlInput.value = _Settings.Settings.getUrl();
     const modelParameters = _Settings.Settings.getModelParameters();
     if (modelParameters) {
@@ -1597,38 +1644,77 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ChatSettingsDialog = void 0;
 var _AppController = require("./AppController.js");
-var _Event = require("./Event.js");
-var _Modal = require("./Modal.js");
-var _Models = require("./models/Models.js");
-var _ModelsList = require("./ModelsList.js");
-class ChatSettingsDialog extends _Modal.Modal {
-  constructor() {
-    super('chat-settings-dialog');
-    this.showButton = document.getElementById('chat-settings-button');
-    this.bindEventListeners();
+var _SettingsDialog = require("./SettingsDialog.js");
+var _Settings = require("./models/Settings.js");
+class ChatSettingsDialog extends _SettingsDialog.SettingsDialog {
+  constructor(showButtonId, title) {
+    super(showButtonId, title);
   }
-  bindEventListeners() {
-    this.showButton.addEventListener('click', this.show.bind(this));
-    _Event.Event.listen('chatSelected', this.handleChatSelected.bind(this));
+  getSelected() {
+    return this.chat?.model;
   }
-  show() {
-    _Models.Models.load().then(() => {
-      _AppController.AppController.getCurrentChat().then(chat => {
-        this.handleChatSelected(chat);
-        this.handleShow();
-      });
-    });
+  async handleSystemPromptUpdated() {
+    this.chat.systemPrompt = this.systemPromptInput.value.trim();
+    await this.chat.save();
   }
-  handleChatSelected(chat) {
-    this.modelList = new _ModelsList.ModelsList('chat-model-list', chat.model);
-    this.modelList.onClick(async model => {
-      chat.model = model;
-      await chat.save();
+  async handleModelUpdated() {
+    this.chat.model = this.modelList.getSelected();
+    await this.chat.save();
+  }
+  async handleModelParametersUpdated() {
+    this.chat.modelParameters = this.modelParametersInput.value.trim();
+    await this.chat.save();
+  }
+  async handleUrlUpdated() {
+    this.chat.url = this.urlInput.value.trim();
+    await this.chat.save();
+  }
+  loadSettings() {
+    _AppController.AppController.getCurrentChat().then(chat => {
+      this.modelList.setSelected(chat.model);
+      this.chat = chat;
+      this.urlInput.value = this.chat.url || _Settings.Settings.getUrl();
+      const modelParameters = this.chat.modelParameters || _Settings.Settings.getModelParameters();
+      if (modelParameters) {
+        this.modelParametersInput.value = JSON.stringify(modelParameters, 2);
+      }
     });
   }
 }
 exports.ChatSettingsDialog = ChatSettingsDialog;
-},{"./AppController.js":"js/AppController.js","./Event.js":"js/Event.js","./Modal.js":"js/Modal.js","./models/Models.js":"js/models/Models.js","./ModelsList.js":"js/ModelsList.js"}],"js/ExportChat.js":[function(require,module,exports) {
+},{"./AppController.js":"js/AppController.js","./SettingsDialog.js":"js/SettingsDialog.js","./models/Settings.js":"js/models/Settings.js"}],"js/ChatModelInfo.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ChatModelInfo = void 0;
+var _Event = require("./Event.js");
+var _AppController = require("./AppController.js");
+class ChatModelInfo {
+  constructor() {
+    this.element = document.getElementById('chat-model-info');
+    this.nameElement = this.element.querySelector('.chat-model-name');
+    this.bindEventListeners();
+    _AppController.AppController.getCurrentChat().then(chat => {
+      this.chat = chat;
+      this.render();
+    });
+  }
+  render() {
+    this.nameElement.textContent = this.chat?.model;
+  }
+  bindEventListeners() {
+    // Event.listen('chatDeleted', this.handleChatDeleted.bind(this));
+    _Event.Event.listen('chatSelected', this.handleChatSelected.bind(this));
+  }
+  handleChatSelected(chat) {
+    this.chat = chat;
+    this.render();
+  }
+}
+exports.ChatModelInfo = ChatModelInfo;
+},{"./Event.js":"js/Event.js","./AppController.js":"js/AppController.js"}],"js/ExportChat.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1808,13 +1894,15 @@ class ChatArea {
   render() {
     // Clear history view
     this.chatHistory.innerText = '';
-    // Render chat history
-    this.chat?.getMessages()?.then(messages => {
-      messages.forEach(message => {
-        this.createMessageDiv(message);
+    if (this.chat) {
+      this.chat // Render chat history
+      .getMessages().then(messages => {
+        messages.forEach(message => {
+          this.createMessageDiv(message);
+        });
       });
-    });
-    this.scrollToEnd();
+      this.scrollToEnd();
+    }
     this.messageInput.focus();
   }
   bindEventListeners() {
@@ -1963,7 +2051,10 @@ var _DownloadButton = require("./DownloadButton.js");
 var _DropDownMenu = require("./DropDownMenu.js");
 var _SettingsDialog = require("./SettingsDialog.js");
 var _ChatSettingsDialog = require("./ChatSettingsDialog.js");
+var _ChatModelInfo = require("./ChatModelInfo.js");
 var _ChatArea = require("./ChatArea.js");
+// import { OpenAiApi } from './OpenAiApi.js';
+
 // import { MarkdownFormatter } from './MarkdownFormatter.js'
 
 // TODO: Review and refactor
@@ -1976,16 +2067,17 @@ class App {
   constructor() {
     this.sidebar = new _Sidebar.Sidebar();
     this.chatArea = new _ChatArea.ChatArea();
-    this.ollamaApi = new _OllamaApi.OllamaApi();
-    this.settingsDialog = new _SettingsDialog.SettingsDialog();
-    this.chatSettingsDialog = new _ChatSettingsDialog.ChatSettingsDialog();
+    this.chatModelInfo = new _ChatModelInfo.ChatModelInfo();
+    this.api = new _OllamaApi.OllamaApi();
+    // this.api = new OpenAiApi();
+    this.settingsDialog = new _SettingsDialog.SettingsDialog('settings-button', 'Global settings');
+    this.chatSettingsDialog = new _ChatSettingsDialog.ChatSettingsDialog('chat-settings-button', 'Chat settings');
     this.downloadButton = new _DownloadButton.DownloadButton();
     this.copyButton = new _CopyButton.CopyButton();
     this.dropDownMenu = new _DropDownMenu.DropDownMenu();
     this.initializeElements();
     this.bindEventListeners();
     this.logInitialization();
-    this.render();
   }
   initializeElements() {
     // this.sendButton = document.getElementById('send-button');
@@ -2002,10 +2094,6 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
 `;
     console.log(msg);
   }
-  render() {
-    this.sidebar.render();
-    this.chatArea.render();
-  }
   bindEventListeners() {
     _Event.Event.listen('chatSelected', this.handleChatSelected);
     // this.sendButton.addEventListener('click', this.sendMessage.bind(this));
@@ -2016,7 +2104,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
     window.history.pushState({}, '', `/chats/${chat.id}`);
   };
   handleAbort = () => {
-    this.ollamaApi.abort();
+    this.api.abort();
     this.enableForm();
     console.log('Request aborted');
   };
@@ -2076,13 +2164,16 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
         systemMessage,
         responseElement
       };
+      const requestData = await this.api.makeRequest(chat, userMessage, systemPrompt, modelParameters);
+      /*
+      console.dir(requestData);
       const requestData = {
         prompt: userMessage,
         model: chat.model,
-        messages: (await chat.getMessages()).map(message => ({
+        messages: (await chat.getMessages()).map((message) => ({
           role: message.role,
-          content: message.content
-        }))
+          content: message.content,
+        })),
       };
       // Add system prompt
       if (systemPrompt) {
@@ -2092,10 +2183,12 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
       if (modelParameters) {
         requestData.options = modelParameters;
       }
+      */
       // Show spinner
       responseElement.textElement.innerHTML = '<div class="waiting"></div>';
+      this.chatArea.scrollToEnd();
       // Make request
-      this.ollamaApi.send(url, requestData, (request, response) => this.handleResponse(request, response, requestContext), (request, error) => this.handleResponseError(request, error), (request, response) => this.handleDone(request, response, requestContext));
+      this.api.send(url, requestData, (request, response) => this.handleResponse(request, response, requestContext), (request, error) => this.handleResponseError(request, error), (request, response) => this.handleDone(request, response, requestContext));
     }
   }
   createChatMessage(message) {
@@ -2111,7 +2204,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
   }
   handleResponseError(request, error) {
     // Ignore "Abort" button
-    if (error.name !== 'AbortError') {
+    if (error !== undefined && error.name !== 'AbortError') {
       console.error(`Error: ${error.message}`);
     }
     this.chatArea.scrollToEnd();
@@ -2132,7 +2225,7 @@ Parameters:  ${JSON.stringify(_Settings.Settings.getModelParameters())}
   };
 }
 exports.App = App;
-},{"./UINotification.js":"js/UINotification.js","./models/Settings.js":"js/models/Settings.js","./Event.js":"js/Event.js","./Dom.js":"js/Dom.js","./Sidebar.js":"js/Sidebar.js","./AppController.js":"js/AppController.js","./CopyButton.js":"js/CopyButton.js","./OllamaApi.js":"js/OllamaApi.js","./DownloadButton.js":"js/DownloadButton.js","./DropDownMenu.js":"js/DropDownMenu.js","./SettingsDialog.js":"js/SettingsDialog.js","./ChatSettingsDialog.js":"js/ChatSettingsDialog.js","./ChatArea.js":"js/ChatArea.js"}],"js/script.js":[function(require,module,exports) {
+},{"./UINotification.js":"js/UINotification.js","./models/Settings.js":"js/models/Settings.js","./Event.js":"js/Event.js","./Dom.js":"js/Dom.js","./Sidebar.js":"js/Sidebar.js","./AppController.js":"js/AppController.js","./CopyButton.js":"js/CopyButton.js","./OllamaApi.js":"js/OllamaApi.js","./DownloadButton.js":"js/DownloadButton.js","./DropDownMenu.js":"js/DropDownMenu.js","./SettingsDialog.js":"js/SettingsDialog.js","./ChatSettingsDialog.js":"js/ChatSettingsDialog.js","./ChatModelInfo.js":"js/ChatModelInfo.js","./ChatArea.js":"js/ChatArea.js"}],"js/script.js":[function(require,module,exports) {
 "use strict";
 
 var _App = require("./App.js");
@@ -2171,7 +2264,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61420" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57477" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

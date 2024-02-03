@@ -16,7 +16,7 @@ svg {
 }
 
 .user-icon {
-  margin: 0.25rem 0.75rem 0 0;
+  margin: 0rem 0.75rem 0 0;
   width: 2.5rem; /* Adjust the size as needed */
   height: 2.5rem; /* Should be equal to the width for a perfect circle */
   border-radius: 50%; /* This makes the shape a circle */
@@ -28,12 +28,14 @@ svg {
 
 .system-icon {
   color: var(--text-color);
-  background-color: var(--tertiary-color);
+  background-color: var(--yellow);
+  @extend %font-weight-bolder;
 }
 
 .you-icon {
-  background-color: var(--text-color);
   color: var(--bg-color);
+  background-color: var(--blue);
+  @extend %font-weight-bolder;
 }
 
 .icon-export::before {

@@ -1,10 +1,12 @@
 import { UINotification } from './UINotification.js';
 import { AppController } from './AppController.js';
+import { AtSymbolListener } from './AtSymbolListener.js';
 import { ExportChat } from './ExportChat.js';
 import { Event } from './Event.js';
 import { Hoverable } from './Hoverable.js';
 import { ChatTitle } from './ChatTitle.js';
 import { ChatForm } from './ChatForm.js';
+import { ModelsList } from './ModelsList.js';
 
 export class ChatArea {
   constructor() {
@@ -13,11 +15,24 @@ export class ChatArea {
     this.chatHistory = document.getElementById('chat-history');
     this.messageInput = document.getElementById('message-input');
     this.editChatButton = document.getElementById('edit-chat-button');
+    this.chatModel = document.getElementById('chat-model');
+    this.modelName = this.chatModel.querySelector('.chat-model-name');
     this.scrollToTopButton = document.getElementById('scroll-to-top-button');
     this.scrollToEndButton = document.getElementById('scroll-to-end-button');
     this.deleteChatButton = document.getElementById('delete-chat-button');
     this.exportChatButton = document.getElementById('export-chat-button');
+    this.modelList = new ModelsList(
+      this.chatModel.querySelector('.chat-model-list'),
+    ).onClick(this.handleModelSelected.bind(this));
+    new AtSymbolListener(
+      this.messageInput,
+      this.modelList,
+      this.handleModelSelected.bind(this),
+    );
     AppController.getCurrentChat().then((chat) => {
+      if (!chat) {
+        return;
+      }
       this.chat = chat;
       this.render();
     });
@@ -28,6 +43,10 @@ export class ChatArea {
     // Clear history view
     this.chatHistory.innerText = '';
     if (this.chat) {
+      // Show model name in "talking to"
+      this.modelName.textContent = this.chat.model;
+      // Update list of models
+      this.modelList.setSelected(this.chat.model);
       this.chat // Render chat history
         .getMessages()
         .then((messages) => {
@@ -167,6 +186,12 @@ export class ChatArea {
       this.chat = chat;
     }
     this.render();
+  }
+
+  async handleModelSelected(selected) {
+    const chat = await AppController.getCurrentChat();
+    this.modelName.textContent = selected;
+    AppController.updateChat(chat, { model: selected });
   }
 
   handleChatSelected(chat) {

@@ -3,12 +3,13 @@
 }
 
 .drop-down-menu-items {
-  background: var(--bg-color);
   position: absolute;
   top: 100%; /* Position below the button */
+  z-index: 1000;
   display: none; /* Hide initially */
   font-size: 0.75rem;
   white-space: nowrap;
+  background-color: var(--white);
 
   i[class^='icon-']::before {
     padding-right: 0.5rem;

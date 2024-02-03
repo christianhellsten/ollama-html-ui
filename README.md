@@ -10,7 +10,7 @@ A HTML UI for [Ollama](https://ollama.ai).
 
 - Minimal & responsive UI: mobile & desktop
 - Cross browser: support last 2 versions with more than > 0.5% global use
-- Zero dependencies: HTML, CSS, and JavaScript (less than 10 Kb gzipped)
+- Zero dependencies: HTML, CSS, and JavaScript (less than 20 Kb gzipped)
 - Simple installation: run in your browser, host on your own server
 
 ## Screenshots

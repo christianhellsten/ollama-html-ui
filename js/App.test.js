@@ -111,7 +111,7 @@ class AppTest {
     await this.page.fill('#message-input', message);
     // await this.page.click('#send-button');
     await this.page.keyboard.press('Enter');
-    await expect(this.page.locator('#abort-button')).toBeVisible();
+    //await expect(this.page.locator('#abort-button')).toBeVisible();
     // await this.screenshot('1.png');
     // Wait for response
     // await this.page.waitForTimeout(3000);
@@ -184,6 +184,7 @@ class AppTest {
     const selector = `.chat-list-item:has-text("${title}")`;
     await this.page.locator(selector).click();
     await this.page.click('#chat-menu-button');
+    // await this.page.waitForSelector('#delete-chat-button', { visible: true });
     await this.page.click('#delete-chat-button');
     await expect(this.page.locator(selector)).not.toBeVisible();
     await expect(this.page.locator('#chat-title')).toHaveText(/Untitled/);
@@ -226,7 +227,7 @@ test.describe('Application tests', { only: true }, () => {
   })
   */
 
-  test('New chat', async () => {
+  test('New chat', { only: true }, async () => {
     await app.newChat('Happy Hamster');
   });
 

@@ -11,7 +11,6 @@ import { DownloadButton } from './DownloadButton.js';
 import { DropDownMenu } from './DropDownMenu.js';
 import { SettingsDialog } from './SettingsDialog.js';
 import { ChatSettingsDialog } from './ChatSettingsDialog.js';
-import { ChatModelInfo } from './ChatModelInfo.js';
 // import { MarkdownFormatter } from './MarkdownFormatter.js'
 import { ChatArea } from './ChatArea.js';
 
@@ -26,7 +25,6 @@ export class App {
   constructor() {
     this.sidebar = new Sidebar();
     this.chatArea = new ChatArea();
-    this.chatModelInfo = new ChatModelInfo();
     this.api = new OllamaApi();
     // this.api = new OpenAiApi();
     this.settingsDialog = new SettingsDialog({

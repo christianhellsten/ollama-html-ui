@@ -2,6 +2,10 @@
 
 // Light theme as default
 :root {
+  --yellow: #ffa700;
+  --blue: #0057e7;
+  --white: #fff;
+  --gray: #888;
   --primary-color: #393e46;
   --secondary-color: #222831;
   --secondary-color-lighten-20: #{color.adjust(#222831, $lightness:20%)};
@@ -9,7 +13,7 @@
   --tertiary-color: #eee;
   --error-color: #ef4040;
   --bg-color: #fafafa;
-  --secondary-bg-color: #f0f0f0;
+  --secondary-bg-color: #f0f0f045;
   --text-color: #333;
   --text-color-lighten-20: #{color.adjust(#eee, $lightness:20%)};
   --icon-color: var(--primary-color);
@@ -21,14 +25,18 @@
   --border-color: #{color.adjust(#393e46, $lightness:60%)};
   --border-hover-color: #{color.adjust(#393e46, $lightness:40%)};
   --border-focus-color: #{color.adjust(#393e46, $lightness:30%)};
-  --box-shadow-color: rgb(196 204 213 / 37%);
-  --box-shadow-modal-color: #444;
+  --box-shadow-color: rgb(196 204 213 / 17%);
+  --box-shadow-modal-color: rgb(196 204 213 / 27%);
   --modal-header-bg-color: var(--primary-color);
 }
 
 // Dark theme for users who prefer dark mode
 @media (prefers-color-scheme: dark) {
   :root {
+    --yellow: #ffa700;
+    --blue: #0057e7;
+    --white: #fff;
+    --gray: #888;
     --primary-color: #4f5b66;
     --secondary-color: #1c2025;
     --secondary-color-lighten-20: #{color.adjust(#1c2025, $lightness:20%)};

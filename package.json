@@ -29,7 +29,7 @@
     "eslint-plugin-n": "^16.6",
     "eslint-plugin-promise": "^6.1",
     "parcel": "^2.11.0",
-    "playwright": "^1.40.1",
+    "playwright": "^1.41.2",
     "postcss": "^8.4.32",
     "prettier": "^3.2.4",
     "sass": "^1.69.6",

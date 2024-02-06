@@ -22,8 +22,8 @@ jobs:
     - name: Cache node modules
       uses: actions/cache@v2
       with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        path: ~/.yarn
+        key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-node-
 
@@ -31,19 +31,24 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm install parcel-bundler
-    - run: npx playwright install
+        cache: 'yarn'
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Install Playwright
+      run: yarn playwright install
+
     - name: Run tests
       run: |
-        nohup parcel index.html > server.log 2>&1 &
+        nohup yarn parcel index.html > server.log 2>&1 &
         # Run server in the background
-        # nohup npm run server > server.log 2>&1 &
+        # nohup yarn server > server.log 2>&1 &
         # Wait for the server to start
         sleep 10
         export GITHUB_ACTIONS=true
-        npm run test
-        npm run test:mobile
+        yarn test
+        yarn test:mobile
 
     - name: Upload server log
       if: failure()

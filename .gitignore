@@ -1,6 +1,12 @@
 tmp
 
+parcel-bundle-reports/
+*.code-workspace
+
 .envrc
+
+dist/*.gz
+dist/*.br
 
 # Logs
 logs

@@ -4,14 +4,17 @@
 
 %font-weight-bold {
   font-variation-settings: 'wght' 400;
+  color: var(--blue);
 }
 
 %font-weight-bolder {
   font-variation-settings: 'wght' 600;
+  color: var(--blue);
 }
 
 %font-weight-boldest {
   font-variation-settings: 'wght' 900;
+  color: var(--blue);
 }
 
 %box-shadow {

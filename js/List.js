@@ -1,9 +1,14 @@
-export class List {
-  constructor(container, items) {
-    this.container = container;
+import { Event } from './Event.js';
+import { UIElement } from './UIElement.js';
+
+export class List extends UIElement {
+  constructor(ul, items) {
+    super(ul);
+    this.ul = ul;
     this.items = items;
     this.render();
     this.clickHandler = null;
+    this.ul.classList.add('list');
   }
 
   onClick(handler) {
@@ -19,7 +24,14 @@ export class List {
   setSelected(selected) {
     console.debug(`Select ${selected}`);
     this.selected = selected;
-    this.render();
+    this.li.forEach((item) => {
+      if (item.textContent === selected) {
+        item.classList.add('selected');
+      } else {
+        item.classList.remove('selected');
+      }
+    });
+    Event.emit('select', selected, this.ul);
   }
 
   getSelected() {
@@ -27,10 +39,8 @@ export class List {
   }
 
   render() {
-    this.container.innerHTML = ''; // Clear existing content
-    const ul = document.createElement('ul');
-    ul.classList.add('list');
-    this.items.forEach((item) => {
+    this.ul.innerHTML = ''; // Clear existing content
+    this.li = this.items.map((item) => {
       const li = document.createElement('li');
       li.classList.add('list-item');
       if (item === this.selected) {
@@ -44,8 +54,8 @@ export class List {
           this.clickHandler(item);
         }
       });
-      ul.appendChild(li);
+      this.ul.appendChild(li);
+      return li;
     });
-    this.container.appendChild(ul);
   }
 }

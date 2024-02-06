@@ -7,8 +7,22 @@
   float: right;
 }
 
-.mt-1 {
-  margin-top: 0.5rem;
+.text-small {
+  font-size: 0.85rem;
+}
+
+.text-light {
+  color: var(--gray);
+}
+
+@for $i from 1 through 10 {
+  .m-#{$i} {
+    margin: 0em * $i*0.25;
+  }
+
+  .p-#{$i} {
+    padding: $i*0.25rem;
+  }
 }
 
 .d-inline {

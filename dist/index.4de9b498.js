@@ -609,7 +609,6 @@ var _downloadButtonJs = require("./DownloadButton.js");
 var _dropDownMenuJs = require("./DropDownMenu.js");
 var _settingsDialogJs = require("./SettingsDialog.js");
 var _chatSettingsDialogJs = require("./ChatSettingsDialog.js");
-var _chatModelInfoJs = require("./ChatModelInfo.js");
 // import { MarkdownFormatter } from './MarkdownFormatter.js'
 var _chatAreaJs = require("./ChatArea.js");
 class App {
@@ -621,7 +620,6 @@ class App {
     constructor(){
         this.sidebar = new (0, _sidebarJs.Sidebar)();
         this.chatArea = new (0, _chatAreaJs.ChatArea)();
-        this.chatModelInfo = new (0, _chatModelInfoJs.ChatModelInfo)();
         this.api = new (0, _ollamaApiJs.OllamaApi)();
         // this.api = new OpenAiApi();
         this.settingsDialog = new (0, _settingsDialogJs.SettingsDialog)({
@@ -781,7 +779,7 @@ Parameters:  ${JSON.stringify((0, _settingsJs.Settings).getModelParameters())}
     };
 }
 
-},{"./UINotification.js":"13HP4","./models/Settings.js":"5L05Z","./Event.js":"ZKUT3","./Dom.js":"gX2rl","./Sidebar.js":"fU3V9","./AppController.js":"dUrsU","./CopyButton.js":"56ZFC","./OllamaApi.js":"jkUug","./DownloadButton.js":"P5Doy","./DropDownMenu.js":"7c60o","./SettingsDialog.js":"jwtg2","./ChatSettingsDialog.js":"fQbdz","./ChatModelInfo.js":"30hRW","./ChatArea.js":"bIyr7","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"13HP4":[function(require,module,exports) {
+},{"./UINotification.js":"13HP4","./models/Settings.js":"5L05Z","./Event.js":"ZKUT3","./Dom.js":"gX2rl","./Sidebar.js":"fU3V9","./AppController.js":"dUrsU","./CopyButton.js":"56ZFC","./OllamaApi.js":"jkUug","./DownloadButton.js":"P5Doy","./DropDownMenu.js":"7c60o","./SettingsDialog.js":"jwtg2","./ChatSettingsDialog.js":"fQbdz","./ChatArea.js":"bIyr7","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"13HP4":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Show all uncaught errors as UI notifications
@@ -975,12 +973,14 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Event", ()=>Event);
 class Event {
-    static listen(eventName, handler) {
-        window.addEventListener(eventName, (event)=>{
+    static listen(eventName, handler, target) {
+        if (target === null || target === undefined) target = window;
+        target.addEventListener(eventName, (event)=>{
             handler(event.detail);
         });
     }
-    static emit(eventName, data) {
+    static emit(eventName, data, target) {
+        if (target === null || target === undefined) target = window;
         let log = `${eventName}`;
         if (data?.id) log += ` id: ${data.id}`;
         console.log(log);
@@ -988,7 +988,7 @@ class Event {
             detail: data || {},
             bubbles: true
         });
-        window.dispatchEvent(event);
+        target.dispatchEvent(event);
     }
 }
 
@@ -2021,10 +2021,10 @@ class Modal {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ModelsList", ()=>ModelsList);
-var _listJs = require("./List.js");
+var _filteredListJs = require("./FilteredList.js");
 var _eventJs = require("./Event.js");
 var _modelsJs = require("./models/Models.js");
-class ModelsList extends (0, _listJs.List) {
+class ModelsList extends (0, _filteredListJs.FilteredList) {
     constructor(container){
         super(container, (0, _modelsJs.Models).getNames());
         this.bindEventListeners();
@@ -2035,18 +2035,88 @@ class ModelsList extends (0, _listJs.List) {
     handleModelsLoaded() {
         this.setItems((0, _modelsJs.Models).getNames());
     }
+    static getModels() {
+        return (0, _modelsJs.Models).getNames();
+    }
 }
 
-},{"./List.js":"gy1Ga","./Event.js":"ZKUT3","./models/Models.js":"grZYv","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gy1Ga":[function(require,module,exports) {
+},{"./FilteredList.js":"evx1C","./Event.js":"ZKUT3","./models/Models.js":"grZYv","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"evx1C":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "FilteredList", ()=>FilteredList);
+var _listJs = require("./List.js");
+var _domJs = require("./DOM.js");
+class FilteredList extends (0, _listJs.List) {
+    constructor(ul, items){
+        super(ul, items); // Call the constructor of the parent class
+        this.div = document.createElement("small");
+        this.div.classList.add("hidden", "p-2");
+        this.ul.prepend(this.div);
+        this.query = null;
+    }
+    escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // Escapes special characters
+    }
+    render() {
+        super.render();
+    }
+    selectFirst() {
+        alert(document.querySelector(".chat-model-list li:not(.hidden)").textContent);
+    }
+    filter(searchTerm) {
+        this.query = searchTerm;
+        if (searchTerm === null || searchTerm === undefined) {
+            this.clearFilter();
+            this.filtered = false;
+            return null;
+        }
+        const query = this.escapeRegExp(searchTerm).replace(/\s+/g, ".*");
+        const regex = new RegExp(query, "i"); // 'i' for case-insensitive matching
+        // Loop through the list items
+        const matches = this.li.map((listItemElement)=>{
+            const text = listItemElement.textContent;
+            const match = regex.test(text);
+            if (match) {
+                (0, _domJs.DOM).showElement(listItemElement);
+                return text;
+            } else {
+                (0, _domJs.DOM).hideElement(listItemElement);
+                return null;
+            }
+        }).filter((match)=>match);
+        console.log(`Search ${query}. Matches: ${matches}`);
+        // Update text
+        (0, _domJs.DOM).showElement(this.div);
+        let message = null;
+        if (searchTerm.length < 1) message = `Continue typing to search models. Showing all models:`;
+        else if (matches.length != 0) message = `Found ${matches.length} model(s) matching '${this.query}'. Click to change chat's model, or press tab to change prompt's model:`;
+        else message = `Did not find any models that match '${this.query}'.`;
+        this.div.textContent = message;
+        return matches;
+    }
+    clearFilter() {
+        (0, _domJs.DOM).hideElement(this.div);
+        this.query = null;
+        this.li.forEach((listItemElement)=>{
+            (0, _domJs.DOM).showElement(listItemElement);
+        });
+    }
+}
+
+},{"./List.js":"gy1Ga","./DOM.js":"EyUfz","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gy1Ga":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "List", ()=>List);
-class List {
-    constructor(container, items){
-        this.container = container;
+var _eventJs = require("./Event.js");
+var _uielementJs = require("./UIElement.js");
+class List extends (0, _uielementJs.UIElement) {
+    constructor(ul, items){
+        super(ul);
+        this.ul = ul;
         this.items = items;
         this.render();
         this.clickHandler = null;
+        this.ul.classList.add("list");
     }
     onClick(handler) {
         this.clickHandler = handler;
@@ -2059,16 +2129,18 @@ class List {
     setSelected(selected) {
         console.debug(`Select ${selected}`);
         this.selected = selected;
-        this.render();
+        this.li.forEach((item)=>{
+            if (item.textContent === selected) item.classList.add("selected");
+            else item.classList.remove("selected");
+        });
+        (0, _eventJs.Event).emit("select", selected, this.ul);
     }
     getSelected() {
         return this.selected;
     }
     render() {
-        this.container.innerHTML = ""; // Clear existing content
-        const ul = document.createElement("ul");
-        ul.classList.add("list");
-        this.items.forEach((item)=>{
+        this.ul.innerHTML = ""; // Clear existing content
+        this.li = this.items.map((item)=>{
             const li = document.createElement("li");
             li.classList.add("list-item");
             if (item === this.selected) li.classList.add("selected");
@@ -2078,9 +2150,49 @@ class List {
                 this.setSelected(item);
                 if (this.clickHandler) this.clickHandler(item);
             });
-            ul.appendChild(li);
+            this.ul.appendChild(li);
+            return li;
         });
-        this.container.appendChild(ul);
+    }
+}
+
+},{"./Event.js":"ZKUT3","./UIElement.js":"efCjh","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"efCjh":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "UIElement", ()=>UIElement);
+var _domJs = require("./DOM.js");
+class UIElement {
+    constructor(element){
+        this.element = element;
+    }
+    show() {
+        (0, _domJs.DOM).showElement(this.element);
+    }
+    hide() {
+        (0, _domJs.DOM).hideElement(this.element);
+    }
+}
+
+},{"./DOM.js":"EyUfz","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"EyUfz":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "DOM", ()=>DOM);
+class DOM {
+    static showElement(element) {
+        element.classList.remove("hidden");
+        return this;
+    }
+    static hideElement(element) {
+        element.classList.add("hidden");
+        return this;
+    }
+    static enableInput(element) {
+        element.removeAttribute("disabled");
+        return this;
+    }
+    static disableInput(element) {
+        element.setAttribute("disabled", "disabled");
+        return this;
     }
 }
 
@@ -2092,6 +2204,7 @@ var _eventJs = require("../Event.js");
 var _settingsJs = require("./Settings.js");
 var _ollamaApiJs = require("../OllamaApi.js");
 class Models {
+    // TODO: Get this from the settings?
     static models = [];
     static getUrl() {
         return (0, _settingsJs.Settings).getUrl("/api/tags");
@@ -2100,18 +2213,21 @@ class Models {
         if (!this.getUrl()) return null;
         return (0, _ollamaApiJs.OllamaApi).getModels(this.getUrl(), (models)=>{
             Models.models = models;
+            // Cache list of models
             (0, _settingsJs.Settings).set("models", Models.models);
             (0, _eventJs.Event).emit("modelsLoaded", Models.models);
         });
     }
     static getAll() {
-        return Models.models;
+        return (0, _settingsJs.Settings).get("models");
     }
     static getNames() {
-        return Models.models.map((model)=>model.name);
+        const models = this.getAll();
+        if (!models) return [];
+        return models.map((model)=>model.name);
     }
     static findModelByName(name) {
-        return Models.models.find((model)=>model.name === name);
+        return this.getAll().find((model)=>model.name === name);
     }
 }
 
@@ -2156,46 +2272,19 @@ class ChatSettingsDialog extends (0, _settingsDialogJs.SettingsDialog) {
     }
 }
 
-},{"./AppController.js":"dUrsU","./SettingsDialog.js":"jwtg2","./models/Settings.js":"5L05Z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"30hRW":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "ChatModelInfo", ()=>ChatModelInfo);
-var _eventJs = require("./Event.js");
-var _appControllerJs = require("./AppController.js");
-class ChatModelInfo {
-    constructor(){
-        this.element = document.getElementById("chat-model-info");
-        this.nameElement = this.element.querySelector(".chat-model-name");
-        this.bindEventListeners();
-        (0, _appControllerJs.AppController).getCurrentChat().then((chat)=>{
-            this.chat = chat;
-            this.render();
-        });
-    }
-    render() {
-        this.nameElement.textContent = this.chat?.model;
-    }
-    bindEventListeners() {
-        // Event.listen('chatDeleted', this.handleChatDeleted.bind(this));
-        (0, _eventJs.Event).listen("chatSelected", this.handleChatSelected.bind(this));
-    }
-    handleChatSelected(chat) {
-        this.chat = chat;
-        this.render();
-    }
-}
-
-},{"./Event.js":"ZKUT3","./AppController.js":"dUrsU","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bIyr7":[function(require,module,exports) {
+},{"./AppController.js":"dUrsU","./SettingsDialog.js":"jwtg2","./models/Settings.js":"5L05Z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bIyr7":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ChatArea", ()=>ChatArea);
 var _uinotificationJs = require("./UINotification.js");
 var _appControllerJs = require("./AppController.js");
+var _atSymbolListenerJs = require("./AtSymbolListener.js");
 var _exportChatJs = require("./ExportChat.js");
 var _eventJs = require("./Event.js");
 var _hoverableJs = require("./Hoverable.js");
 var _chatTitleJs = require("./ChatTitle.js");
 var _chatFormJs = require("./ChatForm.js");
+var _modelsListJs = require("./ModelsList.js");
 class ChatArea {
     constructor(){
         this.chatTitle = new (0, _chatTitleJs.ChatTitle)();
@@ -2203,11 +2292,16 @@ class ChatArea {
         this.chatHistory = document.getElementById("chat-history");
         this.messageInput = document.getElementById("message-input");
         this.editChatButton = document.getElementById("edit-chat-button");
+        this.chatModel = document.getElementById("chat-model");
+        this.modelName = this.chatModel.querySelector(".chat-model-name");
         this.scrollToTopButton = document.getElementById("scroll-to-top-button");
         this.scrollToEndButton = document.getElementById("scroll-to-end-button");
         this.deleteChatButton = document.getElementById("delete-chat-button");
         this.exportChatButton = document.getElementById("export-chat-button");
+        this.modelList = new (0, _modelsListJs.ModelsList)(this.chatModel.querySelector(".chat-model-list")).onClick(this.handleModelSelected.bind(this));
+        new (0, _atSymbolListenerJs.AtSymbolListener)(this.messageInput, this.modelList, this.handleModelSelected.bind(this));
         (0, _appControllerJs.AppController).getCurrentChat().then((chat)=>{
+            if (!chat) return;
             this.chat = chat;
             this.render();
         });
@@ -2217,6 +2311,10 @@ class ChatArea {
         // Clear history view
         this.chatHistory.innerText = "";
         if (this.chat) {
+            // Show model name in "talking to"
+            this.modelName.textContent = this.chat.model;
+            // Update list of models
+            this.modelList.setSelected(this.chat.model);
             this.chat // Render chat history
             .getMessages().then((messages)=>{
                 messages.forEach((message)=>{
@@ -2323,6 +2421,13 @@ class ChatArea {
         else this.chat = chat;
         this.render();
     }
+    async handleModelSelected(selected) {
+        const chat = await (0, _appControllerJs.AppController).getCurrentChat();
+        this.modelName.textContent = selected;
+        (0, _appControllerJs.AppController).updateChat(chat, {
+            model: selected
+        });
+    }
     handleChatSelected(chat) {
         this.chat = chat;
         this.render();
@@ -2343,7 +2448,80 @@ class ChatArea {
     }
 }
 
-},{"./UINotification.js":"13HP4","./AppController.js":"dUrsU","./ExportChat.js":"56vtJ","./Event.js":"ZKUT3","./Hoverable.js":"6urlE","./ChatTitle.js":"38Gm9","./ChatForm.js":"2VTSS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"56vtJ":[function(require,module,exports) {
+},{"./UINotification.js":"13HP4","./AppController.js":"dUrsU","./AtSymbolListener.js":"kas7Q","./ExportChat.js":"56vtJ","./Event.js":"ZKUT3","./Hoverable.js":"6urlE","./ChatTitle.js":"38Gm9","./ChatForm.js":"2VTSS","./ModelsList.js":"3Iv7p","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kas7Q":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "AtSymbolListener", ()=>AtSymbolListener);
+var _eventJs = require("./Event.js");
+class AtSymbolListener {
+    constructor(input, target, onSelected){
+        if (!target) throw Error("No target element specified");
+        this.active = false;
+        this.onSelected = onSelected;
+        this.input = input;
+        this.target = target;
+        this.bindEventListeners();
+    }
+    bindEventListeners() {
+        this.input.addEventListener("input", ()=>this.handleInput());
+        this.input.addEventListener("keydown", (e)=>this.handleKeydown(e));
+        (0, _eventJs.Event).listen("select", this.handleSelected.bind(this), this.ul);
+    }
+    handleInput() {
+        const text = this.getText();
+        const lastChar = text[text.length - 1];
+        // Handle show and hide using special characters
+        if (lastChar === "@") this.showTarget();
+        // Handle search if active
+        if (this.active) {
+            const searchTerm = this.getSearchTerm();
+            if (!this.target.filter(searchTerm)) // TODO: Show ”No matches” instead of hiding
+            this.hideTarget();
+        }
+    }
+    getText() {
+        return this.input.value.trim();
+    }
+    getSearchTerm() {
+        const text = this.getText();
+        const lastAtPos = text.lastIndexOf("@");
+        const query = lastAtPos !== -1 ? text.substring(lastAtPos + 1) : null;
+        return query;
+    }
+    handleKeydown(event) {
+        const key = event.key;
+        // Select first item on tab
+        if (event.which == 9 && this.active) {
+            this.target.selectFirst();
+            event.preventDefault();
+        } else if (key === " " || key === "Enter" || key === "Escape") this.hideTarget();
+    }
+    handleSelected(selected) {
+        if (selected === null || selected === undefined) return;
+        if (!this.active) return;
+        const text = this.getText();
+        const lastAtPos = text.lastIndexOf("@");
+        if (lastAtPos !== -1) {
+            this.input.value = text.substring(0, lastAtPos + 1) + selected;
+            this.input.focus();
+            this.input.setSelectionRange(this.input.value.length, this.input.value.length);
+            this.onSelected(selected);
+            this.hideTarget();
+        }
+    }
+    showTarget() {
+        this.active = true;
+        this.target.element.classList.add("active");
+        this.target.show();
+    }
+    hideTarget() {
+        this.active = false;
+        this.target.element.classList.remove("active");
+        this.target.hide();
+    }
+}
+
+},{"./Event.js":"ZKUT3","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"56vtJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ExportChat", ()=>ExportChat);
@@ -2453,7 +2631,7 @@ class ChatTitle {
 }
 
 },{"./Event.js":"ZKUT3","./AppController.js":"dUrsU","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2VTSS":[function(require,module,exports) {
-// TODO: Move code here from App.js
+// TODO: Move code here from App.js and ChatArea.js
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ChatForm", ()=>ChatForm);

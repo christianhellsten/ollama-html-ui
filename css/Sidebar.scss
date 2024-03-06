@@ -1,14 +1,7 @@
-aside {
-  padding: 1rem;
-}
-
-/* Sidebar styling */
 #sidebar {
   @extend %box-shadow;
 
   background-color: var(--secondary-bg-color);
-
-  // NOTE: This should be the same as chat-header border-bottom
   border-right: 1px solid #cccccc5e;
   min-width: 200px;
   max-width: 480px;
@@ -26,7 +19,7 @@ aside {
 }
 
 #sidebar.collapsed {
+  min-width: 0;
   max-width: 0;
-  display: none;
   padding: 0;
 }

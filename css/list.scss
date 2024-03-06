@@ -5,6 +5,7 @@ ul {
   width: 100%;
 
   li {
+    border: 1px solid transparent; /* Invisible border by default */
     position: relative;
     display: flex; /* Use flexbox layout */
     justify-content: left;
@@ -34,7 +35,7 @@ ul {
     @extend %font-weight-boldest;
 
     // NOTE: Should match #chat-header border-bottom
-    border-top: 1px solid #cccccc5e;
+    border-top-color: #cccccc5e;
   }
 
   li.selected::after {
@@ -45,6 +46,8 @@ ul {
   }
 
   li.hover {
+    border-top-color: #cccccc5e;
+
     button {
       visibility: visible;
     }

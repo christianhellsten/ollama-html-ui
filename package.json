@@ -6,10 +6,11 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "server": "node scripts/server.js",
-    "test": "node --test --test-reporter=spec",
-    "test:only": "node  --test --test-reporter=spec --test-only",
+    "test": "npm run test:all && npm run test:mobile && npm run test:video",
+    "test:all": "node --test --test-reporter=spec",
     "test:mobile": "MOBILE=true node --test --test-reporter=spec",
     "test:video": "VIDEO=true node --test --test-reporter=spec",
+    "test:only": "node  --test --test-reporter=spec --test-only",
     "format": "prettier --write \"**/*.{js,html,scss}\"",
     "lint-js": "eslint \"**/*.js\" --fix",
     "lint-css": "stylelint \"**/*.scss\" --fix",

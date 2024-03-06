@@ -95,7 +95,7 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
 
   // https://github.com/jmorganca/ollama/blob/main/docs/api.md#generate-a-completion
   async sendMessage() {
-    const userMessage = this.messageInput.value.trim();
+    const userPrompt = this.messageInput.value.trim();
     // Get the current chat
     let chat = await AppController.getCurrentChat();
     const url = Settings.getUrl('/api/chat');
@@ -105,7 +105,7 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
       );
       return null;
     }
-    if (userMessage) {
+    if (userPrompt) {
       // Reset input
       this.messageInput.value = '';
       // Create new chat
@@ -116,24 +116,26 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
         });
       }
       // Store user message
-      await chat.addMessage({
+      const userMessage = await chat.addMessage({
         role: 'user',
-        content: userMessage,
+        content: userPrompt,
+      });
+      const systemMessage = await chat.addMessage({
+        role: 'assistant',
+        content: '',
       });
       const systemPrompt = Settings.getSystemPrompt();
       const modelParameters = Settings.getModelParameters();
       // Disable form
       this.disableForm();
       // Create user message
-      this.createChatMessage({ content: userMessage, role: 'user' });
+      this.createChatMessage(userMessage);
       // Create system message container
-      const responseElement = this.createChatMessage({
-        content: '',
-        role: 'system',
-      });
+      const responseElement = this.createChatMessage(systemMessage);
       const requestContext = {
         chat,
-        content: '', // TODO: Move this to the response?
+        userMessage,
+        systemMessage,
         responseElement,
       };
       const requestData = {
@@ -153,7 +155,7 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
         requestData.options = modelParameters;
       }
       // Show spinner
-      responseElement.innerHTML = '<div class="waiting"></div>';
+      responseElement.textElement.innerHTML = '<div class="waiting"></div>';
       // Make request
       this.ollamaApi.send(
         url,
@@ -175,8 +177,8 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
     const responseElement = context.responseElement;
     const sanitizedContent = this.sanitizeContent(response);
     // Remember original response
-    context.content += sanitizedContent;
-    responseElement.textContent += sanitizedContent;
+    context.systemMessage.content += sanitizedContent;
+    responseElement.textElement.textContent += sanitizedContent;
     this.chatArea.scrollToEnd();
   }
 
@@ -192,10 +194,7 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
   async handleDone(request, response, context) {
     const chat = context.chat;
     console.log(`Chat ${chat.id} done`);
-    await chat.addMessage({
-      role: 'assistant',
-      content: context.content,
-    });
+    await context.systemMessage.save();
     this.enableForm();
   }
 

@@ -153,7 +153,7 @@ export class ChatArea {
       message.quality = 'bad';
       await message.save();
     });
-    return messageDiv;
+    return { element: messageDiv, textElement: textSpan };
   }
 
   handleChatDeleted(chat) {

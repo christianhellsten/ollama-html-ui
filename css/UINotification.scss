@@ -2,15 +2,15 @@
   position: fixed;
   top: 0;
   left: 0;
-  color: $bg-color;
-  background-color: $text-color;
+  color: var(--bg-color);
+  background-color: var(--text-color);
   width: calc(100vw - 2rem);
   z-index: 30000;
-  background-color: $bg-color;
+  background-color: var(--bg-color);
   padding: 1rem;
   margin: 1rem;
   @extend %box-shadow-modal;
-  border-radius: $border-radius;
+  border-radius: var(--border-radius);
 
   .button {
     border-radius: 2px;
@@ -23,5 +23,5 @@
 }
 
 .notification-error {
-  background: $error-color;
+  background: var(--error-color);
 }

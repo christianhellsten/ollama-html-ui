@@ -1,9 +1,6 @@
 # ollama-html-ui
 
-<video controls>
-  <source src="videos/video.webm" type="video/webm">
-  ![cover](/screenshots/chat-collapsed.png)
-</video>
+![cover](/videos/video.gif)
 
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
 
@@ -24,6 +21,13 @@ A HTML UI for [Ollama](https://ollama.ai).
 ![Chat](/screenshots/chat.png)
 ![Settings screen](/screenshots/settings.png)
 ![Search](/screenshots/search.png)
+
+**Dark mode**
+
+![Chat (fullscreen)](/screenshots/darkmode-chat-collapsed.png)
+![Chat](/screenshots/darkmode-chat.png)
+![Settings screen](/screenshots/darkmode-settings.png)
+![Search](/screenshots/darkmode-search.png)
 
 **Mobile**
 

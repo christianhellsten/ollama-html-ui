@@ -1,6 +1,6 @@
 /* Chat history */
 #chat-history {
-  mask-image: linear-gradient(180deg, $white 95%, transparent);
+  mask-image: linear-gradient(180deg, var(--white) 95%, transparent);
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -36,7 +36,7 @@
 /* Styling for system messages */
 .assistant-chat-message {
   .chat-message-text {
-    color: #444;
+    // color: var(--text-color-lighten-20);
   }
   margin-bottom: 0.5rem;
 }

@@ -3,7 +3,7 @@
 }
 
 .drop-down-menu-items {
-  background: $bg-color;
+  background: var(--bg-color);
   position: absolute;
   top: 100%; /* Position below the button */
   display: none; /* Hide initially */

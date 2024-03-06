@@ -1,0 +1,9 @@
+.hoverable {
+  visibility: collapse;
+}
+
+.hover {
+  .hoverable {
+    visibility: visible;
+  }
+}

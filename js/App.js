@@ -1,4 +1,3 @@
-import { Models } from './models/Models.js';
 import { UINotification } from './UINotification.js';
 import { Settings } from './models/Settings.js';
 import { Event } from './Event.js';
@@ -19,7 +18,6 @@ export class App {
   static run() {
     UINotification.initialize();
     const app = new App();
-    Models.load();
     return app;
   }
 
@@ -46,7 +44,7 @@ export class App {
   }
 
   logInitialization() {
-    const msg = `~~~\nChat UI\n~~~
+    const msg = `~~~~\nChat\n~~~~
 Model:       ${Settings.getModel()}
 URL:         ${Settings.getUrl()}
 Chat:        ${Settings.getCurrentChatId()}
@@ -104,6 +102,13 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
     const userMessage = this.messageInput.value.trim();
     // Get the current chat
     let chat = await AppController.getCurrentChat();
+    const url = Settings.getUrl('/api/chat');
+    if (!url) {
+      UINotification.show(
+        'Please update the URL in the settings to continue. ',
+      );
+      return null;
+    }
     if (userMessage) {
       // Reset input
       this.messageInput.value = '';
@@ -124,9 +129,12 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
       // Disable form
       this.disableForm();
       // Create user message
-      this.createChatMessage(userMessage, 'user');
+      this.createChatMessage({ content: userMessage, role: 'user' });
       // Create system message container
-      const responseElement = this.createChatMessage('', 'system');
+      const responseElement = this.createChatMessage({
+        content: '',
+        role: 'system',
+      });
       const requestContext = {
         chat,
         content: '', // TODO: Move this to the response?
@@ -152,6 +160,7 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
       responseElement.innerHTML = '<div class="spinner"></div>';
       // Make request
       this.ollamaApi.send(
+        url,
         requestData,
         (request, response) =>
           this.handleResponse(request, response, requestContext),
@@ -162,32 +171,9 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
     }
   }
 
-  createChatMessage(content, sender) {
-    return this.chatArea.createMessageDiv(content, sender);
+  createChatMessage(message) {
+    return this.chatArea.createMessageDiv(message);
   }
-
-  /*
-  createMessageDiv = (text, sender) => {
-    // Get the template and its content
-    const template = document.getElementById('chat-message-template')
-    const messageClone = template.content.cloneNode(true)
-
-    // Find the div and span elements within the cloned template
-    const messageDiv = messageClone.querySelector('.chat-message')
-    const textSpan = messageClone.querySelector('.chat-message-text')
-
-    // Set the class for sender and text content
-    messageDiv.classList.add(`${sender}-chat-message`)
-    textSpan.textContent = text
-    messageDiv.spellcheck = false
-
-    // Append to chatHistory and adjust scroll
-    this.chatHistory.appendChild(messageDiv)
-    this.chatArea.scrollToEnd()
-
-    return messageDiv
-  }
-  */
 
   handleResponse(request, response, context) {
     const responseElement = context.responseElement;

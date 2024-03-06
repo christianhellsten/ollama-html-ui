@@ -227,6 +227,16 @@
     <template id="chat-message-template">
       <div class="chat-message">
         <span class="chat-message-text"></span>
+        <div id="chat-message-menu" class="drop-down-menu col hoverable">
+          <button id="chats-menu-button" class="button" title="Chats menu">
+            <i class="icon-menu"></i>
+          </button>
+          <div class="drop-down-menu-items hidden">
+            <button class="delete-chat-message-button button" title="Delete chat message">
+              <i class="icon-delete"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </template>
     <!-- Chat list item template -->
@@ -236,15 +246,6 @@
         <!--<button class="list-item-edit" title="Edit chat">...</button>-->
         <button class="list-item-delete" title="Delete chat">&times;</button>
       </li>
-    </template>
-    <!-- Chat message template -->
-    <template id="chat-message-template">
-      <div class="message" contenteditable="false">
-        <span class="message-text"></span>
-        <!--
-            <button class="copy-button button button-mini"><i class="icon-copy"></i></button>
-            -->
-      </div>
     </template>
     <!-- UI notification template -->
     <template id="notification-template">

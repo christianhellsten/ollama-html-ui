@@ -1,49 +1,49 @@
 export class ChatTitle {
-  constructor(chats) {
-    this.chats = chats;
-    this.defaultTitle = 'Untitled';
-    this.element = document.getElementById('chat-title');
-    this.bindEventListeners();
+  constructor (chats) {
+    this.chats = chats
+    this.defaultTitle = 'Untitled'
+    this.element = document.getElementById('chat-title')
+    this.bindEventListeners()
   }
 
-  render() {
-    const chat = this.chats.getCurrentChat();
-    this.setTitle(chat?.title);
+  render () {
+    const chat = this.chats.getCurrentChat()
+    this.setTitle(chat?.title)
   }
 
-  setTitle(title) {
-    this.element.textContent = title || this.defaultTitle;
+  setTitle (title) {
+    this.element.textContent = title || this.defaultTitle
   }
 
-  focus() {
-    const hasFocus = (document.activeElement === this.element);
+  focus () {
+    const hasFocus = (document.activeElement === this.element)
     if (!hasFocus) {
-      this.element.focus();
+      this.element.focus()
     }
   }
 
-  bindEventListeners() {
+  bindEventListeners () {
     this.element.addEventListener('blur', () => {
-      let title = this.element.textContent.trim();
+      let title = this.element.textContent.trim()
       if (title.length === 0) {
-        title = this.defaultTitle;
-        this.element.classList.add('error');
+        title = this.defaultTitle
+        this.element.classList.add('error')
       } else {
-        this.element.classList.remove('error');
+        this.element.classList.remove('error')
       }
-      const chat = this.chats.getCurrentChat();
+      const chat = this.chats.getCurrentChat()
       if (chat) {
-        this.chats.updateTitle(chat.id, title);
+        this.chats.updateTitle(chat.id, title)
       } else {
-        this.chats.add(title, '');
+        this.chats.add(title, '')
       }
-    });
+    })
 
     this.element.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
-        e.preventDefault();
-        this.element.blur();
+        e.preventDefault()
+        this.element.blur()
       }
-    });
+    })
   }
 }

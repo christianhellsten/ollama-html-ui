@@ -1,47 +1,51 @@
-import { Event } from './Event.js';
-import { ChatTitle } from './ChatTitle.js';
-import { ChatForm } from './ChatForm.js';
+import { Event } from './Event.js'
+import { ChatTitle } from './ChatTitle.js'
+import { ChatForm } from './ChatForm.js'
 
 export class ChatArea {
-  constructor(chats) {
-    this.chats = chats;
-    this.chatTitle = new ChatTitle(this.chats);
-    this.chatForm = new ChatForm();
-    this.bindEventListeners();
-    this.chatHistory = document.getElementById('chat-history');
-    this.messageInput = document.getElementById('message-input');
+  constructor (chats) {
+    this.chats = chats
+    this.chatTitle = new ChatTitle(this.chats)
+    this.chatForm = new ChatForm()
+    this.chatHistory = document.getElementById('chat-history')
+    this.messageInput = document.getElementById('message-input')
+    this.editChatButton = document.getElementById('edit-chat-button')
+    this.deleteChatButton = document.getElementById('delete-chat-button')
+    this.bindEventListeners()
   }
 
-  render() {
-    this.chatHistory.innerHTML = this.chats.getCurrentChat()?.content || '';
-    this.chatTitle.render();
-    this.messageInput.focus();
-    // Edit chat
-    const editChatButton = document.getElementById('edit-chat-button').addEventListener("click", (event) => {
-      this.chatTitle.focus();
-      event.stopPropagation();
-    });
-    // Delete chat
-    const deleteChatButton = document.getElementById('delete-chat-button').addEventListener("click", (event) => {
-      const chat = this.chats.getCurrentChat();
-      if(chat) {
-        this.chats.delete(chat.id);
-        this.chatHistory.innerHTML = '';
-        Event.emit('deleteChat', chat.id)
-      }
-      event.stopPropagation();
-    });
+  render () {
+    this.chatHistory.innerHTML = this.chats.getCurrentChat()?.content || ''
+    this.chatTitle.render()
+    this.messageInput.focus()
   }
 
-  bindEventListeners() {
+  bindEventListeners () {
     Event.listen('chatSelected', this.handleChatSelected.bind(this));
     ['chatCreated', 'chatDeleted', 'chatUpdated'].forEach(name => {
-      Event.listen(name, this.render.bind(this));
-    });
+      Event.listen(name, this.render.bind(this))
+    })
+    this.editChatButton.addEventListener('click', this.handleEditChat.bind(this))
+    this.deleteChatButton.addEventListener('click', this.handleDeleteChat.bind(this))
   }
 
-  handleChatSelected() {
-    const chat = this.chats.getCurrentChat();
-    this.chatTitle.setTitle(chat.title);
+  handleChatSelected () {
+    const chat = this.chats.getCurrentChat()
+    this.chatTitle.setTitle(chat.title)
+  }
+
+  handleEditChat () {
+    this.chatTitle.focus()
+    event.stopPropagation()
+  }
+
+  handleDeleteChat () {
+    const chat = this.chats.getCurrentChat()
+    if (chat) {
+      this.chats.delete(chat.id)
+      this.chatHistory.innerHTML = ''
+      Event.emit('deleteChat', chat.id)
+    }
+    event.stopPropagation()
   }
 }

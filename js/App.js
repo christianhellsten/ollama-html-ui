@@ -178,10 +178,9 @@ export class App {
       const requestDiv = this.createMessageDiv(message, 'user');
       const responseDiv = this.createMessageDiv('...', 'system');
       responseDiv.innerHTML = '<div class="spinner"></div>';
-
       try {
         const data = { model: this.getModel(), prompt: message };
-        const response = await this.postMessage(data);
+        const response = await this.postMessage(data, responseDiv);
         this.handleResponse(response, responseDiv);
       } catch (error) {
         this.updateChat(responseDiv, `Error: ${error.message}`, 'system');
@@ -201,7 +200,7 @@ export class App {
   }
 
   // Post message to the server
-  async postMessage(data) {
+  async postMessage(data, responseDiv) {
     this.controller = new AbortController();
     const signal = this.controller.signal;
     const ollamaModel = storage.get('model', 'mistral');
@@ -213,7 +212,10 @@ export class App {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (!response.ok) {
+    // 404 = Model not found, etc.
+    if (response.status === 404) {
+      throw new Error(`Ollama responded with an error. Please verify the settings. URL: ${ollamaHost} Model: ${ollamaModel}`);
+    } else if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     return response;
@@ -274,7 +276,13 @@ export class App {
     } else {
       div.innerHTML += sanitizedContent; // Append content
     }
-    chats.updateCurrentChat(this.chatHistory.innerHTML);
+    const chat = chats.getCurrentChat();
+    if (chat !== null) {
+      chats.update(chat.id, chat.title, content);
+    } else {
+      chats.add('New chat', content);
+      this.renderChatList();
+    }
   }
 
   // Returns the id from the URL /chats/1 returns 1

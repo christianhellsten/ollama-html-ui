@@ -101,16 +101,6 @@ export class Chats {
     return currentChat;
   }
 
-  // Update the current chat or add a new one if no current chat is selected
-  updateCurrentChat(content) {
-    if (this.currentChatId !== null) {
-      const chat = this.getCurrentChat();
-      this.update(chat.id, chat.title, content);
-    } else {
-      this.add('New chat', content);
-    }
-  }
-
   // Method to get all chats
   getChats() {
     return this.chats;

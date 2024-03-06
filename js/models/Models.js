@@ -3,6 +3,7 @@ import { Settings } from './Settings.js';
 import { OllamaApi } from '../OllamaApi.js';
 
 export class Models {
+  // TODO: Get this from the settings?
   static models = [];
 
   static getUrl() {
@@ -15,20 +16,25 @@ export class Models {
     }
     return OllamaApi.getModels(this.getUrl(), (models) => {
       Models.models = models;
+      // Cache list of models
       Settings.set('models', Models.models);
       Event.emit('modelsLoaded', Models.models);
     });
   }
 
   static getAll() {
-    return Models.models;
+    return Settings.get('models');
   }
 
   static getNames() {
-    return Models.models.map((model) => model.name);
+    const models = this.getAll();
+    if (!models) {
+      return [];
+    }
+    return models.map((model) => model.name);
   }
 
   static findModelByName(name) {
-    return Models.models.find((model) => model.name === name);
+    return this.getAll().find((model) => model.name === name);
   }
 }

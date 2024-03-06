@@ -1,10 +1,12 @@
 /* Chat history */
 #chat-history {
-  mask-image: linear-gradient(180deg, var(--white) 95%, transparent);
+  padding: 0.5rem;
+  padding-top: 1rem;
+  // border-bottom: 1px solid #ccc;
+  // mask-image: linear-gradient(180deg, var(--white) 98%, transparent);
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  padding: 0.5rem;
   max-width: 1024px;
   width: 100%; /* Full width of its parent */
   overflow-y: auto; /* Enable vertical scrolling */
@@ -26,7 +28,7 @@
 
 /* Styling for user messages */
 .user-chat-message {
-  @extend %font-weight-bolder;
+  //@extend %font-weight-bolder;
 
   .system-icon {
     display: none;

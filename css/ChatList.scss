@@ -17,6 +17,7 @@
 
 .list-item.selected {
   background: var(--white);
+  border-radius: 0.25rem;
 
   @extend %box-shadow;
 

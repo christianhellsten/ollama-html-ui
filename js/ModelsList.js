@@ -1,8 +1,8 @@
-import { List } from './List.js';
+import { FilteredList } from './FilteredList.js';
 import { Event } from './Event.js';
 import { Models } from './models/Models.js';
 
-export class ModelsList extends List {
+export class ModelsList extends FilteredList {
   constructor(container) {
     super(container, Models.getNames());
     this.bindEventListeners();
@@ -14,5 +14,9 @@ export class ModelsList extends List {
 
   handleModelsLoaded() {
     this.setItems(Models.getNames());
+  }
+
+  static getModels() {
+    return Models.getNames();
   }
 }

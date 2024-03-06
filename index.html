@@ -150,17 +150,23 @@
           </button>
         </aside>
       </div>
-      <div id="chat-model-info">Talking to: <span class="chat-model-name"></span></div>
+      <div id="chat-model" class="p-2 text-small">
+        <div class="p-2">
+          Talking to:
+          <span class="chat-model-name"></span>
+        </div>
+        <ul class="chat-model-list hidden"></ul>
+      </div>
       <div id="chat-form">
         <!-- Chat input and button -->
         <div class="textarea">
           <textarea
             id="message-input"
             type="text"
-            placeholder="Message..."
+            placeholder="Type a message or @ to switch model..."
             required
             autofocus
-            title="Type a message..."
+            title="Type a message or @ to switch model..."
           ></textarea>
         </div>
         <div class="buttons">

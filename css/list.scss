@@ -13,7 +13,7 @@ ul {
     cursor: pointer;
     width: 100%;
     // font-weight: 500;
-    border-bottom: 1px solid #ececec;
+    //border-bottom: 1px solid #ececec;
     white-space: nowrap; /* Prevent text from wrapping */
 
     .col {
@@ -35,7 +35,8 @@ ul {
 
   li.selected {
     @extend %font-weight-boldest;
-    border-bottom: 1px solid #ccc;
+    // NOTE: Should match #chat-header border-bottom
+    border-top: 1px solid #cccccc5e;
 
     //color: $button-primary-color;
     //background-color: $light-color;

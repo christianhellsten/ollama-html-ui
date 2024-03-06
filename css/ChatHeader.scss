@@ -1,5 +1,6 @@
 #chat-header {
-  border-bottom: 1px solid #ccc;
+  // NOTE: Should match #chat-form border-top
+  border-bottom: 1px solid #cccccc5e;
   @extend %box-shadow;
   z-index: 4;
   .button {

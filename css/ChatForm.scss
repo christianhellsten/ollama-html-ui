@@ -2,7 +2,8 @@
   flex: 0 0 60px; /* fixed height */
   display: flex;
   align-items: center;
-  border-top: 1px solid #ccc;
+  // NOTE: Should match #chat-header border-bottom
+  border-top: 1px solid #cccccc5e;
 
   .textarea {
     height: 100%;

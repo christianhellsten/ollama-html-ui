@@ -1,6 +1,6 @@
 # ollama-html-ui
 
-![cover](/screenshots/main.png)
+![cover](/screenshots/chat.png)
 
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
 
@@ -17,6 +17,8 @@ A HTML UI for Ollama.
 - New chat
 - Edit chat
 - Delete chat
+- Download chat
+- Copy chat
 - Search chats
 - Clear chats
 - View settings
@@ -25,7 +27,7 @@ A HTML UI for Ollama.
 
 ## Screenshots
 
-![Main screen](/screenshots/main.png)
+![Main screen](/screenshots/chat.png)
 ![Settings screen](/screenshots/settings.png)
 ![Search](/screenshots/search.png)
 

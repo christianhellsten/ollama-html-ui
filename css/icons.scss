@@ -7,6 +7,16 @@ i[class^="icon-"] {
   font-size: 12px;
 }
 
+.icon-download:before {
+  content: '\21E9\00a0'; /* Unicode character for the download icon followed by a non-breaking space */
+}
+
+.icon-copy:before {
+  content: '\2398\00a0'; /* Unicode character for the copy icon followed by a non-breaking space */
+  font-size: 20px; /* Adjust the size of the icon */
+  vertical-align: middle;
+}
+
 .icon-selected:before {
   content: "\203A";
 }

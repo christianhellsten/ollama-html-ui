@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // Light theme as default
 :root {
   --primary-color: #393e46;
@@ -15,7 +17,7 @@
   --button-primary-bgcolor: #fff;
   --button-secondary-color: var(--text-color);
   --button-secondary-bgcolor: $bg-color;
-  --border-color: #{color.adjust(#393e46, 60%)};
+  --border-color: #{color.adjust(#393e46, $lightness:60%)};
   --border-hover-color: #{color.adjust(#393e46, $lightness:40%)};
   --border-focus-color: #{color.adjust(#393e46, $lightness:30%)};
   --box-shadow-color: rgb(196 204 213 / 74.9%);

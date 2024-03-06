@@ -17,6 +17,8 @@ function openScreenshot (filePath) {
   })
 }
 
+const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS
+
 class AppTest {
   async start () {
     this.browser = await chromium.launch()
@@ -86,6 +88,10 @@ class AppTest {
   }
 
   async screenshot (path) {
+    if (process.env.GITHUB_ACTIONS === 'true') {
+      // console.log('Running in GitHub Actions, skipping screenshot')
+      return false
+    }
     if (path === undefined) {
       path = 'screenshot.png'
     }
@@ -159,15 +165,6 @@ test.describe('Application tests', () => {
     await app.editChatTitle('Super Hamster')
   })
 
-  test('Show settings', async () => {
-    await app.showSettings()
-    await app.screenshot('screenshots/settings.png')
-  })
-
-  test('Update settings', async () => {
-    await app.updateSettings(url, model)
-  })
-
   test('Search chats', async () => {
     // Create chats for each country
     for (const name of ['Finland', 'Sweden', 'Canada', 'Norway', 'Denmark']) {
@@ -213,12 +210,23 @@ test.describe('Application tests', () => {
     await expect(app.sidebar).toHaveClass(/.*collapsed.*/)
   })
 
-  test('Send message', async () => {
-    await app.updateSettings(url, model)
-    await app.editChatTitle('What is 10+10?')
-    await app.sendMessage('What is 10+10?')
-    await app.screenshot('screenshots/chat.png')
-  })
+  if (GITHUB_ACTIONS) {
+    test('Send message', async () => {
+      await app.updateSettings(url, model)
+      await app.editChatTitle('What is 10+10?')
+      await app.sendMessage('What is 10+10?')
+      await app.screenshot('screenshots/chat.png')
+    })
+
+    test('Show settings', async () => {
+      await app.showSettings()
+      await app.screenshot('screenshots/settings.png')
+    })
+
+    test('Update settings', async () => {
+      await app.updateSettings(url, model)
+    })
+  }
 
   test('Send message (server down)', async () => {
     await app.page.fill('#message-input', 'Server is down')

@@ -8,10 +8,18 @@ export class Modal {
   }
 
   show () {
-    this.modal.classList.add('show')
+    this.handleShow()
   }
 
   hide () {
+    this.handleHide()
+  }
+
+  handleShow () {
+    this.modal.classList.add('show')
+  }
+
+  handleHide () {
     this.modal.classList.remove('show')
   }
 }

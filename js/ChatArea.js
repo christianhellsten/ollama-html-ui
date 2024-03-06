@@ -21,7 +21,14 @@ export class ChatArea {
   }
 
   render () {
-    this.chatHistory.innerHTML = this.chat?.content || ''
+    // Clear history view
+    this.chatHistory.innerText = ''
+    // Render chat history
+    this.chat?.getMessages()?.then((messages) => {
+      messages.forEach(message => {
+        this.createMessageDiv(message.content, message.role)
+      })
+    })
     this.messageInput.focus()
   }
 
@@ -32,6 +39,27 @@ export class ChatArea {
     this.scrollToEndButton.addEventListener('click', this.scrollToEnd.bind(this))
     this.editChatButton.addEventListener('click', this.handleEditChat.bind(this))
     this.deleteChatButton.addEventListener('click', this.handleDeleteChat.bind(this))
+  }
+
+  createMessageDiv (text, role) {
+    // Get the template and its content
+    const template = document.getElementById('chat-message-template')
+    const messageClone = template.content.cloneNode(true)
+
+    // Find the div and span elements within the cloned template
+    const messageDiv = messageClone.querySelector('.chat-message')
+    const textSpan = messageClone.querySelector('.chat-message-text')
+
+    // Set the class for role and text content
+    messageDiv.classList.add(`${role}-chat-message`)
+    textSpan.textContent = text
+    messageDiv.spellcheck = false
+
+    // Append to chatHistory and adjust scroll
+    this.chatHistory.appendChild(messageDiv)
+    this.scrollToEnd()
+
+    return messageDiv
   }
 
   handleChatDeleted (chat) {

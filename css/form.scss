@@ -1,6 +1,7 @@
 label {
     @extend .font-weight-boldest;
-    margin-bottom: .5rem;
+    padding-bottom: .5rem;
+    display: block;
 }
 
 input, textarea {
@@ -31,10 +32,6 @@ textarea:hover {
 
 .input {
     margin-bottom: 0.5rem;
-}
-
-label {
-    display: block;
 }
 
 textarea {

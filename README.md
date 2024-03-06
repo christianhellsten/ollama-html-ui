@@ -17,6 +17,7 @@ A HTML UI for Ollama.
 - New chat
 - Edit chat
 - Delete chat
+- Search chats
 - Clear chats
 - View settings
 - Update settings
@@ -26,6 +27,7 @@ A HTML UI for Ollama.
 
 ![Main screen](/screenshots/main.png)
 ![Settings screen](/screenshots/settings.png)
+![Search](/screenshots/search.png)
 
 ## Installing
 
@@ -79,20 +81,20 @@ $ node test
 
 ## Todo
 
+- [ ] Clear chat
 - [ ] Ollama Chat API
 - [ ] Select model in sidebar (global)
 - [ ] Select model in chat (local)
 - [ ] Delete message and response
-- [ ] Add browserslist to package.json for transpiling
 - [ ] Copy message / response
 - [ ] CSP
 - [ ] Speech recognition
 - [ ] Uploads
-- [ ] Search chats
 - [ ] IndexedDB
 
 ## Done
 
+- [x] Search chats
 - [x] Delete Chat
 - [x] Select model
 - [x] Save settings

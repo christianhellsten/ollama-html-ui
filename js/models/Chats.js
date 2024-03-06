@@ -38,7 +38,11 @@ export class Chats {
 
   // Add a new chat
   add(title, content) {
-    const newChat = new Chat(this.nextId++, title, content);
+    const newId = this.nextId++;
+    if (title === null || title === '') {
+      title = `Untitled ${newId}`;
+    }
+    const newChat = new Chat(newId, title, content);
     this.chats.push(newChat);
     this.setCurrentChat(newChat.id);
     this.saveData();

@@ -1,7 +1,7 @@
 .row {
   display: flex; /* Use flexbox layout */
-  flex-direction: row;
-  gap: 0.5rem;
+  //flex-direction: row;
+  //gap: 0.5rem;
   justify-content: space-between; /* Distribute space evenly between the buttons */
   align-items: center; /* Align items vertically */
   width: 100%; /* Container takes full width */
@@ -25,34 +25,6 @@
 /* Optional: Style for the primary button */
 .button-primary {
   /* Add specific styles for primary button if needed */
-}
-
-
-/* Chat app container */
-#chat-app {
-  display: flex;
-  height: 100vh;
-}
-
-/* Sidebar styling */
-#sidebar {
-  flex: 0 0 250px; /* fixed width */
-}
-
-/* Chat history */
-#chat-history {
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-}
-
-.buttons {
-  display: flex;
-  //flex: 0 0 60px; /* fixed width */
-
-  .button {
-    border-radius: 0;
-  }
 }
 
 #chat-input .buttons {

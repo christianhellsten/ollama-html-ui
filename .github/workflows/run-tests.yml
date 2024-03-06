@@ -19,6 +19,9 @@ jobs:
     - run: npm install
     - run: npm install parcel-bundler
     - run: npx playwright install
-    - run: nohup npm run server > server.log 2>&1 &
-    - run: sleep 5 # Wait for the server to start
-    - run: npm test
+    - run: |
+        # Run server in the background
+        nohup npm run server > server.log 2>&1 &
+        # Wait for the server to start
+        sleep 5
+        npm test

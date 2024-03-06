@@ -1,5 +1,6 @@
 import { Event } from './Event.js';
 import { ChatListItem } from './ChatListItem.js';
+import { DragAndDrop } from './DragAndDrop.js';
 import { Chat } from './models/Chat.js';
 import { AppController } from './AppController.js';
 
@@ -75,6 +76,7 @@ export class ChatList {
         const selected = chat.id === currentChatId;
         this.appendChat(chat, selected);
       });
+      new DragAndDrop('.chat-list-item');
     });
   }
 

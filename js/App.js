@@ -157,7 +157,7 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
         requestData.options = modelParameters;
       }
       // Show spinner
-      responseElement.innerHTML = '<div class="spinner"></div>';
+      responseElement.innerHTML = '<div class="waiting"></div>';
       // Make request
       this.ollamaApi.send(
         url,

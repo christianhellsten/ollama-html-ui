@@ -21,11 +21,11 @@ button:hover,
 button.selected {
   color: $button-primary-color;
   background-color: $light-color;
-    @extend .box-shadow;
+  @extend .box-shadow;
 }
 
 .button-small {
-  padding: 0.25rem 1.0rem;
+  padding: 0.25rem 1rem;
 }
 
 .button-mini {

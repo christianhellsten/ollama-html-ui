@@ -1,28 +1,28 @@
 .drop-down-menu {
-    position: relative;
+  position: relative;
 }
 
 .drop-down-menu-items {
-    background: $bg-color;
-    position: absolute;
-    top: 100%; /* Position below the button */
-    display: none; /* Hide initially */
-    @extend .box-shadow;
-    left: 0;
+  background: $bg-color;
+  position: absolute;
+  top: 100%; /* Position below the button */
+  display: none; /* Hide initially */
+  @extend .box-shadow;
+  left: 0;
 
-    .text {
-        padding: 0.5rem;
-    }
+  .text {
+    padding: 0.5rem;
+  }
 }
 
 .drop-down-menu-items.visible {
-    z-index: 10000;
-    display: inline-block;
+  z-index: 10000;
+  display: inline-block;
 }
 
 .drop-down-menu-right {
-    .drop-down-menu-items {
-        right: 0 !important;
-        left: auto;
-    }
+  .drop-down-menu-items {
+    right: 0 !important;
+    left: auto;
+  }
 }

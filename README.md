@@ -13,11 +13,13 @@ A HTML UI for Ollama.
 
 ## Features
 
-- Ollama support
+- https://ollama.ai support
 - New chat
 - Edit chat
 - Clear chats
-- Persistence of chat history using local storage
+- View settings
+- Update settings
+- Chat history (local storage)
 
 ## Screenshots
 
@@ -42,7 +44,9 @@ $ git clone git@github.com:christianhellsten/ollama-html-ui.git
 
 ```bash
 $ cd ollama-html-ui
-$ open index.html
+# Use built-in and unsafe HTTP server
+$ npm run server
+$ open http://locahost:1234
 ```
 
 ## Development

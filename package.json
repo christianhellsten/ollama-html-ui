@@ -1,7 +1,17 @@
 {
+  "name": "ollama-html-ui",
+  "version": "1.0.0",
+  "description": "Ollama HTML UI",
+  "scripts": {
+    "server": "node scripts/server.js",
+    "build": "parcel build index.html"
+  },
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.10.3",
     "cssnano": "^6.0.1",
     "postcss": "^8.4.32",
     "sass": "^1.69.5"
-  }
+  },
+  "author": "Christian Hellsten",
+  "license": "MIT"
 }

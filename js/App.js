@@ -3,9 +3,11 @@ import { Chats } from './models/Chats.js';
 import { LocalStorage } from './models/LocalStorage.js';
 import { Sidebar } from './Sidebar.js';
 import { ChatArea } from './ChatArea.js';
+import { Controller } from './Controller.js';
 
 // Configuration and DOM elements
 const storage = new LocalStorage();
+//const controller = new Controller();
 
 export class App {
   constructor() {
@@ -14,9 +16,9 @@ export class App {
     this.sidebar = new Sidebar(this.chats);
     this.chatArea = new ChatArea(this.chats);
     this.initializeElements();
-    this.render();
     this.bindEventListeners();
     this.logInitialization();
+    this.render();
   }
 
   initializeElements() {
@@ -36,21 +38,21 @@ Chat:  ${this.chats.getCurrentChat()?.id}
   }
 
   render() {
-    // Render logic here
+    this.sidebar.render();
+    this.chatArea.render();
   }
 
   bindEventListeners() {
     Event.listen('chatSelected', this.handleChatSelected);
-    this.sendButton.addEventListener('click', this.sendMessage);
-    this.abortButton.addEventListener("click", this.handleAbort);
-    this.messageInput.addEventListener('keypress', this.handleKeyPress);
+    this.sendButton.addEventListener('click', this.sendMessage.bind(this));
+    this.abortButton.addEventListener("click", this.handleAbort.bind(this));
+    this.messageInput.addEventListener('keypress', this.handleKeyPress.bind(this));
   }
 
-  handleChatSelected = () => {
-    const chat = this.chats.getCurrentChat();
+  handleChatSelected = (chat) => {
     window.history.pushState({}, '', `/chats/${chat.id}`);
-    this.chatHistory.innerHTML = chat.content;
-    this.messageInput.focus();
+    this.chatArea.render();
+    this.sidebar.render();
   }
 
   handleAbort = () => {
@@ -185,9 +187,8 @@ Chat:  ${this.chats.getCurrentChat()?.id}
   }
 
   handleResponseError = (error, responseDiv) => {
-    if (error.name === 'AbortError') {
-      console.log('Fetch aborted');
-    } else {
+    // Ignore "Abort" button
+    if (error.name !== 'AbortError') {
       this.updateResponse(responseDiv, `Error: ${error.message}`, 'system');
     }
   }

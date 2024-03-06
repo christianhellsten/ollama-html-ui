@@ -1,0 +1,23 @@
+#chat-area {
+  padding: 1rem;
+  padding-left: 0;
+  gap: 0.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#chat-header {
+  display: flex;
+  h2 {
+    flex-grow: 1;
+    margin: 0;
+  }
+}
+
+#chat-title:focus {
+  color: #222;
+  border: 1px solid #aaa;
+  background: #eef;
+  padding: 2px;
+}

@@ -2,12 +2,21 @@
   margin-right: 0.25rem;
 }
 
+i[class^="icon-"] {
+  color: #222;
+  font-size: 10px;
+}
+
 .icon-selected:before {
   content: "\203A";
 }
 
+.icon-edit:before {
+  content: "\270E"; // Unicode character for ✎
+}
+
 .icon-new:before {
-  content: "\271A"; /* Unicode for heavy plus sign */
+  content: "\002B";
 }
 
 .icon-clear:before {
@@ -20,6 +29,7 @@
 
 .icon-send:before {
   content: "\2192"; /* Unicode for → */
+  //content: '\2B06';
 }
 
 .icon-delete:before {
@@ -31,5 +41,5 @@
 }
 
 .icon-save::before {
-    content: "\1F4BE"; /* Unicode for floppy */
+  content: "\1F4BE"; /* Unicode for floppy */
 }

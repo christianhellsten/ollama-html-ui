@@ -3,7 +3,6 @@ export class ChatTitle {
     this.chats = chats;
     this.element = document.getElementById('chat-title');
     this.bindEventListeners();
-    this.render();
   }
 
   render() {
@@ -13,6 +12,13 @@ export class ChatTitle {
 
   setTitle(title) {
     this.element.textContent = title || 'New chat';
+  }
+
+  focus() {
+    const hasFocus = (document.activeElement === this.element);
+    if (!hasFocus) {
+      this.element.focus();
+    }
   }
 
   bindEventListeners() {

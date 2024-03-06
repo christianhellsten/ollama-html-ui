@@ -11,8 +11,8 @@ export class ChatForm {
   }
 
   bindEventListeners(appInstance) {
-    // Bind event listeners for the chat form
-    this.sendButton.addEventListener('click', () => appInstance.sendMessage());
+    // TODO: Bind event listeners for the chat form
+    //this.sendButton.addEventListener('click', () => appInstance.sendMessage());
     // Other event listeners...
   }
 

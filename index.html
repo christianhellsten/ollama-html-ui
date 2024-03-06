@@ -17,22 +17,27 @@
         <aside id="sidebar">
             <!-- Buttons -->
             <div class="row">
-                <button id="new-chat-button" class="col button button-primary" title="New chat"><i class="icon-new"></i></button>
+                <button id="new-chat-button" class="col button" title="New chat"><i class="icon-new"></i></button>
+                <div class="flex-align-end">
+                    <button id="clear-button" class="col button" title="Clear chats"><i class="icon-clear"></i></button>
+                    <button id="settings-button" class="col button" title="Show settings"><i class="icon-settings"></i></button>
+                </div>
             </div>
             <!-- Chats -->
             <div class="row">
                 <ul id="chat-list" class="col"></ul>
             </div>
-            <!-- Buttons -->
-            <div class="row flex-align-end">
-                <button id="clear-button" class="col button" title="Clear chats"><i class="icon-clear"></i></button>
-                <button id="settings-button" class="col button" title="Show settings"><i class="icon-settings"></i></button>
-            </div>
         </aside>
         <div id="chat-area">
-            <header id="chat-header">
+            <header id="chat-header" class="row">
                 <!-- Chat header -->
-                <h2 id="chat-title" contenteditable required title="Edit chat title">New chat</h2>
+                <h2 id="chat-title" class="col" contenteditable required title="Edit chat title">New chat</h2>
+                <button id="edit-chat-button" class="button col">
+                  <i class="icon-edit"></i>
+                </button>
+                <button id="delete-chat-button" class="button col">
+                  <i class="icon-delete"></i>
+                </button>
             </header>
             <div id="chat-history">
                 <!-- Chat messages -->
@@ -40,11 +45,11 @@
             <div id="chat-form">
                 <!-- Chat input and button -->
                 <div class="textarea">
-                  <textarea id="message-input" type="text" placeholder="Type a message..."></textarea>
+                    <textarea id="message-input" type="text" placeholder="Type a message..." contenteditable required title="Type a message..."></textarea>
                 </div>
                 <div class="buttons">
-                  <button id="send-button" class="button button-primary" title="Send"><i class="icon-send"></i></button>
-                  <button id="abort-button" class="button hidden" title="Abort"><i class="icon-abort"></i></button>
+                    <button id="send-button" class="button button-primary" title="Send"><i class="icon-send"></i></button>
+                    <button id="abort-button" class="button hidden" title="Abort"><i class="icon-abort"></i></button>
                 </div>
             </div>
         </div>
@@ -77,12 +82,17 @@
     </div>
     <!-- Chat list item template -->
     <template id="chat-list-item-template">
-      <li class="chat-list-item">
-        <i class="icon-selected icon hidden"></i>
-        <span class="chat-title"></span>
-        <a class="delete-chat-button hidden float-right">
+      <li class="chat-list-item row button">
+        <i class="icon-selected icon hidden col"></i>
+        <span class="chat-title grw col"></span>
+        <!--
+        <button class="edit-chat-button button hidden col">
+          <i class="icon-edit"></i>
+        </button>
+        <a class="delete-chat-button button hidden col">
           <i class="icon-delete"></i>
         </a>
+        -->
       </li>
     </template>
     <script type="module" src="/js/script.js"></script>

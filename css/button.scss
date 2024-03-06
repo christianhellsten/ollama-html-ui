@@ -1,0 +1,20 @@
+.button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #cfcfcf;
+}
+
+/* Primary button */
+.button-primary {
+  background-color: #0052cc;
+  color: white;
+}
+
+.button-primary:hover {
+  background-color: #0041c4;
+}

@@ -22,6 +22,10 @@
   content: "\2192"; /* Unicode for → */
 }
 
+.icon-delete:before {
+  content: "\00D7"; /* Unicode for ✖ */
+}
+
 .icon-abort:before {
   content: "\00D7"; /* Unicode for ✖ */
 }

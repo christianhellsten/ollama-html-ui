@@ -91,6 +91,7 @@ export class ChatArea {
   }
 
   createMessageDiv(message) {
+    const domId = `chat-message-${message.id}`;
     const role = message.role;
     const content = message.content;
     // Get the template and its content
@@ -102,9 +103,16 @@ export class ChatArea {
     const deleteButton = messageClone.querySelector(
       '.delete-chat-message-button',
     );
+    const copyButton = messageClone.querySelector(
+      '.copy-chat-message-button .copy-button',
+    );
+    const goodButton = messageClone.querySelector('.good-chat-message-button');
+    const badButton = messageClone.querySelector('.bad-chat-message-button');
+    const flagButton = messageClone.querySelector('.flag-chat-message-button');
 
     // Set the class for role and text content
     messageDiv.classList.add(`${role}-chat-message`);
+    messageDiv.id = domId;
     textSpan.textContent = content;
     messageDiv.spellcheck = false;
 
@@ -115,6 +123,22 @@ export class ChatArea {
     deleteButton.addEventListener('click', async () => {
       await AppController.deleteChatMessage(message.id);
       messageDiv.remove();
+    });
+    copyButton.dataset['target'] = domId;
+    flagButton.addEventListener('click', async () => {
+      console.log('flagged');
+      message.quality = 'flagged';
+      await message.save();
+    });
+    goodButton.addEventListener('click', async () => {
+      console.log('good');
+      message.quality = 'good';
+      await message.save();
+    });
+    badButton.addEventListener('click', async () => {
+      console.log('bad');
+      message.quality = 'bad';
+      await message.save();
     });
     return messageDiv;
   }

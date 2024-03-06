@@ -1,9 +1,13 @@
 export class CopyButton {
   constructor() {
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', (event) => {
       // Check if the clicked element has the class 'copy-button'
       if (event.target.classList.contains('copy-button')) {
         const targetSelector = event.target.getAttribute('data-target');
+        if (!targetSelector) {
+          console.error('The data-target attribute is not set');
+          return;
+        }
         const textToCopy = document.getElementById(targetSelector).innerText;
         // Create a temporary textarea element
         const textarea = document.createElement('textarea');

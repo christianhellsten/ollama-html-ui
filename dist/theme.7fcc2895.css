@@ -140,7 +140,7 @@ html * {
 }
 
 html {
-  font-size: 16px; /* Standard font size for body, use rem to modify font-size */
+  font-size: 14px; /* Standard font size for body, use rem to modify font-size */
 }
 
 :root {
@@ -206,8 +206,8 @@ html {
   box-shadow: 0 2px 5px var(--box-shadow-color);
 }
 
-.list-item.hover, button:hover,
-button.selected, input:focus,
+.list-item.hover, .button:hover,
+.button.selected, input:focus,
 textarea:focus,
 [contenteditable]:focus {
   box-shadow: 2px 0 6px var(--box-shadow-color) inset;
@@ -287,6 +287,19 @@ svg {
   vertical-align: middle;
 }
 
+.icon-flag::before {
+  content: "🚩"; /* Triangular Flag on Post */
+  content: "⚠";
+}
+
+.icon-good::before {
+  content: "👎"; /* Thumbs Down */
+}
+
+.icon-bad::before {
+  content: "👍"; /* Thumbs Up */
+}
+
 .icon-close::before {
   content: "×";
 }
@@ -332,8 +345,12 @@ svg {
   content: "📩";
 }
 
-.icon-delete::before {
+.icon-delete-alt::before {
   content: "❌";
+}
+
+.icon-delete::before {
+  content: "✖";
 }
 
 .icon-abort::before {
@@ -441,7 +458,8 @@ svg {
   border-bottom: 1px solid var(--border-color);
 }
 .modal-header .button {
-  background-color: var(--light-text-color);
+  color: var(--text-color);
+  background-color: var(--bg-color);
   padding: 0.35rem;
   line-height: 0.5rem;
   border-radius: 0.1rem;
@@ -562,12 +580,14 @@ ul li.hover::after {
 button {
   background-color: var(--button-secondary-bgcolor);
   z-index: 1;
-  padding: 0.75rem 1rem;
   border: none;
   cursor: pointer;
 }
-button i {
-  width: 1rem;
+
+.button {
+  padding: 0.75rem 1rem;
+}
+.button i {
   display: inline-block;
 }
 
@@ -856,6 +876,9 @@ ul li {
 .chat-list-item .chat-title {
   mask-image: linear-gradient(90deg, var(--white) 95%, transparent);
 }
+.chat-list-item .button {
+  padding: 0.25rem 0.75rem;
+}
 
 .list-item.selected {
   background: var(--white);
@@ -917,7 +940,12 @@ ul li {
   position: absolute;
   top: 100%; /* Position below the button */
   display: none; /* Hide initially */
+  font-size: 0.75rem;
+  white-space: nowrap;
   left: 0;
+}
+.drop-down-menu-items i[class^=icon-]::before {
+  padding-right: 0.5rem;
 }
 .drop-down-menu-items .text {
   padding: 0.5rem;

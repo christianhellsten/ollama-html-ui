@@ -15,7 +15,7 @@
   <body>
     <div id="chat-app">
       <header id="chat-header" class="row">
-        <button id="hamburger-menu" class="hamburger-menu button" title="Hide sidebar">
+        <button id="hamburger-menu" class="hamburger-menu button" title="Collapse or expand the sidebar">
           <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <rect x="4" y="6" width="16" height="2" fill="black"></rect>
             <rect x="4" y="11" width="16" height="2" fill="black"></rect>
@@ -40,19 +40,19 @@
             <button id="new-chat-button" class="button" title="New chat">
               <i class="icon-new"></i>
             </button>
-            <div id="chats-menu" class="drop-down-menu col">
+            <div id="chats-menu" class="drop-down-menu drop-down-menu-right col">
               <button id="chats-menu-button" class="button" title="Chats menu">
                 <i class="icon-menu"></i>
               </button>
               <div class="drop-down-menu-items hidden">
-                <button id="search-button" class="button" title="Search chats">
-                  <i class="icon-search"></i>
+                <button id="search-button" class="button row" title="Search chats">
+                  <i class="icon-search">Search chats</i>
                 </button>
-                <button id="export-button" class="button" title="Export all data">
-                  <i class="icon-download"></i>
+                <button id="export-button" class="button row" title="Export all data">
+                  <i class="icon-download">Download chats</i>
                 </button>
-                <button id="clear-button" class="button" title="Delete all chats">
-                  <i class="icon-clear"></i>
+                <button id="clear-button" class="button row" title="Delete all chats">
+                  <i class="icon-clear">Delete chats</i>
                 </button>
               </div>
             </div>
@@ -73,26 +73,26 @@
             </button>
             <div class="drop-down-menu-items hidden">
               <button id="edit-chat-button" class="button row" title="Edit chat title">
-                <i class="icon-edit"></i>
+                <i class="icon-edit">Edit title</i>
               </button>
               <button class="button copy-button row" title="Copy chat to clipboard" data-target="chat-history">
-                <i class="icon-copy"></i>
+                <i class="icon-copy">Copy chat</i>
               </button>
               <button id="delete-chat-button" class="button row" title="Delete chat">
-                <i class="icon-delete"></i>
+                <i class="icon-delete">Delete chat</i>
               </button>
               <button data-target="chat-history" class="button download-button row" title="Download chat">
-                <i class="icon-download"></i>
+                <i class="icon-download">Download chat</i>
               </button>
               <button id="chat-settings-button" class="button" title="Chat settings">
-                <i class="icon-settings"></i>
+                <i class="icon-settings">Chat settings</i>
               </button>
             </div>
           </div>
-          <button id="scroll-to-top-button" class="row">
+          <button id="scroll-to-top-button" class="row button">
             <i class="icon-scroll-to-top"></i>
           </button>
-          <button id="scroll-to-end-button" class="row">
+          <button id="scroll-to-end-button" class="row button">
             <i class="icon-scroll-to-end"></i>
           </button>
         </aside>
@@ -169,25 +169,31 @@
     <template id="chat-message-template">
       <div class="chat-message">
         <span class="chat-message-text"></span>
-        <div id="chat-message-menu" class="drop-down-menu col hoverable">
-          <button id="chats-menu-button" class="button" title="Chats menu">
-            <i class="icon-menu"></i>
-          </button>
-          <div class="drop-down-menu-items hidden">
-            <button class="delete-chat-message-button button" title="Delete chat message">
+        <div id="chat-message-menu" class="col hoverable">
+          <button class="delete-chat-message-button" title="Delete chat message">
               <i class="icon-delete"></i>
-            </button>
-          </div>
-        </div>
+          </button>
+          <button class="copy-chat-message-button" title="Copy chat message to clipboard">
+              <i class="icon-copy copy-button"></i>
+          </button>
+          <button class="good-chat-message-button copy-button" title="Good chat message">
+              <i class="icon-bad"></i>
+          </button>
+          <button class="bad-chat-message-button" title="Bad chat message">
+              <i class="icon-good"></i>
+          </button>
+          <button class="flag-chat-message-button" title="Flag chat message">
+              <i class="icon-flag"></i>
+          </button>
       </div>
-    </template>
+    </div></template>
     <!-- Chat list item template -->
     <template id="chat-list-item-template">
       <li class="chat-list-item list-item row">
         <span class="chat-title col grw"></span>
         <!--<button class="list-item-edit" title="Edit chat">...</button>-->
-        <button class="list-item-delete" title="Delete chat">
-          <i class="icon-close"></i>
+        <button class="list-item-delete button" title="Delete chat">
+          <i class="icon-delete"></i>
         </button>
       </li>
     </template>

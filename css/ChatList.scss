@@ -9,6 +9,10 @@
       transparent
     ); // Fade out title instead of ellipsis
   }
+
+  .button {
+    padding: 0.25rem 0.75rem;
+  }
 }
 
 .list-item.selected {

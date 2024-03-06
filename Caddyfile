@@ -1,5 +1,27 @@
 :80
 
-root * dist/
+# Enable the static file server
 file_server
-try_files {path} /index.html
+
+# Add compression
+encode zstd gzip
+
+# Reverse proxy configuration for the API
+reverse_proxy /api/* {
+    to http://localhost:11434
+
+    # basicauth /* {
+    #     apitoken $2a$14$sI1j0RbhzKHMZ4cHU8otHOkB3Dgl9egF2D.CXB6C0/Qk5dtaMHS/u
+    # }
+    # Remove Origin
+    # header_up -Origin
+    # Add a new Origin header
+    # header_up Origin http://127.0.0.1
+}
+
+root * dist/
+
+log {
+    output stdout
+    format json
+}

@@ -8,7 +8,7 @@
   top: 100%; /* Position below the button */
   display: none; /* Hide initially */
 
-  @extend .box-shadow;
+  @extend %box-shadow;
 
   left: 0;
 

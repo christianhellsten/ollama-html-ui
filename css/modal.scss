@@ -25,7 +25,7 @@
   h2 {
     color: $light-color;
 
-    @extend .font-weight-boldest;
+    @extend %font-weight-boldest;
   }
 }
 

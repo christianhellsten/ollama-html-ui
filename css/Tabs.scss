@@ -12,7 +12,7 @@
 }
 
 .active-tab-button {
-  @extend .box-shadow;
+  @extend %box-shadow;
 }
 
 .tab-content {

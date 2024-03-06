@@ -1,5 +1,5 @@
 label {
-  @extend .font-weight-boldest;
+  @extend %font-weight-boldest;
 
   padding-bottom: 0.5rem;
   display: block;
@@ -25,7 +25,7 @@ textarea:focus,
   border-color: lighten($secondary-color, 40%);
   outline: none !important;
 
-  @extend .box-shadow;
+  @extend %box-shadow;
 }
 
 input:hover,

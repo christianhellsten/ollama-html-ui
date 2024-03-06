@@ -1,0 +1,18 @@
+.tab-container {
+  display: flex;
+  border: 1px solid #ccc;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  border: none;
+  outline: none;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+  border-top: 1px solid #ccc;
+}

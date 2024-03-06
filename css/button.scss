@@ -5,7 +5,7 @@ button {
   background-color: $button-secondary-bgcolor;
 }
 
-.button {
+button {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: $border-radius;
@@ -15,12 +15,8 @@ button {
   }
 }
 
-.button.selected:after {
-  content: "\203A\00a0"; // \00a0 is a non-breaking space
-}
-
-.button:hover,
-.button.selected {
+button:hover,
+button.selected {
   color: $button-primary-color;
   background-color: $light-color;
 }

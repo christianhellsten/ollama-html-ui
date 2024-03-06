@@ -1,14 +1,13 @@
 import { List } from './List.js'
 import { Event } from './Event.js'
 import { Models } from './models/Models.js'
-import { Settings } from './models/Settings.js'
 
 export class ModelsList {
-  constructor (selector) {
+  constructor (selector, selectedModel) {
     this.modelList = new List(
       selector,
       Models.getNames(),
-      Settings.getModel()
+      selectedModel
     )
     this.bindEventListeners()
   }

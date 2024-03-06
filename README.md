@@ -110,12 +110,13 @@ $ node test
 - [ ] CSP
 - [ ] Speech recognition
 - [ ] Uploads
-- [ ] IndexedDB
+- [ ] Use IndexedDB instead of local storage
 - [ ] Markdown support
 - [ ] Keyboard shortcuts
 
 ## Done
 
+- [x] System prompt
 - [x] Copy message to clipboard
 - [x] Select model in settings (global)
 - [x] Select model in chat (local)
@@ -130,3 +131,22 @@ $ node test
 - [x] Abort response
 - [x] Send message
 - [x] UI tests: https://nodejs.org/api/test.html
+
+## Licensing
+
+This project is available under two licensing options:
+
+1. **Open Source License (MIT)**:
+
+   - The code in this project is available under the terms of the MIT License.
+   - You are free to use, modify, and distribute the code in your non-commercial, open source projects.
+   - View the full text of the MIT License in the [LICENSE](LICENSE) file.
+
+2. **Commercial License**:
+
+   - If you intend to use this code in a commercial project, we offer a separate commercial licensing option.
+   - Our commercial license provides additional rights and support tailored to your commercial needs.
+   - To inquire about our commercial licensing options, pricing, and terms, please contact us at [christian@aktagon.com](mailto:christian@aktagon.com) to discuss your specific requirements.
+
+We value and support both our open source community and commercial users. By providing dual licensing options, we aim to make this project accessible to a wide range of users while offering customized solutions for commercial projects.
+

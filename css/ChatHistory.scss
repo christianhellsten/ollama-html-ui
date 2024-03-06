@@ -9,13 +9,10 @@
   overflow-y: auto; /* Enable vertical scrolling */
 }
 
-#chat-history .user-message:last-child {
-  border: 1px solid $primary-color;
-}
-
 /* Base styling for all messages */
 .message {
-  padding: 1rem;
+  padding: 0.5rem;
+  padding-top: 0rem;
   position: relative;
 
   .copy-button {

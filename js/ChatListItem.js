@@ -22,6 +22,7 @@ export class ChatListItem {
     this.element.addEventListener('mouseover', this.onMouseover.bind(this))
     this.element.addEventListener('mouseout', this.onMouseout.bind(this))
     this.element.addEventListener('click', this.onClick.bind(this))
+    this.element.querySelector('.list-item-delete').addEventListener('click', this.deleteChat.bind(this))
   }
 
   onMouseover () {
@@ -39,5 +40,10 @@ export class ChatListItem {
   setTitle () {
     const chatTitle = this.content.querySelector('.chat-title')
     chatTitle.textContent = this.chat.title
+  }
+
+  deleteChat () {
+    this.chatList.chats.delete(this.chat.id)
+    this.element.remove()
   }
 }

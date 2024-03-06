@@ -18,15 +18,14 @@
 
   .button {
     background-color: var(--light-text-color);
-    border-radius: var(--border-radius);
     padding: 0.35rem;
     line-height: 0.5rem;
-    border-radius: 1rem;
+    border-radius: 0.1rem;
   }
 
   .button:hover {
     position: relative;
-    top: -1px;
+    top: 1px;
   }
 
   h2 {

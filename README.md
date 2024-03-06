@@ -13,8 +13,11 @@ A HTML UI for Ollama.
 
 ## Features
 
-- Ollama
-- Mistral
+- Ollama support
+- New chat
+- Edit chat
+- Clear chats
+- Persistence of chat history using local storage
 
 ## Installing
 
@@ -52,17 +55,20 @@ $ open http://locahost:1234
 $ parcel build index.html
 ```
 
-## TODO
+## Todo
 
-- [ ] Set model
 - [ ] Delete Chat
-- [ ] Use Chat API
+- [ ] Ollama Chat API
 - [ ] CSP
 - [ ] GPTs
 
+## Done
+
+- [x] Select model
 - [x] Save settings
 - [x] View settings
-- [x] Send message
-- [x] Abort response
-- [x] New chat
 - [x] Clear chats
+- [x] Edit chat
+- [x] New chat
+- [x] Abort response
+- [x] Send message

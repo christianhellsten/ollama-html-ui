@@ -17,16 +17,18 @@
     display: flex;
     background-color: #0052cc;
     color: white;
-    padding: 0.25rem 1rem;
+    padding: 1rem;
     margin-bottom: 1rem;
 }
 
 .modal-body {
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
 .modal-content {
+    min-width: 480px;
     background-color: white;
     padding: 20px;
     border-radius: 2px;

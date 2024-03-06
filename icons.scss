@@ -25,3 +25,7 @@
 .icon-abort:before {
   content: "\00D7"; /* Unicode for ✖ */
 }
+
+.icon-save::before {
+    content: "\1F4BE"; /* Unicode for floppy */
+}

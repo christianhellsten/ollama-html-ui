@@ -49,16 +49,27 @@
             </div>
         </div>
     </div>
+    <!-- Settings dialog -->
     <div id="settings-dialog" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Settings</h3>
             </div>
             <div class="modal-body">
-                <label for="input-ollama-url">API URL</label>
-                <input id="input-ollama-url" type="url" required class="input" placeholder="http://localhost:11434">
+                <div class="input">
+                    <label class="" for="input-ollama-url" class="hidden">URL</label>
+                    <input id="input-ollama-url" class="col" type="url" required class="input" placeholder="http://localhost:11434"/>
+                </div>
+                <div class="input">
+                    <label class="" for="input-ollama-models">Model</label>
+                    <input id="input-ollama-model" class="col" required class="input" placeholder="mistral"/>
+                </div>
+                <div class="">
+                    <h4>Available models</h4>
+                    <div id="input-ollama-models" class=""></div>
+                </div>
                 <div class="buttons row">
-                    <button id="button-save-settings" class="button grw col button-primary">Save</button>
+                    <button id="button-save-settings" class="button grw col button-primary"><i class="icon-save"> Save</i></button>
                     <button id="button-close-settings" class="button grw col">Cancel</button>
                 </div>
             </div>

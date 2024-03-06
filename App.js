@@ -3,8 +3,8 @@ import { LocalStorage } from './LocalStorage.js';
 import { SettingsDialog } from './SettingsDialog.js';
 
 // Configuration and DOM elements
-const storage = new LocalStorage();
-const chats = new Chats();
+export const storage = new LocalStorage();
+export const chats = new Chats();
 
 // App implements all UI functionality
 export class App {
@@ -28,6 +28,7 @@ export class App {
 
     // Bind event listeners
     this.bindEventListeners();
+    console.log(`~~~ Loaded App ~~~\nModel: ${storage.get('model')}\nURL: ${storage.get('url')}`);
   }
 
   render() {

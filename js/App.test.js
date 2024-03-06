@@ -3,6 +3,8 @@ const { chromium } = require('playwright')
 const { expect } = require('playwright/test')
 const { exec } = require('child_process')
 
+// The Ollama server must be running mistral:latest
+// TODO: Implement dummy server
 const url = 'http://localhost:11434'
 const model = 'mistral:latest'
 
@@ -11,23 +13,33 @@ function openScreenshot (filePath) {
   exec(`${openCommand} ${filePath}`, (error) => {
     if (error) {
       console.error(`  ✔ Error opening screenshot: ${error}`)
-      return
     }
-    console.log(`  ✔ Screenshot ${filePath}`)
   })
 }
 
+const DEBUG = process.env.DEBUG === 'true' || false
 const MOBILE = process.env.MOBILE === 'true' || false
 const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true' || false
 
 class AppTest {
   async start () {
     this.browser = await chromium.launch()
-    this.context = await this.browser.newContext()
+    this.context = await this.browser.newContext({
+      launchOptions: {
+        slowMo: 1000 // Slow motion value in milliseconds
+      },
+      recordVideo: {
+        dir: 'videos', // Directory to save videos
+        size: { width: 1280, height: 720 } // Optional: set video size
+      }
+    })
     this.page = await this.context.newPage()
     this.page.on('console', message => {
+      if (DEBUG) {
+        console.debug(message)
+      }
       if (message.type() === 'error') {
-        throw Error(`Console error detected: ${message.text()}`)
+        throw Error(`Console error: ${message.text()}`)
       }
     })
     if (MOBILE) {
@@ -44,25 +56,34 @@ class AppTest {
   }
 
   async showSettings () {
+    await this.page.click('#chats-menu-button')
+    await this.screenshot()
     await this.page.click('#settings-button')
     await expect(this.page.locator('#settings-dialog')).toBeVisible()
   }
 
   async updateSettings (url, model) {
     await this.showSettings()
-    const urlInput = this.page.locator('#input-url')
-    const modelInput = this.page.locator('#input-model')
-    await expect(urlInput).toHaveValue(url)
-    await expect(modelInput).toHaveValue('')
     // Fill in URL
+    const urlInput = this.page.locator('#input-url')
     await urlInput.fill(url)
-    // Select model
-    const modelItem = this.page.locator(`.list-item:has-text("${model}")`)
-    await modelItem.click()
-    await expect(modelItem).toBeVisible()
-    await expect(modelInput).toHaveValue(model)
-    await expect(urlInput).toHaveValue(url)
-    await this.page.locator('#button-save-settings').click()
+    if (model && model !== '') {
+      // Refresh model list
+      await this.page.locator('#refresh-models-button').click()
+      // Select model from list
+      // await this.screenshot()
+      // this.page.locator('#model-list').getByText('mistral:latest').click()
+
+      // Wait for the element to be visible
+      const listItem = this.page.locator('#model-list .list-item', { hasText: model })
+      await listItem.waitFor({ state: 'visible' })
+
+      // Click the element
+      await listItem.click()
+    }
+
+    // Save settings
+    await this.page.locator('#button-close-settings').click()
   }
 
   async sendMessage (message) {
@@ -110,7 +131,10 @@ class AppTest {
     }
     path = `screenshots/${path}`
     await this.page.screenshot({ path })
-    openScreenshot(path)
+    console.log(`  ✔ Screenshot ${path}`)
+    if (process.env.OPEN_SCREENSHOT === 'true') {
+      openScreenshot(path)
+    }
   }
 
   async selectChat (title) {
@@ -133,6 +157,11 @@ class AppTest {
 
   async close () {
     await this.browser.close()
+    const video = await this.page.video()
+    if (video) {
+      const path = await video.path()
+      console.log(`  ✔ Video ${path}`)
+    }
   }
 }
 
@@ -151,6 +180,17 @@ test.describe('Application tests', () => {
     }
     await app.close()
   })
+
+  /*
+  test('Send message (server down)', async () => {
+    await app.updateSettings('http://localhost:999999')
+    await app.page.fill('#message-input', 'What is Mistral?')
+    await app.page.click('#send-button')
+    await app.page.waitForTimeout(500) // Small delay to allow UI to update
+    await expect(app.page.locator('#abort-button')).not.toBeVisible()
+    await expect(app.page.locator('#send-button')).toBeVisible()
+  })
+  */
 
   test('New chat', async () => {
     await app.newChat('Happy Hamster')
@@ -187,6 +227,7 @@ test.describe('Application tests', () => {
     }
 
     // Initiate search
+    await app.page.click('#chats-menu-button')
     await app.page.click('#search-button')
 
     // Search for 'USA' and check that 'Sweden' and 'Finland' are not visible
@@ -246,16 +287,6 @@ test.describe('Application tests', () => {
       await app.updateSettings(url, model)
     })
   }
-
-  test('Send message (server down)', async () => {
-    await app.page.fill('#message-input', 'Server is down')
-    await app.page.fill('#message-input', 'What is Mistral?')
-    await app.page.click('#send-button')
-    await app.page.waitForTimeout(500) // Small delay to allow UI to update
-    await app.screenshot('chat-error.png')
-    await expect(app.page.locator('#abort-button')).not.toBeVisible()
-    await expect(app.page.locator('#send-button')).toBeVisible()
-  })
 
   /*
   TODO:

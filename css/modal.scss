@@ -1,7 +1,5 @@
 .modal {
     display: none;
-    //align-items: center;
-    //justify-content: center;
     position: fixed;
     top: 0;
     left: 0;
@@ -11,29 +9,40 @@
     z-index: 1000; /* ensures modal is on top */
 }
 
+.modal-header {
+    font-weight: 700;
+    background-color: $primary-color;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid $border-color;
+
+    .button {
+        border-radius: 2px;
+        padding: .5rem;
+        line-height: 0.5rem;
+    }
+
+    h2 {
+        color: $light-color;
+        @extend .font-weight-boldest;
+    }
+}
+
 .modal-content {
-    background: white;
-    min-width: 640px;
+    background: $bg-color;
+    width: 640px;
+    min-width: 320px;
+    max-width: 50vw;
     margin: auto; /* Center the modal */
     border-radius: 2px;
     overflow: hidden; /* Ensures the border-radius applies to children */
     box-shadow: 0 0 15px #444;
 }
 
-.modal-header {
-    font-weight: 700;
-    //color: white;
-    //background-color: #0052cc;
-    padding: 0rem 1rem;
-    //text-align: center;
-    border-bottom: 1px solid #ddd;
-}
-
 .modal-body {
-    padding: 20px;
+    padding: 1rem;
 }
 
 .modal.show {
-    z-index: 1000;
+    z-index: 20000;
     display: flex;
 }

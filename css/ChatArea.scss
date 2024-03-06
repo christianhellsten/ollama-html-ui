@@ -5,9 +5,7 @@
   overflow: auto;
 }
 
-#chat-title:focus {
-  color: #222;
-  border: 1px solid #aaa;
-  background: #eef;
-  padding: 2px;
+#chat-title {
+  padding-left: 0.5rem;
+  @extend .font-weight-boldest;
 }

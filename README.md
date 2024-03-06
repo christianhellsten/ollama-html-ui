@@ -15,16 +15,25 @@ A HTML UI for Ollama.
 ## Features
 
 - https://ollama.ai support
+
+**Chat**
+
 - New chat
 - Edit chat
 - Delete chat
 - Download chat
 - Copy chat to clipboard
+
+**Chats**
+
 - Search chats
 - Clear chats
+- Chat history (local storage)
+
+**Settings**
+
 - View settings
 - Update settings
-- Chat history (local storage)
 
 ## Screenshots
 
@@ -94,20 +103,22 @@ $ node test
 
 ## Todo
 
-- [ ] Clear chat
-- [ ] Edit message
 - [ ] Ollama Chat API
-- [ ] Select model in sidebar (global)
-- [ ] Select model in chat (local)
-- [ ] Delete message and response
-- [ ] Copy message / response
+- [ ] Edit message / response
+- [ ] Delete message / response
+- [ ] Clear chat
 - [ ] CSP
 - [ ] Speech recognition
 - [ ] Uploads
 - [ ] IndexedDB
+- [ ] Markdown support
+- [ ] Keyboard shortcuts
 
 ## Done
 
+- [x] Copy message to clipboard
+- [x] Select model in settings (global)
+- [x] Select model in chat (local)
 - [x] Search chats
 - [x] Delete Chat
 - [x] Select model

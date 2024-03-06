@@ -66,7 +66,7 @@ export class Sidebar {
     const regex = new RegExp(query, 'i') // 'i' for case-insensitive matching
     const chatItems = this.element.querySelectorAll('.chat-list-item')
     chatItems.forEach(function (item) {
-      const title = item.querySelector('.chat-title').textContent.toLowerCase()
+      const title = item.textContent.toLowerCase()
       const match = regex.test(title)
       // console.log(`Search ${regex} ${title}`)
       if (match) {

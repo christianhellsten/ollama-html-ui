@@ -3,9 +3,16 @@
 }
 
 .drop-down-menu-items {
+    background: $bg-color;
     position: absolute;
     top: 100%; /* Position below the button */
     display: none; /* Hide initially */
+    @extend .box-shadow;
+    left: 0;
+
+    .text {
+        padding: 0.5rem;
+    }
 }
 
 .drop-down-menu-items.visible {
@@ -16,5 +23,6 @@
 .drop-down-menu-right {
     .drop-down-menu-items {
         right: 0 !important;
+        left: auto;
     }
 }

@@ -1,5 +1,6 @@
 import { Event } from '../Event.js'
 import { Chat } from './Chat.js'
+import { Settings } from './Settings.js'
 
 export class Chats {
   constructor () {
@@ -18,7 +19,7 @@ export class Chats {
       Object.keys(data).forEach(key => {
         this[key] = data[key]
       })
-      this.chats = this.chats.map(chat => new Chat(chat.id, chat.title, chat.content))
+      this.chats = this.chats.map(chat => new Chat(chat.id, chat.title, chat.content, chat.model))
     }
   }
 
@@ -42,7 +43,7 @@ export class Chats {
     if (title === null || title === '') {
       title = `Untitled ${newId}`
     }
-    const newChat = new Chat(newId, title, content)
+    const newChat = new Chat(newId, title, content, Settings.getModel())
     this.chats.push(newChat)
     this.setCurrentChat(newChat.id)
     this.saveData()
@@ -67,6 +68,18 @@ export class Chats {
     const chat = this.chats.find(chat => chat.id === id)
     if (chat) {
       Object.assign(chat, { title })
+      this.saveData()
+      Event.emit('chatUpdated', chat)
+    } else {
+      console.error('Chat not found for update:', id)
+    }
+  }
+
+  // Update an existing chat's model
+  updateModel (id, model) {
+    const chat = this.chats.find(chat => chat.id === id)
+    if (chat) {
+      Object.assign(chat, { model })
       this.saveData()
       Event.emit('chatUpdated', chat)
     } else {

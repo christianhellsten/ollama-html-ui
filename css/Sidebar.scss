@@ -15,6 +15,10 @@
   // transition: display 0.4s;
 }
 
+#search-input {
+  padding-left: 1.5rem;
+}
+
 #sidebar.collapsed {
   display: none;
   flex: 0 0 0px; /* Collapsed state with zero width */

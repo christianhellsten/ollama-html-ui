@@ -9,6 +9,7 @@
     "test": "node --test --test-reporter=spec",
     "test:only": "node  --test --test-reporter=spec --test-only",
     "test:mobile": "MOBILE=true node --test --test-reporter=spec",
+    "test:video": "VIDEO=true node --test --test-reporter=spec",
     "format": "prettier --write \"**/*.{js,html,scss}\"",
     "lint-js": "eslint \"**/*.js\" --fix",
     "lint-css": "stylelint \"**/*.scss\" --fix",

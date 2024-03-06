@@ -4,13 +4,13 @@
 
 i[class^='icon-'] {
   color: var(--icon-color);
-  font-size: 12px;
+  font-size: 0.75rem;
   vertical-align: middle;
 }
 
 svg {
-  width: 24px;
-  height: 24px;
+  width: 1.5rem;
+  height: 1.5rem;
   vertical-align: middle;
 }
 
@@ -36,7 +36,7 @@ svg {
 
 .icon-new::before {
   content: '\002B';
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .icon-search::before {

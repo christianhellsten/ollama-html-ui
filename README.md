@@ -43,8 +43,10 @@ $ open http://locahost:1234
 
 ## TODO
 
-- [ ] New Chat
 - [ ] Delete Chat
-- [ ] Local storage
+- [ ] Update URL to /chats/:id
 - [ ] Settings
 - [ ] CSP
+
+- [x] New Chat
+- [x] Local storage

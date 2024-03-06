@@ -38,12 +38,14 @@ ul {
     border-top-color: #cccccc5e;
   }
 
+  /*
   li.selected::after {
     position: absolute;
-    right: 1rem;
+    right: 1.5rem;
     padding-left: 0.5rem;
-    content: '\203A\00a0'; // \00a0 is a non-breaking space
+    content: '\203A'; // \00a0 is a non-breaking space
   }
+  */
 
   li.hover {
     border-top-color: #cccccc5e;

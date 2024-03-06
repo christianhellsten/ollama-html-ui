@@ -1,9 +1,11 @@
 .hoverable {
   visibility: collapse;
+  transition: visibility 0s; /* Add a transition for smooth animation */
 }
 
 .hover {
   .hoverable {
     visibility: visible;
+    transition: visibility 0.7s ease-in-out; /* Add a transition for smooth animation */
   }
 }

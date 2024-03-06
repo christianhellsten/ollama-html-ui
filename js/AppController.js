@@ -1,8 +1,10 @@
+import { UINotification } from './UINotification.js';
 import { Event } from './Event.js';
 import { Chat } from './models/Chat.js';
 import { ChatMessage } from './models/ChatMessage.js';
 import { Settings } from './models/Settings.js';
 
+// TODO: Move all actions here?
 export class AppController {
   static async updateChat(chat, data) {
     Object.assign(chat, data);
@@ -29,6 +31,7 @@ export class AppController {
   }
 
   static async deleteChatMessage(messageId) {
+    UINotification.show('Deleted message').autoDismiss();
     const message = await ChatMessage.get(messageId);
     message.delete();
   }

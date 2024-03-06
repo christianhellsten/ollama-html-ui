@@ -4,9 +4,13 @@
   "description": "Ollama HTML UI",
   "scripts": {
     "server": "node scripts/server.js",
+    "test": "node App.test.js",
     "build": "parcel build index.html"
   },
+  "dependencies": {
+  },
   "devDependencies": {
+    "playwright": "^1.40.1",
     "@parcel/transformer-sass": "^2.10.3",
     "cssnano": "^6.0.1",
     "postcss": "^8.4.32",

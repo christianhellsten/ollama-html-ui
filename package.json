@@ -3,15 +3,5 @@
     "cssnano": "^6.0.1",
     "postcss": "^8.4.32",
     "sass": "^1.69.5"
-  },
-  "dependencies": {
-    "grid": "^4.10.8",
-    "grid.css": "^0.6.1",
-    "reset": "^0.1.0",
-    "reset.css": "^2.0.2",
-    "style": "^0.0.3",
-    "style.css": "^1.0.3",
-    "typography": "^0.16.24",
-    "typography.css": "^0.1.0"
   }
 }

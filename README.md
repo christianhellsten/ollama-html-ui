@@ -8,7 +8,7 @@ A HTML UI for Ollama.
 
 ## Goals
 
-- Zero dependencies
+- Zero dependencies: Vanilla HTML, CSS, and Javascript
 - Simple installation: download and open in browser
 
 ## Features
@@ -18,6 +18,11 @@ A HTML UI for Ollama.
 - Edit chat
 - Clear chats
 - Persistence of chat history using local storage
+
+## Screenshots
+
+![Main screen](/screenshots/main.png)
+![Settings screen](/screenshots/settings.png)
 
 ## Installing
 
@@ -44,7 +49,9 @@ $ open index.html
 ## Development
 
 ```bash
-$ yarn add --dev parcel
+$ yarn global add parcel-bundler
+# Alternatively, use npm:
+# npm install -g parcel-bundler
 $ parcel index.html
 $ open http://locahost:1234
 ```

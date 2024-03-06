@@ -1,5 +1,5 @@
 :80
 
-root * dist/
+root * /srv
 file_server
 try_files {path} /index.html

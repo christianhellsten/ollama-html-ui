@@ -4,7 +4,7 @@
 
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
 
-A HTML UI for Ollama.
+A HTML UI for [Ollama](https://ollama.ai).
 
 ## Goals
 
@@ -12,32 +12,6 @@ A HTML UI for Ollama.
 - Cross browser: support last 2 versions with more than > 0.5% global use
 - Zero dependencies: HTML, CSS, and JavaScript (less than 10 Kb gzipped)
 - Simple installation: run in your browser, host on your own server
-
-## Features
-
-- https://ollama.ai support
-
-**Chat**
-
-- New chat
-- Edit chat
-- Delete chat
-- Download chat
-- Scroll to top/bottom
-- Copy chat to clipboard
-
-**Chats**
-
-- Search chats
-- Clear chats
-- Chat history
-
-**Settings**
-
-- URL
-- Model
-- System prompt
-- Model parameters
 
 ## Screenshots
 
@@ -55,53 +29,69 @@ A HTML UI for Ollama.
 ![Settings screen](/screenshots/mobile-settings.png)
 ![Search](/screenshots/mobile-search.png)
 
-## Installing
+## How to install Ollama
 
-First, install and start [Olama](https://ollama.ai/).
+**Manually**
+
+Download [Ollama](https://ollama.ai/) from the website.
+
+**MacOS**
+
+```bash
+brew install ollama
+```
+
+**Linux**
+
+For instructions on how to install Ollama on Linux, see [https://ollama.ai/download/linux](https://ollama.ai/download/linux).
+
+## How to install and run the Ollama UI
+
+To run the Ollama UI, all you need is a web server that serves dist/index.html
+and the bundled JS and CSS file.
+
+First, start Ollama:
 
 ```bash
 $ ollama run dolphin-phi
 ```
 
-Next, clone this repository:
+**Using Caddy**
+
+To run the Ollama UI using [Caddy](https://caddyserver.com/), execute the following command from the command line:
 
 ```bash
 $ git clone git@github.com:christianhellsten/ollama-html-ui.git
+$ caddy run
 ```
-
-## Running
 
 **Using Docker**
 
-To run the application using Docker, execute the following command:
+To run the Ollama UI using Docker, execute the following command from the command line:
 
 ```bash
-docker run -p 80:80 aktagon/ollama-html-ui
+$ docker run -p 80:80 aktagon/ollama-html-ui
 ```
 
-**Using the built-in server**
-
-To run the application using the built-in server, execute the following command:
+Alternatively, build the image yourself:
 
 ```bash
+$ git clone git@github.com:christianhellsten/ollama-html-ui.git
+$ docker build -t ollama-html-ui .
+$ docker run -p 80:80 ollama-html-ui
+```
+
+<details>
+  <summary>Contributing</summary>
+Clone the repository:
+
+```bash
+$ git clone git@github.com:christianhellsten/ollama-html-ui.git
 $ cd ollama-html-ui
-# Use built-in and unsafe HTTP server
-$ npm run server
-$ open http://locahost:1234
-```
-
-## Deployment
-
-```bash
-$ parcel build index.html
-```
-
-## Development
-
-```bash
 $ yarn global add parcel-bundler
 # Alternatively, use npm:
 # npm install -g parcel-bundler
+$ npm install
 $ parcel index.html
 $ open http://locahost:1234
 ```
@@ -117,40 +107,79 @@ $ ollama run dolphin-phi
 $ node test
 ```
 
-## TODO
+## Deployment
 
-- [ ] Edit message / response
-- [ ] Delete message / response
-- [ ] Clear chat
-- [ ] CSP
-- [ ] Speech recognition
-- [ ] Image upload / multi-modal
-- [ ] Markdown support
-- [ ] Keyboard shortcuts
+```bash
+$ parcel build index.html
+```
+  </summary>
+</details>
 
-## Done
 
-- [x] Ollama chat API / chat memory
-- [x] IndexedDB persistence
-- [x] Model parameters
-- [x] System prompt
-- [x] Copy message to clipboard
-- [x] Select model in settings (global)
-- [x] Select model in chat (local)
-- [x] Search chats
-- [x] Delete Chat
-- [x] Select model
-- [x] Save settings
-- [x] View settings
-- [x] Clear chats
-- [x] Edit chat
-- [x] New chat
-- [x] Abort response
-- [x] Send message
-- [x] UI tests: https://nodejs.org/api/test.html
+<details>
+  <summary>Tasks</summary>
+  - [ ] Edit message / response
+  - [ ] Clear chat
+  - [ ] CSP
+  - [ ] Speech recognition
+  - [ ] Image upload / multi-modal
+  - [ ] Markdown support
+  - [ ] Keyboard shortcuts
 
-## Licensing
+  ## Done
 
+  - [x] Delete message / response
+  - [x] Ollama chat API / chat memory
+  - [x] IndexedDB persistence
+  - [x] Model parameters
+  - [x] System prompt
+  - [x] Copy message to clipboard
+  - [x] Select model in settings (global)
+  - [x] Select model in chat (local)
+  - [x] Search chats
+  - [x] Delete Chat
+  - [x] Select model
+  - [x] Save settings
+  - [x] View settings
+  - [x] Clear chats
+  - [x] Edit chat
+  - [x] New chat
+  - [x] Abort response
+  - [x] Send message
+  - [x] UI tests: https://nodejs.org/api/test.html
+  </summary>
+</details>
+
+<details>
+  <summary>Features</summary>
+    - https://ollama.ai support
+
+    **Chat**
+
+    - New chat
+    - Edit chat
+    - Delete chat
+    - Download chat
+    - Scroll to top/bottom
+    - Copy chat to clipboard
+
+    **Chats**
+
+    - Search chats
+    - Clear chats
+    - Chat history
+
+    **Settings**
+
+    - URL
+    - Model
+    - System prompt
+    - Model parameters
+  </summary>
+</details>
+
+<details>
+  <summary>Licensing</summary>
 This project is available under two licensing options:
 
 1. **Open Source License (MIT)**:
@@ -166,4 +195,5 @@ This project is available under two licensing options:
    - To inquire about our commercial licensing options, pricing, and terms, please contact us at [christian@aktagon.com](mailto:christian@aktagon.com) to discuss your specific requirements.
 
 We value and support both our open source community and commercial users. By providing dual licensing options, we aim to make this project accessible to a wide range of users while offering customized solutions for commercial projects.
-
+  </summary>
+</details>

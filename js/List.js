@@ -1,6 +1,5 @@
 export class List {
     constructor(containerId, items) {
-        console.log(`List ${containerId}`)
         this.container = document.getElementById(containerId);
         this.items = items;
         this.render();

@@ -1,4 +1,3 @@
-// Classes
 export class LocalStorage {
   // Set a value in localStorage
   set(key, value) {

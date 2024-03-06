@@ -16,6 +16,7 @@ A HTML UI for Ollama.
 - https://ollama.ai support
 - New chat
 - Edit chat
+- Delete chat
 - Clear chats
 - View settings
 - Update settings
@@ -74,6 +75,10 @@ $ parcel build index.html
 - [ ] Add browserslist to package.json for transpiling
 - [ ] Copy message / response
 - [ ] CSP
+- [ ] Speech recognition
+- [ ] Uploads
+- [ ] Search chats
+- [ ] IndexedDB
 - [ ] Unit and UI tests: https://nodejs.org/api/test.html
 
 ## Done

@@ -54,28 +54,6 @@
   flex-direction: column;
 }
 
-/* Message input area */
-#chat-input {
-  flex: 0 0 60px; /* fixed height */
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  background-color: #fff;
-  border-top: 1px solid #ccc;
-}
-
-/* Message input area */
-#chat-input {
-  flex: 0 0 60px; /* fixed height */
-  gap: 0.5rem;
-  display: flex;
-}
-
-#chat-input .textarea {
-  display: flex;
-  flex-grow: 1;
-}
-
 .buttons {
   display: flex;
   flex: 0 0 60px; /* fixed width */

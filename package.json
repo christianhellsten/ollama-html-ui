@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Ollama HTML UI",
   "type": "module",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "server": "node scripts/server.js",
     "test": "node --test --test-reporter=spec",

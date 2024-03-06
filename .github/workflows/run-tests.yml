@@ -1,6 +1,12 @@
 name: Run Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -12,6 +18,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -28,3 +43,10 @@ jobs:
         export GITHUB_ACTIONS=true
         npm run test
         npm run test:mobile
+
+    - name: Upload server log
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: server-log
+        path: server.log

@@ -6,10 +6,12 @@ import { Sidebar } from './Sidebar.js';
 import { AppController } from './AppController.js';
 import { CopyButton } from './CopyButton.js';
 import { OllamaApi } from './OllamaApi.js';
+// import { OpenAiApi } from './OpenAiApi.js';
 import { DownloadButton } from './DownloadButton.js';
 import { DropDownMenu } from './DropDownMenu.js';
 import { SettingsDialog } from './SettingsDialog.js';
 import { ChatSettingsDialog } from './ChatSettingsDialog.js';
+import { ChatModelInfo } from './ChatModelInfo.js';
 // import { MarkdownFormatter } from './MarkdownFormatter.js'
 import { ChatArea } from './ChatArea.js';
 
@@ -24,16 +26,27 @@ export class App {
   constructor() {
     this.sidebar = new Sidebar();
     this.chatArea = new ChatArea();
-    this.ollamaApi = new OllamaApi();
-    this.settingsDialog = new SettingsDialog();
-    this.chatSettingsDialog = new ChatSettingsDialog();
+    this.chatModelInfo = new ChatModelInfo();
+    this.api = new OllamaApi();
+    // this.api = new OpenAiApi();
+    this.settingsDialog = new SettingsDialog({
+      domId: 'settings-dialog',
+      buttonId: 'settings-button',
+      title: 'Global settings',
+      templateId: 'settings-dialog-template',
+    });
+    this.chatSettingsDialog = new ChatSettingsDialog({
+      domId: 'chat-settings-dialog',
+      buttonId: 'chat-settings-button',
+      title: 'Chat settings',
+      templateId: 'settings-dialog-template',
+    });
     this.downloadButton = new DownloadButton();
     this.copyButton = new CopyButton();
     this.dropDownMenu = new DropDownMenu();
     this.initializeElements();
     this.bindEventListeners();
     this.logInitialization();
-    this.render();
   }
 
   initializeElements() {
@@ -53,11 +66,6 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
     console.log(msg);
   }
 
-  render() {
-    this.sidebar.render();
-    this.chatArea.render();
-  }
-
   bindEventListeners() {
     Event.listen('chatSelected', this.handleChatSelected);
     // this.sendButton.addEventListener('click', this.sendMessage.bind(this));
@@ -73,7 +81,7 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
   };
 
   handleAbort = () => {
-    this.ollamaApi.abort();
+    this.api.abort();
     this.enableForm();
     console.log('Request aborted');
   };
@@ -138,6 +146,14 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
         systemMessage,
         responseElement,
       };
+      const requestData = await this.api.makeRequest(
+        chat,
+        userMessage,
+        systemPrompt,
+        modelParameters,
+      );
+      /*
+      console.dir(requestData);
       const requestData = {
         prompt: userMessage,
         model: chat.model,
@@ -154,10 +170,12 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
       if (modelParameters) {
         requestData.options = modelParameters;
       }
+      */
       // Show spinner
       responseElement.textElement.innerHTML = '<div class="waiting"></div>';
+      this.chatArea.scrollToEnd();
       // Make request
-      this.ollamaApi.send(
+      this.api.send(
         url,
         requestData,
         (request, response) =>
@@ -184,7 +202,7 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
 
   handleResponseError(request, error) {
     // Ignore "Abort" button
-    if (error.name !== 'AbortError') {
+    if (error !== undefined && error.name !== 'AbortError') {
       console.error(`Error: ${error.message}`);
     }
     this.chatArea.scrollToEnd();

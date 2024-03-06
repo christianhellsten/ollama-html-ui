@@ -194,7 +194,7 @@ html {
     --modal-header-bg-color: var(--bg-color);
   }
 }
-.user-chat-message {
+#chat-model-info .chat-model-name, .user-chat-message {
   font-variation-settings: "wght" 600;
 }
 
@@ -731,6 +731,11 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  /* For Mozilla Firefox */
+  -moz-osx-font-smoothing: grayscale;
+  /* Modern browsers (WebKit-based) */
+  -webkit-font-smoothing: antialiased;
+  /* Fallback for other browsers */
   /* stylelint-disable-next-line property-no-unknown */
   font-smoothing: antialiased;
 }
@@ -761,22 +766,30 @@ ul li {
 }
 
 #sidebar {
-  transition: min-width 0.5s ease-out, max-width 1s ease-out;
+  transition: min-width 0.5s ease-out, max-width 0.5s ease-out;
 }
 
 #sidebar.collapsed {
-  transition: min-width 0.5s ease-in, max-width 1s ease-in;
+  transition: min-width 0.5s ease-in, max-width 0.5s ease-in;
 }
 
 .modal {
+  opacity: 0%;
+  transition: opacity 0.5s ease;
+}
+.modal .modal-content {
   transform: scale(0.9); /* Start slightly scaled down */
-  transition: opacity 0.5s ease, transform 0.5s ease-in; /* Transition effect */
+  transition: transform 0.5s ease-in;
 }
 
 .modal.show {
-  transition: opacity 0.5s ease, transform 1s ease-out; /* Transition effect */
-  transform: scale(1); /* Scale to original size */
+  opacity: 100%;
+  transition: opacity 0.5s ease;
   pointer-events: auto; /* Allow interactions */
+}
+.modal.show .modal-content {
+  transform: scale(1); /* Scale to original size */
+  transition: transform 0.5s ease-out;
 }
 
 @media (width <= 1024px) {
@@ -955,6 +968,9 @@ ul li {
   background-color: var(--secondary-bg-color);
 }
 
+#chat-model-info {
+  padding: 0.25rem 0.75rem;
+}
 #chat-title {
   padding: 0.5rem 0.25rem;
   font-size: 1.2rem;

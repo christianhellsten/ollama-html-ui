@@ -7,22 +7,32 @@ ul {
 
 // Sidebar
 #sidebar {
-    transition: min-width  0.5s ease-out, max-width 1s ease-out;
+    transition: min-width  0.5s ease-out, max-width 0.5s ease-out;
 }
 
 #sidebar.collapsed {
-    transition: min-width 0.5s ease-in, max-width 1s ease-in;
+    transition: min-width 0.5s ease-in, max-width 0.5s ease-in;
 }
 
 // Modal dialogs
 .modal {
-  transform: scale(0.9); /* Start slightly scaled down */
-  transition: opacity 0.5s ease, transform 0.5s ease-in; /* Transition effect */
+  opacity: 0%;
+  transition: opacity 0.5s ease;
+
+  .modal-content {
+    transform: scale(0.9); /* Start slightly scaled down */
+    transition: transform 0.5s ease-in;
+  }
 }
 
 .modal.show {
-  transition: opacity 0.5s ease, transform 1s ease-out; /* Transition effect */
-  transform: scale(1); /* Scale to original size */
+  opacity: 100%;
+  transition: opacity 0.5s ease;
+
+  .modal-content {
+    transform: scale(1); /* Scale to original size */
+    transition: transform 0.5s ease-out;
+  }
   pointer-events: auto; /* Allow interactions */
 }
 

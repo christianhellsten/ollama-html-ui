@@ -135,7 +135,7 @@
               </button>
               <button
                 id="chat-settings-button"
-                class="button"
+                class="button row"
                 title="Chat settings"
               >
                 <i class="icon-settings">Chat settings</i>
@@ -150,6 +150,7 @@
           </button>
         </aside>
       </div>
+      <div id="chat-model-info">Talking to: <span class="chat-model-name"></span></div>
       <div id="chat-form">
         <!-- Chat input and button -->
         <div class="textarea">
@@ -175,84 +176,69 @@
       </div>
     </div>
     <!-- Settings dialog -->
-    <div id="settings-dialog" class="modal">
-      <div class="modal-content">
-        <div class="modal-header row">
-          <h2 class="col grw">Settings</h2>
-          <button class="button col button-close button-secondary">
-            <i class="icon-close"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="input">
-            <label class="" for="input-url" class="hidden">URL</label>
-            <input
-              id="input-url"
-              autofocus
-              class="col"
-              type="url"
-              required
-              class="input"
-              placeholder="Example: http://localhost:11434"
-            />
+    <template id="settings-dialog-template">
+      <div class="settings-dialog modal">
+        <div class="modal-content">
+          <div class="modal-header row">
+            <h2 class="modal-title col grw">Settings</h2>
+            <button class="button col button-close button-secondary">
+              <i class="icon-close"></i>
+            </button>
           </div>
-          <div class="input">
-            <label class="" for="model-list">Model</label>
-            <div class="row">
-              <ul id="model-list" class="col"></ul>
-              <button
-                class="refresh-models-button button col"
-                title="Refresh model list"
-              >
-                <i class="icon-refresh"></i>
-              </button>
+          <div class="modal-body">
+            <div class="input">
+              <label class="" for="input-url" class="hidden">URL</label>
+              <input
+                  id="input-url"
+                  autofocus
+                  class="col"
+                  type="url"
+                  required
+                  class="input"
+                  placeholder="Example: http://localhost:11434"
+                  />
+            </div>
+            <div class="input">
+              <label class="" for="model-list">Model</label>
+              <div class="row">
+                <ul id="model-list" class="col"></ul>
+                <button
+                    class="refresh-models-button button col"
+                    title="Refresh model list"
+                    >
+                    <i class="icon-refresh"></i>
+                </button>
+              </div>
+            </div>
+            <div class="input">
+              <label class="" for="input-system-prompt">System prompt</label>
+              <textarea
+                  id="input-system-prompt"
+                  class="row"
+                  rows="3"
+                  placeholder="You are a helpful assistant."
+                  ></textarea>
+            </div>
+            <div class="input">
+              <label class="" for="input-model-parameters"
+                              >Model parameters</label
+                            >
+                            <textarea
+                                id="input-model-parameters"
+                                class="row"
+                                rows="3"
+                                placeholder="{ 'temperature': 0, 'stop': 'AI assistant:', 'num_ctx': 4096 }"
+                                ></textarea>
             </div>
           </div>
-          <div class="input">
-            <label class="" for="input-system-prompt">System prompt</label>
-            <textarea
-              id="input-system-prompt"
-              class="row"
-              rows="3"
-              placeholder="You are a helpful assistant."
-            ></textarea>
-          </div>
-          <div class="input">
-            <label class="" for="input-model-parameters"
-              >Model parameters</label
-            >
-            <textarea
-              id="input-model-parameters"
-              class="row"
-              rows="3"
-              placeholder="{ 'temperature': 0, 'stop': 'AI assistant:', 'num_ctx': 4096 }"
-            ></textarea>
-          </div>
         </div>
       </div>
-    </div>
-    <!-- Chat settings dialog -->
-    <div id="chat-settings-dialog" class="modal">
-      <div class="modal-content">
-        <div class="modal-header row">
-          <h2 class="col grw chat-title">Chat settings</h2>
-          <button class="button button-close col button-secondary">
-            <i class="icon-close"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="input">
-            <label class="" for="chat-model-list">Model</label>
-            <ul id="chat-model-list"></ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    </template>
     <!-- Chat message template -->
     <template id="chat-message-template">
       <div class="chat-message row">
         <div class="col height-100">
-          <div class="user-icon system-icon">&#x25A0;</div>
+          <div class="user-icon system-icon">AI</div>
           <div class="user-icon you-icon">You</div>
           <div class="hoverable chat-message-menu">
             <button

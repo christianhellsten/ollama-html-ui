@@ -9,3 +9,11 @@
 #chat-menu-button {
   background-color: var(--secondary-bg-color);
 }
+
+#chat-model-info {
+  padding: 0.25rem 0.75rem;
+
+  .chat-model-name {
+    @extend %font-weight-bolder;
+  }
+}

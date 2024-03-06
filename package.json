@@ -6,7 +6,7 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "server": "node scripts/server.js",
-    "test": "npm run test:all && npm run test:mobile && npm run test:video",
+    "test": "yarn run test:all && yarn run test:mobile && yarn run test:video",
     "test:all": "node --test --test-reporter=spec",
     "test:mobile": "MOBILE=true node --test --test-reporter=spec",
     "test:video": "VIDEO=true node --test --test-reporter=spec",
@@ -17,6 +17,7 @@
     "build": "parcel build index.html"
   },
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.11.0",
     "cssnano": "^6.0",
     "eslint": "^8.56",
     "eslint-config-prettier": "^9.1",
@@ -24,6 +25,7 @@
     "eslint-plugin-import": "^2.29",
     "eslint-plugin-n": "^16.6",
     "eslint-plugin-promise": "^6.1",
+    "parcel": "^2.11.0",
     "playwright": "^1.40.1",
     "postcss": "^8.4.32",
     "prettier": "^3.2.4",

@@ -22,6 +22,7 @@ export class Sidebar {
       this.element.classList.add('collapsed');
     }
     this.bindEventListeners();
+    this.render();
   }
 
   render() {

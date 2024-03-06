@@ -8,7 +8,9 @@
   background-color: $primary-color;
   padding: 1rem;
   margin: 1rem;
+
   @extend .box-shadow;
+
   border-radius: $border-radius;
 
   .button {

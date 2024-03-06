@@ -16,6 +16,7 @@
     display: flex;
     position: relative;
     height: 100%;
+
     .button {
       border-radius: 3px;
       background: transparent;
@@ -25,7 +26,7 @@
   textarea {
     padding: 0.5rem;
     resize: none;
-    border: 0px;
+    border: 0;
   }
 
   textarea:focus {

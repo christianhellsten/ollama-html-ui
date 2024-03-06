@@ -7,7 +7,9 @@
   position: absolute;
   top: 100%; /* Position below the button */
   display: none; /* Hide initially */
+
   @extend .box-shadow;
+
   left: 0;
 
   .text {

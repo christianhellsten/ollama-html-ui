@@ -19,7 +19,7 @@ export class Chats {
 
   // Load the whole Chats object from local storage
   loadData() {
-    const dataJSON = localStorage.getItem('chatsData');
+    const dataJSON = localStorage.getItem('chats');
     const data = dataJSON ? JSON.parse(dataJSON) : null;
 
     if (data) {
@@ -38,7 +38,7 @@ export class Chats {
   // Save chats to local storage
   saveData() {
     const dataJSON = JSON.stringify(this);
-    localStorage.setItem('chatsData', dataJSON);
+    localStorage.setItem('chats', dataJSON);
   }
 
   // Clear saved data
@@ -89,6 +89,7 @@ export class Chats {
     const chatExists = this.chats.some(chat => chat.id === id);
     if (chatExists) {
       this.currentChatId = id;
+      this.saveData();
     } else {
       console.error('Chat not found');
     }

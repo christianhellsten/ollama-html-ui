@@ -2,57 +2,41 @@ import { LocalStorage } from './LocalStorage.js';
 
 export class SettingsDialog {
     constructor() {
+        this.domId = 'settings-dialog';
         this.storage = new LocalStorage();
         this.createDialogElements();
         this.attachEventListeners();
         this.loadSettings();
     }
 
+    show() {
+        this.modal.classList.add('show');
+    }
+
+    hide() {
+        this.modal.classList.remove('show');
+    }
+
     createDialogElements() {
-        this.modal = document.createElement('div');
-        this.modal.className = 'modal';
-
-        this.modalContent = document.createElement('div');
-        this.modalContent.className = 'modal-content';
-
-        this.urlInput = document.createElement('input');
-        this.urlInput.type = 'text';
-        this.urlInput.placeholder = 'Enter URL';
-
-        this.saveButton = document.createElement('button');
-        this.saveButton.textContent = 'Save';
+        this.modal = document.getElementById(this.domId);
+        this.urlInput = document.getElementById('input-ollama-url');
+        this.saveButton = document.getElementById('button-save-settings');
         this.saveButton.onclick = () => this.saveSettings();
-
-        this.closeButton = document.createElement('button');
-        this.closeButton.textContent = 'Close';
-        this.closeButton.onclick = () => this.hideDialog();
-
-        this.modalContent.appendChild(this.urlInput);
-        this.modalContent.appendChild(this.saveButton);
-        this.modalContent.appendChild(this.closeButton);
-        this.modal.appendChild(this.modalContent);
-        document.body.appendChild(this.modal);
+        this.closeButton = document.getElementById('button-close-settings');
+        this.closeButton.onclick = () => this.hide();
     }
 
     attachEventListeners() {
         // Optional: Implement event listeners if needed (e.g., keyboard shortcuts)
     }
 
-    showDialog() {
-        this.modal.classList.add('show');
-    }
-
-    hideDialog() {
-        this.modal.classList.remove('show');
-    }
-
     saveSettings() {
-        this.storage.set('settingsUrl', this.urlInput.value);
-        this.hideDialog();
+        this.storage.set('url', this.urlInput.value);
+        this.hide();
     }
 
     loadSettings() {
-        const url = this.storage.get('settingsUrl', '');
+        const url = this.storage.get('url', '');
         this.urlInput.value = url;
     }
 }

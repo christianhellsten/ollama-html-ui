@@ -1,5 +1,6 @@
 /* General styling */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -30,13 +31,30 @@ textarea {
 
 /* Styling for chat list */
 #chat-list {
+  width: 100%;
   padding: .5rem 0;
 
   .chat-list-item {
+    cursor: pointer;
     display: block;
     width: 100%;
+    font-weight: 700;
     background: #efefef;
     padding: 0.75rem;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ececec;
+
+    a:visited {
+      color: #222;
+    }
+  }
+
+  .selected {
+    background: #fefefe;
+  }
+
+  .chat-list-item:hover {
+    background: #fefefe;
   }
 }
 
@@ -44,7 +62,7 @@ textarea {
 #chat-header {
   background-color: #0052cc;
   color: white;
-  padding: 0 1rem;
+  padding: 0.25rem 1rem;
 }
 
 /* Styling for chat history container */

@@ -17,9 +17,7 @@
         <aside id="sidebar">
             <!-- Buttons -->
             <div class="row">
-                <button id="new-chat-button" class="col grw button button-primary" title="New chat"><i class="icon-new"></i></button>
-                <button id="settings-button" class="col grw button" title="Show settings"><i class="icon-settings"></i></button>
-                <button id="clear-button" class="col grw button" title="Clear chats"><i class="icon-clear"></i></button>
+                <button id="new-chat-button" class="col button button-primary" title="New chat"><i class="icon-new"></i></button>
             </div>
             <!-- Chats -->
             <div class="row">
@@ -27,12 +25,14 @@
             </div>
             <!-- Buttons -->
             <div class="row flex-align-end">
+                <button id="clear-button" class="col button" title="Clear chats"><i class="icon-clear"></i></button>
+                <button id="settings-button" class="col button" title="Show settings"><i class="icon-settings"></i></button>
             </div>
         </aside>
         <div id="chat-area">
             <header id="chat-header">
                 <!-- Chat header -->
-                <h2 id="chat-title" contenteditable required>New chat</h2>
+                <h2 id="chat-title" contenteditable required title="Edit chat title">New chat</h2>
             </header>
             <div id="chat-history">
                 <!-- Chat messages -->
@@ -45,6 +45,21 @@
                 <div class="buttons">
                   <button id="send-button" class="button button-primary" title="Send"><i class="icon-send"></i></button>
                   <button id="abort-button" class="button hidden" title="Abort"><i class="icon-abort"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="settings-dialog" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Settings</h3>
+            </div>
+            <div class="modal-body">
+                <label for="input-ollama-url">API URL</label>
+                <input id="input-ollama-url" type="url" required class="input" placeholder="http://localhost:11434">
+                <div class="buttons row">
+                    <button id="button-save-settings" class="button grw col button-primary">Save</button>
+                    <button id="button-close-settings" class="button grw col">Cancel</button>
                 </div>
             </div>
         </div>

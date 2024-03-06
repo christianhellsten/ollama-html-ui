@@ -1,3 +1,11 @@
+.icon {
+  margin-right: 0.25rem;
+}
+
+.icon-selected:before {
+  content: "\203A";
+}
+
 .icon-new:before {
   content: "\271A"; /* Unicode for heavy plus sign */
 }

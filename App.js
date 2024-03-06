@@ -1,22 +1,22 @@
 import { Chat, Chats } from './Chats.js';
 import { LocalStorage } from './LocalStorage.js';
+import { SettingsDialog } from './SettingsDialog.js';
 
 // Configuration and DOM elements
 const storage = new LocalStorage();
-const ollamaModel = storage.get('model', 'mistral');
-const ollamaHost = storage.get('url', 'http://localhost:11434');
-const url = `${ollamaHost}/api/generate`;
 const chats = new Chats();
 
 // App implements all UI functionality
 export class App {
   constructor() {
     this.controller = null;
+    this.settings = new SettingsDialog();
 
     // Elements
     this.newChatButton = document.getElementById('new-chat-button');
     this.sendButton = document.getElementById('send-button');
     this.abortButton = document.getElementById('abort-button');
+    this.settingsButton = document.getElementById('settings-button');
     this.messageInput = document.getElementById('message-input');
     this.clearButton = document.getElementById('clear-button');
     this.chatHistory = document.getElementById('chat-history');
@@ -48,10 +48,17 @@ export class App {
       const listItem = document.createElement('li');
       const chatLink = document.createElement('a');
       listItem.classList.add('chat-list-item', `chat${chat.id}`);
+      if (chat.id === chats.getCurrentChat()?.id) {
+        listItem.classList.add('selected');
+        const icon = document.createElement('i');
+        icon.classList.add('icon-selected', 'icon');
+        listItem.appendChild(icon);
+      }
       chatLink.classList.add('chat-link');
       chatLink.textContent = chat.title;
-      chatLink.href = "#";
-      chatLink.addEventListener("click", () => {
+      chatLink.href = `/chats/${chat.id}`;
+      listItem.addEventListener("click", () => {
+        window.history.pushState({}, '', `/chats/${chat.id}`);
         chats.setCurrentChat(chat.id);
         this.render();
         this.messageInput.focus();
@@ -62,6 +69,7 @@ export class App {
   }
 
   bindEventListeners() {
+    this.settingsButton.addEventListener('click', () => this.settings.show());
     this.sendButton.addEventListener('click', () => this.sendMessage());
     this.abortButton.addEventListener("click", () => {
       if (this.controller) {
@@ -79,7 +87,6 @@ export class App {
 
     this.newChatButton.addEventListener("click", () => {
       const chatId = chats.add('New chat', '');
-      this.currentChatId = chatId;
       this.render();
       this.messageInput.focus();
     });
@@ -174,6 +181,9 @@ export class App {
   async postMessage(data) {
     this.controller = new AbortController();
     const signal = this.controller.signal;
+    const ollamaModel = storage.get('model', 'mistral');
+    const ollamaHost = storage.get('url', 'http://localhost:11434');
+    const url = `${ollamaHost}/api/generate`;
     const response = await fetch(url, {
       signal,
       method: 'POST',
@@ -242,5 +252,12 @@ export class App {
       div.innerHTML += sanitizedContent; // Append content
     }
     chats.updateCurrentChat(this.chatHistory.innerHTML);
+  }
+
+  // Returns the id from the URL /chats/1 returns 1
+  getIdParam() {
+    const url = new URL(window.location.href);
+    const id = url.pathname.split('/').pop();
+    return id;
   }
 }

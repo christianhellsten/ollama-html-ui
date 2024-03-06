@@ -10,10 +10,10 @@ function openScreenshot(filePath) {
   const openCommand = process.platform === 'win32' ? 'start' : process.platform === 'darwin' ? 'open' : 'xdg-open';
   exec(`${openCommand} ${filePath}`, (error) => {
     if (error) {
-      console.error(`Error opening screenshot: ${error}`);
+      console.error(`  ✔ Error opening screenshot: ${error}`);
       return;
     }
-    console.log('Screenshot opened successfully.');
+    console.log(`  ✔ Screenshot ${filePath}`);
   });
 }
 
@@ -63,7 +63,7 @@ class AppTest {
       path = 'screenshot.png';
     }
     await this.page.screenshot({ path });
-    openScreenshot('screenshot.png');
+    openScreenshot(path);
   }
 
   async selectChat(title) {
@@ -149,4 +149,16 @@ test.describe('Application tests', () => {
     await expect(urlInput).toHaveValue(url);
     await app.screenshot('screenshots/settings.png');
   });
+
+  /*
+  test('Send message', async () => {
+    await app.page.fill('#message-input', 'What is 10+10?');
+    await app.page.click('#send-button');
+    await app.page.click('#send-button');
+    await app.page.click('#send-button');
+    await app.screenshot('screenshots/chat.png');
+    await expect(app.page.locator('#abort-button')).toBeVisible();
+    await app.page.waitForSelector('#send-button', { timeout: 60000 });
+  });
+  */
 });

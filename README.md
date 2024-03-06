@@ -18,7 +18,7 @@ A HTML UI for Ollama.
 - Edit chat
 - Delete chat
 - Download chat
-- Copy chat
+- Copy chat to clipboard
 - Search chats
 - Clear chats
 - View settings
@@ -84,6 +84,7 @@ $ node test
 ## Todo
 
 - [ ] Clear chat
+- [ ] Edit message
 - [ ] Ollama Chat API
 - [ ] Select model in sidebar (global)
 - [ ] Select model in chat (local)

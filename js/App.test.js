@@ -17,7 +17,7 @@ function openScreenshot (filePath) {
   })
 }
 
-const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS
+const GITHUB_ACTIONS = process.env.GITHUB_ACTIONS || false
 
 class AppTest {
   async start () {
@@ -111,6 +111,7 @@ class AppTest {
   async deleteChat (title) {
     const selector = `.chat-list-item:has-text("${title}")`
     await this.page.locator(selector).click()
+    await this.page.click('#chat-menu-button')
     await this.page.click('#delete-chat-button')
     await expect(this.page.locator(selector)).not.toBeVisible()
     await expect(this.page.locator('#chat-title')).toHaveText(/Untitled/)
@@ -210,7 +211,8 @@ test.describe('Application tests', () => {
     await expect(app.sidebar).toHaveClass(/.*collapsed.*/)
   })
 
-  if (GITHUB_ACTIONS) {
+  if (GITHUB_ACTIONS === false) {
+    console.log('AAAAAAAAAAAAAA')
     test('Send message', async () => {
       await app.updateSettings(url, model)
       await app.editChatTitle('What is 10+10?')

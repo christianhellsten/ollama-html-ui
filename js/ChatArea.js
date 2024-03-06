@@ -7,6 +7,7 @@ export class ChatArea {
     this.chats = chats
     this.chatTitle = new ChatTitle(this.chats)
     this.chatForm = new ChatForm()
+    this.chatModel = document.getElementById('chat-model')
     this.chatHistory = document.getElementById('chat-history')
     this.messageInput = document.getElementById('message-input')
     this.editChatButton = document.getElementById('edit-chat-button')
@@ -15,7 +16,9 @@ export class ChatArea {
   }
 
   render () {
-    this.chatHistory.innerHTML = this.chats.getCurrentChat()?.content || ''
+    const chat = this.chats.getCurrentChat()
+    this.chatModel.textContent = chat?.model
+    this.chatHistory.innerHTML = chat?.content || ''
     this.chatTitle.render()
     this.messageInput.focus()
   }

@@ -15,10 +15,14 @@
   padding: 0.5rem;
   border-radius: 2px;
   border: 1px solid #BBDEFB; /* Light blue border (100) */
+  position: relative;
 
-  .button {
-    margin-top: 1rem;
-    display: block;
+  .copy-button {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 0.25rem;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
 

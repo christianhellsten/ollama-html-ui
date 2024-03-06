@@ -14,7 +14,7 @@
 </head>
 <body>
     <div id="chat-app">
-        <header id="chat-menu" class="row">
+        <header id="chat-header" class="row">
             <div id="hamburger-menu" class="hamburger-menu col">
                 <div class="bar"></div>
                 <div class="bar"></div>
@@ -22,16 +22,27 @@
             </div>
             <!-- Chat menu -->
             <h2 id="chat-title" class="col grw" contenteditable required title="Edit chat title">New chat</h2>
-            <div class="buttons">
-            <button id="edit-chat-button" class="button col" title="Edit chat">
-              <i class="icon-edit"></i>
-            </button>
-            <button id="delete-chat-button" class="button col" title="Delete chat">
-              <i class="icon-delete"></i>
-            </button>
-            <button data-target="chat-history" class="button download-button col" title="Download chat">
-              <i class="icon-download"></i>
-            </button>
+            <div id="chat-model" class="col"></div>
+            <div id="chat-menu" class="drop-down-menu drop-down-menu-right">
+                <button id="chat-menu-button" class="button col" title="Chat menu">
+                    <i class="icon-menu"></i>
+                </button>
+                <div class="drop-down-menu-items hidden">
+                    <div class="buttons">
+                        <button id="edit-chat-button" class="button col" title="Edit chat">
+                            <i class="icon-edit"></i>
+                        </button>
+                        <button class="button copy-button col" title="Copy chat to clipboard" data-target="chat-history">
+                            <i class="icon-copy"></i>
+                        </button>
+                        <button id="delete-chat-button" class="button col" title="Delete chat">
+                            <i class="icon-delete"></i>
+                        </button>
+                        <button data-target="chat-history" class="button download-button col" title="Download chat">
+                            <i class="icon-download"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </header>
         <div id="chat-area">

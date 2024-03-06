@@ -1,0 +1,20 @@
+.drop-down-menu {
+    position: relative;
+}
+
+.drop-down-menu-items {
+    position: absolute;
+    top: 100%; /* Position below the button */
+    display: none; /* Hide initially */
+}
+
+.drop-down-menu-items.visible {
+    z-index: 10000;
+    display: inline-block;
+}
+
+.drop-down-menu-right {
+    .drop-down-menu-items {
+        right: 0 !important;
+    }
+}

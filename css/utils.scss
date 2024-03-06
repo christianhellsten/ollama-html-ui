@@ -35,6 +35,10 @@
   .pl-#{$i} {
     padding-left: var(--size-#{$i});
   }
+
+  .pr-#{$i} {
+    padding-right: var(--size-#{$i});
+  }
 }
 
 .d-inline {

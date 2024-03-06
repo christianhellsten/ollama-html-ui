@@ -21,8 +21,7 @@ i[class^='icon-'] {
 }
 
 .system-icon {
-  color: var(--text-color);
-  background-color: var(--yellow);
+  border: 1px solid var(--gray);
   @extend %font-weight-bolder;
 }
 

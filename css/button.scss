@@ -11,6 +11,14 @@ button {
   i {
     display: inline-block;
   }
+
+  i[class^='icon-'].selected {
+    filter: grayscale(0%); // Make icons normal
+  }
+}
+
+.button-sm {
+  padding: 0.25rem;
 }
 
 .button:hover,

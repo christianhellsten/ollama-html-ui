@@ -501,18 +501,6 @@ class BaseModel {
   constructor(data) {
     Object.assign(this, data);
   }
-  static async database(name, store) {
-    this.dbName = name;
-    this.storeName = store;
-    this.db = new _Database.Database(name, [store], _Migrations.Migrations);
-    await this.db.open();
-  }
-  static async transaction(mode) {
-    return await this.db.transaction(this.storeName, mode);
-  }
-  async transaction(mode) {
-    return await this.constructor.transaction(mode);
-  }
   async create() {
     const key = await this.constructor.db.add(this.constructor.storeName, this);
     if (!this.id) {
@@ -525,6 +513,21 @@ class BaseModel {
   }
   async delete() {
     return await this.constructor.db.delete(this.constructor.storeName, this.id);
+  }
+  jsonify() {
+    return JSON.stringify(this);
+  }
+  static async database(name, store) {
+    this.dbName = name;
+    this.storeName = store;
+    this.db = new _Database.Database(name, [store], _Migrations.Migrations);
+    await this.db.open();
+  }
+  static async transaction(mode) {
+    return await this.db.transaction(this.storeName, mode);
+  }
+  async transaction(mode) {
+    return await this.constructor.transaction(mode);
   }
   static async get(id) {
     const data = await this.db.get(this.storeName, id);
@@ -1612,7 +1615,39 @@ class ChatSettingsDialog extends _Modal.Modal {
   }
 }
 exports.ChatSettingsDialog = ChatSettingsDialog;
-},{"./AppController.js":"js/AppController.js","./Event.js":"js/Event.js","./Modal.js":"js/Modal.js","./models/Models.js":"js/models/Models.js","./ModelsList.js":"js/ModelsList.js"}],"js/Hoverable.js":[function(require,module,exports) {
+},{"./AppController.js":"js/AppController.js","./Event.js":"js/Event.js","./Modal.js":"js/Modal.js","./models/Models.js":"js/models/Models.js","./ModelsList.js":"js/ModelsList.js"}],"js/ExportChat.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ExportChat = void 0;
+class ExportChat {
+  static exportChat(chat, filename) {
+    // Get the contents of the element
+    const content = chat.jsonify();
+
+    // Create a Blob with the content
+    const blob = new Blob([content], {
+      type: 'application/json'
+    });
+
+    // Create an anchor element and set the href to the blob
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+
+    // Append the anchor to the document, trigger a click, and then remove it
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Revoke the blob URL
+    URL.revokeObjectURL(a.href);
+  }
+}
+exports.ExportChat = ExportChat;
+},{}],"js/Hoverable.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1734,6 +1769,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ChatArea = void 0;
 var _AppController = require("./AppController.js");
+var _ExportChat = require("./ExportChat.js");
 var _Event = require("./Event.js");
 var _Hoverable = require("./Hoverable.js");
 var _ChatTitle = require("./ChatTitle.js");
@@ -1748,6 +1784,7 @@ class ChatArea {
     this.scrollToTopButton = document.getElementById('scroll-to-top-button');
     this.scrollToEndButton = document.getElementById('scroll-to-end-button');
     this.deleteChatButton = document.getElementById('delete-chat-button');
+    this.exportChatButton = document.getElementById('export-chat-button');
     _AppController.AppController.getCurrentChat().then(chat => {
       this.chat = chat;
       this.render();
@@ -1773,6 +1810,9 @@ class ChatArea {
     this.scrollToEndButton.addEventListener('click', this.scrollToEnd.bind(this));
     this.editChatButton.addEventListener('click', this.handleEditChat.bind(this));
     this.deleteChatButton.addEventListener('click', this.handleDeleteChat.bind(this));
+    this.exportChatButton.addEventListener('click', () => {
+      _ExportChat.ExportChat.exportChat(this.chat, `chat-${this.chat.id}.json`);
+    });
     this.currentMessage = this.chatHistory.querySelector('.selected');
     // Select chat message with arrow up and arrow down keys
     document.addEventListener('keydown', event => {
@@ -1817,6 +1857,13 @@ class ChatArea {
     const goodButton = messageClone.querySelector('.good-chat-message-button');
     const badButton = messageClone.querySelector('.bad-chat-message-button');
     const flagButton = messageClone.querySelector('.flag-chat-message-button');
+    if (message.quality == 'bad') {
+      badButton.classList.add('selected');
+    } else if (message.quality == 'good') {
+      goodButton.classList.add('selected');
+    } else if (message.quality == 'flagged') {
+      flagButton.classList.add('selected');
+    }
 
     // Set the class for role and text content
     messageDiv.classList.add(`${role}-chat-message`);
@@ -1880,7 +1927,7 @@ class ChatArea {
   }
 }
 exports.ChatArea = ChatArea;
-},{"./AppController.js":"js/AppController.js","./Event.js":"js/Event.js","./Hoverable.js":"js/Hoverable.js","./ChatTitle.js":"js/ChatTitle.js","./ChatForm.js":"js/ChatForm.js"}],"js/App.js":[function(require,module,exports) {
+},{"./AppController.js":"js/AppController.js","./ExportChat.js":"js/ExportChat.js","./Event.js":"js/Event.js","./Hoverable.js":"js/Hoverable.js","./ChatTitle.js":"js/ChatTitle.js","./ChatForm.js":"js/ChatForm.js"}],"js/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2112,7 +2159,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60773" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61698" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

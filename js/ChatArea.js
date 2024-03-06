@@ -1,4 +1,5 @@
 import { AppController } from './AppController.js';
+import { ExportChat } from './ExportChat.js';
 import { Event } from './Event.js';
 import { Hoverable } from './Hoverable.js';
 import { ChatTitle } from './ChatTitle.js';
@@ -14,6 +15,7 @@ export class ChatArea {
     this.scrollToTopButton = document.getElementById('scroll-to-top-button');
     this.scrollToEndButton = document.getElementById('scroll-to-end-button');
     this.deleteChatButton = document.getElementById('delete-chat-button');
+    this.exportChatButton = document.getElementById('export-chat-button');
     AppController.getCurrentChat().then((chat) => {
       this.chat = chat;
       this.render();
@@ -53,6 +55,9 @@ export class ChatArea {
       'click',
       this.handleDeleteChat.bind(this),
     );
+    this.exportChatButton.addEventListener('click', () => {
+      ExportChat.exportChat(this.chat, `chat-${this.chat.id}.json`);
+    });
     this.currentMessage = this.chatHistory.querySelector('.selected');
     // Select chat message with arrow up and arrow down keys
     document.addEventListener('keydown', (event) => {
@@ -109,6 +114,14 @@ export class ChatArea {
     const goodButton = messageClone.querySelector('.good-chat-message-button');
     const badButton = messageClone.querySelector('.bad-chat-message-button');
     const flagButton = messageClone.querySelector('.flag-chat-message-button');
+
+    if (message.quality == 'bad') {
+      badButton.classList.add('selected');
+    } else if (message.quality == 'good') {
+      goodButton.classList.add('selected');
+    } else if (message.quality == 'flagged') {
+      flagButton.classList.add('selected');
+    }
 
     // Set the class for role and text content
     messageDiv.classList.add(`${role}-chat-message`);

@@ -1,0 +1,53 @@
+/* Chat app container */
+#chat-app {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar styling */
+#sidebar {
+  flex: 0 0 250px; /* fixed width */
+}
+
+/* Chat area styling */
+#chat-area {
+  gap: 0.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chat history */
+#chat-history {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+/* Message input area */
+#chat-input {
+  flex: 0 0 60px; /* fixed height */
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+/* Message input area */
+#chat-input {
+  flex: 0 0 60px; /* fixed height */
+  gap: 0.5rem;
+  display: flex;
+}
+
+#chat-input .textarea {
+  display: flex;
+  flex-grow: 1;
+}
+
+#chat-input .buttons {
+  height: 100%;
+  display: flex;
+  flex: 0 0 60px; /* fixed width */
+}

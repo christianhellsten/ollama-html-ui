@@ -125,19 +125,24 @@ $ parcel build index.html
 
 <details>
   <summary>Tasks</summary>
+
   - [ ] Edit message / response
   - [ ] Clear chat
   - [ ] CSP
   - [ ] Speech recognition
   - [ ] Image upload / multi-modal
   - [ ] Markdown support
-  - [ ] Keyboard shortcuts
-  - [ ] Dark & light theme
   - [ ] Vote up / down
-  - [ ] Export chat messages to JSON
 
   ## Done
 
+  - [x] Export chat messages to JSON
+  - [x] Keyboard shortcuts
+  - [x] Dark & light theme
+  - [x] Export chat messages to JSON
+  - [x] Keyboard shortcuts
+  - [x] Keyboard shortcuts
+  - [x] Dark & light theme
   - [x] Delete message / response
   - [x] Ollama chat API / chat memory
   - [x] IndexedDB persistence
@@ -157,11 +162,13 @@ $ parcel build index.html
   - [x] Abort response
   - [x] Send message
   - [x] UI tests: https://nodejs.org/api/test.html
+
   </summary>
 </details>
 
 <details>
   <summary>Features</summary>
+
     - https://ollama.ai support
 
     **Chat**
@@ -178,6 +185,7 @@ $ parcel build index.html
     - Search chats
     - Clear chats
     - Chat history
+    - Export chats
 
     **Settings**
 
@@ -185,11 +193,13 @@ $ parcel build index.html
     - Model
     - System prompt
     - Model parameters
+
   </summary>
 </details>
 
 <details>
   <summary>Licensing</summary>
+
 This project is available under two licensing options:
 
 1. **Open Source License (MIT)**:
@@ -205,5 +215,6 @@ This project is available under two licensing options:
    - To inquire about our commercial licensing options, pricing, and terms, please contact us at [christian@aktagon.com](mailto:christian@aktagon.com) to discuss your specific requirements.
 
 We value and support both our open source community and commercial users. By providing dual licensing options, we aim to make this project accessible to a wide range of users while offering customized solutions for commercial projects.
+
   </summary>
 </details>

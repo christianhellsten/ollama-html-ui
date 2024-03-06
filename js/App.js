@@ -85,14 +85,12 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
   };
 
   enableForm() {
-    DOM.hideElement(this.abortButton)
-      .enableInput(this.messageInput);
+    DOM.hideElement(this.abortButton).enableInput(this.messageInput);
     this.messageInput.focus();
   }
 
   disableForm() {
-    DOM.showElement(this.abortButton)
-      .disableInput(this.messageInput);
+    DOM.showElement(this.abortButton).disableInput(this.messageInput);
   }
 
   // https://github.com/jmorganca/ollama/blob/main/docs/api.md#generate-a-completion

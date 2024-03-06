@@ -25,11 +25,13 @@ export class Chat extends BaseModel {
   static async get(id) {
     const chat = await super.get(id);
 
+    /*
     if (chat) {
       // Fetch all messages for this chat
       const messages = await ChatMessage.getAllByChatId(id);
       chat.messages = messages;
     }
+    */
 
     return chat;
   }

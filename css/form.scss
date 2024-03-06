@@ -5,6 +5,11 @@ label {
   display: block;
 }
 
+textarea {
+  padding: 0.5rem;
+  resize: none;
+}
+
 input,
 textarea {
   width: 100%;
@@ -35,9 +40,4 @@ textarea:hover {
 
 .input {
   margin-bottom: 0.5rem;
-}
-
-textarea {
-  padding: 0.5rem;
-  resize: none;
 }

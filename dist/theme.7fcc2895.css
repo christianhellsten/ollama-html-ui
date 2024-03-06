@@ -84,7 +84,7 @@ video {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
+  font-family: inherit;
   vertical-align: baseline;
 }
 
@@ -137,25 +137,25 @@ html * {
 }
 
 :root {
-  --primary-color: #393E46;
+  --primary-color: #393e46;
   --secondary-color: #222831;
   --secondary-color-lighten-20: #4c596d;
   --secondary-color-lighten-40: #7b8ba4;
-  --tertiary-color: #EEE;
-  --error-color: #EF4040;
-  --bg-color: #FAFAFA;
+  --tertiary-color: #eee;
+  --error-color: #ef4040;
+  --bg-color: #fafafa;
   --text-color: #333;
   --text-color-lighten-20: white;
   --icon-color: var(--primary-color);
-  --light-text-color: #FFFFFF;
+  --light-text-color: #fff;
   --button-primary-color: var(--primary-color);
-  --button-primary-bgcolor: #FFFFFF;
+  --button-primary-bgcolor: #fff;
   --button-secondary-color: var(--text-color);
   --button-secondary-bgcolor: $bg-color;
   --border-color: #d5d8dc;
   --border-hover-color: #9ca3af;
   --border-focus-color: #808998;
-  --box-shadow-color: rgba(196, 204, 213, 0.7490196078);
+  --box-shadow-color: rgb(196 204 213 / 74.9%);
   --box-shadow-modal-color: #444;
   --modal-header-bg-color: var(--primary-color);
 }
@@ -169,18 +169,18 @@ html * {
     --tertiary-color: #d1d1d1;
     --error-color: #ff6b6b;
     --bg-color: #121212;
-    --text-color: #FAFAFA;
+    --text-color: #fafafa;
     --text-color-lighten-20: white;
     --icon-color: var(--text-color);
-    --light-text-color: #FFFFFF;
-    --button-primary-color: #ffffff;
+    --light-text-color: #fff;
+    --button-primary-color: #fff;
     --button-primary-bgcolor: var(--primary-color);
     --button-secondary-color: var(--text-color);
     --button-secondary-bgcolor: var(--bg-color);
     --border-color: #9ca7b2;
     --border-hover-color: #d5dadf;
     --border-focus-color: #f2f4f5;
-    --box-shadow-color: rgba(40, 48, 57, 0.7490196078);
+    --box-shadow-color: rgb(40 48 57 / 74.9%);
     --box-shadow-modal-color: #444;
     --modal-header-bg-color: var(--bg-color);
   }
@@ -636,7 +636,7 @@ button i {
     opacity: 0.7;
   }
 }
-@keyframes changeColor {
+@keyframes change-color {
   0% {
     background-color: blue;
   }
@@ -712,7 +712,7 @@ a {
 }
 
 #chat-header {
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #ccc;
   z-index: 4;
 }
 #chat-header .button {
@@ -758,11 +758,13 @@ a {
   top: 0;
   right: 0;
 }
+
 /* Styling for user messages */
 /* Styling for system messages */
 .assistant-chat-message {
   margin-bottom: 0.5rem;
 }
+
 #chat-form {
   flex: 0 0 60px; /* fixed height */
   display: flex;
@@ -882,7 +884,6 @@ aside {
   top: 0;
   left: 0;
   color: var(--bg-color);
-  background-color: var(--text-color);
   width: calc(100vw - 2rem);
   z-index: 30000;
   background-color: var(--bg-color);

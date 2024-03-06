@@ -1,10 +1,10 @@
-const http = require('http');
-const fs = require('fs').promises;
-const path = require('path');
+import http from 'http';
+import fs from 'fs/promises';
+import path from 'path';
 
 const hostname = 'localhost';
 const port = 1234;
-const distPath = path.join(__dirname, '../dist');
+const distPath = path.join(process.cwd(), './dist');
 
 const server = http.createServer((req, res) => {
   const uri = req.url === '/' ? '/index.html' : req.url;
@@ -32,7 +32,7 @@ const server = http.createServer((req, res) => {
   };
   const contentType = mimeTypes[extname] || 'application/octet-stream';
   // Validate mime type exists
-  const invalidMimeType = !mimeTypes.hasOwnProperty(extname);
+  const invalidMimeType = !mimeTypes[extname];
   // Validate URL
   // Allows: alphanumeric characters, hyphens, underscores, and exactly one dot in the extension
   const isValidUri = /^\/?[a-zA-Z0-9_-]+(\.[a-zA-Z0-9]+)+$/.test(uri);

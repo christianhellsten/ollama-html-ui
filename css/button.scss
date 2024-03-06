@@ -1,12 +1,8 @@
 button {
   background-color: var(--button-secondary-bgcolor);
   z-index: 1;
-}
-
-button {
   padding: 0.75rem 1rem;
   border: none;
-  // border-radius: var(--border-radius);
   cursor: pointer;
 
   i {
@@ -18,10 +14,6 @@ button {
 button:hover,
 button.selected {
   @extend %box-shadow-hover;
-  //color: var(--button-primary-color);
-  //background-color: var(--light-color);
-
-  // @extend %box-shadow;
 }
 
 .button-small {
@@ -36,14 +28,6 @@ button.selected {
 .button-primary {
   @extend %font-weight-boldest;
   @extend %box-shadow;
-
-  //color: var(--button-primary-color);
-  //background-color: var(--button-primary-bgcolor);
-}
-
-.button-primary:hover {
-  //color: var(--button-primary-color);
-  //background-color: var(--light-color);
 }
 
 .buttons {

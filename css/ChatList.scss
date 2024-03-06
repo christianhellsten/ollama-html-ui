@@ -1,5 +1,6 @@
 .chat-list-item {
   z-index: 2;
+
   .chat-title {
     // text-overflow: ellipsis;
     mask-image: linear-gradient(
@@ -12,11 +13,14 @@
 
 .list-item.selected {
   background: var(--white);
+
   @extend %box-shadow;
+
   z-index: 2;
 }
 
 .list-item.hover {
   @extend %box-shadow-hover;
+
   z-index: 3;
 }

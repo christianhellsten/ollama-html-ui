@@ -3,11 +3,10 @@
   display: flex;
   flex-direction: row;
   overflow: auto;
-
 }
 
-#chat-model {
-  .chat-model-name {
-    @extend %font-weight-bolder;
-  }
+#scroll-buttons {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }

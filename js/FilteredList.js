@@ -18,11 +18,14 @@ export class FilteredList extends List {
     super.render();
   }
 
+  /*
   selectFirst() {
-    alert(
-      document.querySelector('.chat-model-list li:not(.hidden)').textContent,
-    );
+    const select = document.querySelector(
+      '#chat-model .chat-model-list li:not(.hidden)',
+    )?.textContent;
+    this.setSelected(select);
   }
+  */
 
   filter(searchTerm) {
     this.query = searchTerm;

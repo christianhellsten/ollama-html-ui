@@ -53,7 +53,10 @@ export class AtSymbolListener {
 
     // Select first item on tab
     if (event.which == 9 && this.active) {
-      this.target.selectFirst();
+      const select =
+        this.target.element.querySelector('li:not(.hidden)')?.textContent;
+      this.handleSelected(select);
+
       event.preventDefault();
     } else if (key === ' ' || key === 'Enter' || key === 'Escape') {
       this.hideTarget();
@@ -76,7 +79,7 @@ export class AtSymbolListener {
         this.input.value.length,
         this.input.value.length,
       );
-      this.onSelected(selected);
+      // this.onSelected(selected);
       this.hideTarget();
     }
   }

@@ -3,6 +3,12 @@ button {
   z-index: 1;
   border: none;
   cursor: pointer;
+  line-height: 100%;
+  svg {
+      margin: auto;
+      width: 100%;
+      height: auto;
+  }
 }
 
 .button {

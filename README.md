@@ -1,6 +1,6 @@
 # ollama-html-ui
 
-![cover](/screenshots/chat.png)
+![cover](/screenshots/chat-collapsed.png)
 
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
 
@@ -10,6 +10,7 @@ A HTML UI for Ollama.
 
 - Zero dependencies: vanilla HTML, CSS, and Javascript
 - Simple installation: download and open in browser
+- Minimal & responsive UI: mobile & desktop
 
 ## Features
 
@@ -27,9 +28,19 @@ A HTML UI for Ollama.
 
 ## Screenshots
 
-![Main screen](/screenshots/chat.png)
+**Desktop**
+
+![Chat (fullscreen)](/screenshots/chat-collapsed.png)
+![Chat](/screenshots/chat.png)
 ![Settings screen](/screenshots/settings.png)
 ![Search](/screenshots/search.png)
+
+**Mobile**
+
+![Chat (fullscreen)](/screenshots/mobile-chat-collapsed.png)
+![Chat](/screenshots/mobile-chat.png)
+![Settings screen](/screenshots/mobile-settings.png)
+![Search](/screenshots/mobile-search.png)
 
 ## Installing
 

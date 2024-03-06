@@ -1,14 +1,19 @@
+import { Event } from './Event.js'
+import { AppController } from './AppController.js'
+
 export class ChatTitle {
-  constructor (chats) {
-    this.chats = chats
+  constructor () {
     this.defaultTitle = 'Untitled'
     this.element = document.getElementById('chat-title')
     this.bindEventListeners()
+    this.render()
   }
 
   render () {
-    const chat = this.chats.getCurrentChat()
-    this.setTitle(chat?.title)
+    AppController.getCurrentChat().then(chat => {
+      this.chat = chat
+      this.setTitle(chat?.title)
+    })
   }
 
   setTitle (title) {
@@ -23,27 +28,41 @@ export class ChatTitle {
   }
 
   bindEventListeners () {
-    this.element.addEventListener('blur', () => {
-      let title = this.element.textContent.trim()
-      if (title.length === 0) {
-        title = this.defaultTitle
-        this.element.classList.add('error')
-      } else {
-        this.element.classList.remove('error')
-      }
-      const chat = this.chats.getCurrentChat()
-      if (chat) {
-        this.chats.updateTitle(chat.id, title)
-      } else {
-        this.chats.add(title, '')
-      }
-    })
-
+    Event.listen('chatDeleted', this.handleChatDeleted.bind(this))
+    Event.listen('chatSelected', this.handleChatSelected.bind(this))
+    this.element.addEventListener('blur', this.handleSave.bind(this))
     this.element.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault()
         this.element.blur()
       }
     })
+  }
+
+  handleChatSelected (chat) {
+    this.chat = chat
+    this.setTitle(chat.title)
+  }
+
+  handleChatDeleted (chat) {
+    if (chat.id === this.chat.id) {
+      this.setTitle(this.defaultTitle)
+    }
+  }
+
+  async handleSave () {
+    let title = this.element.textContent.trim()
+    if (title.length === 0) {
+      title = this.defaultTitle
+      this.element.classList.add('error')
+    } else {
+      this.element.classList.remove('error')
+    }
+    const chat = await AppController.getCurrentChat()
+    if (chat) {
+      await AppController.updateChat(chat, { title })
+    } else {
+      await AppController.createChat({ title })
+    }
   }
 }

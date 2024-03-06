@@ -1,11 +1,11 @@
+import { AppController } from './AppController.js'
 import { Event } from './Event.js'
 import { ChatTitle } from './ChatTitle.js'
 import { ChatForm } from './ChatForm.js'
 
 export class ChatArea {
-  constructor (chats) {
-    this.chats = chats
-    this.chatTitle = new ChatTitle(this.chats)
+  constructor () {
+    this.chatTitle = new ChatTitle()
     this.chatForm = new ChatForm()
     this.chatHistory = document.getElementById('chat-history')
     this.messageInput = document.getElementById('message-input')
@@ -13,31 +13,39 @@ export class ChatArea {
     this.scrollToTopButton = document.getElementById('scroll-to-top-button')
     this.scrollToEndButton = document.getElementById('scroll-to-end-button')
     this.deleteChatButton = document.getElementById('delete-chat-button')
+    AppController.getCurrentChat().then((chat) => {
+      this.chat = chat
+      this.render()
+    })
     this.bindEventListeners()
   }
 
   render () {
-    const chat = this.chats.getCurrentChat()
-    this.chatHistory.innerHTML = chat?.content || ''
-    this.chatTitle.render()
+    this.chatHistory.innerHTML = this.chat?.content || ''
     this.messageInput.focus()
   }
 
   bindEventListeners () {
-    Event.listen('chatSelected', this.handleChatSelected.bind(this));
-    ['chatCreated', 'chatDeleted', 'chatUpdated'].forEach(name => {
-      Event.listen(name, this.render.bind(this))
-    })
+    Event.listen('chatSelected', this.handleChatSelected.bind(this))
+    Event.listen('chatDeleted', this.handleChatDeleted.bind(this))
     this.scrollToTopButton.addEventListener('click', this.scrollToTop.bind(this))
     this.scrollToEndButton.addEventListener('click', this.scrollToEnd.bind(this))
     this.editChatButton.addEventListener('click', this.handleEditChat.bind(this))
     this.deleteChatButton.addEventListener('click', this.handleDeleteChat.bind(this))
   }
 
-  handleChatSelected () {
-    const chat = this.chats.getCurrentChat()
-    this.chatTitle.setTitle(chat.title)
-    // this.modelList.setSelected(chat.model)
+  handleChatDeleted (chat) {
+    if (chat.id === this.chat?.id) {
+      this.chat = null
+    } else {
+      this.chat = chat
+    }
+    this.render()
+  }
+
+  handleChatSelected (chat) {
+    this.chat = chat
+    this.render()
   }
 
   handleEditChat () {
@@ -45,14 +53,11 @@ export class ChatArea {
     event.stopPropagation()
   }
 
-  handleDeleteChat () {
-    const chat = this.chats.getCurrentChat()
+  async handleDeleteChat () {
+    const chat = await AppController.getCurrentChat()
     if (chat) {
-      this.chats.delete(chat.id)
-      this.chatHistory.innerHTML = ''
-      Event.emit('deleteChat', chat.id)
+      await AppController.deleteChat(chat)
     }
-    event.stopPropagation()
   }
 
   scrollToTop () {

@@ -1,5 +1,7 @@
+import { AppController } from './AppController.js'
+
 export class ChatListItem {
-  constructor (chat, chatList) {
+  constructor (chat, chatList, selected) {
     this.chat = chat
     this.chatList = chatList
     this.content = document.getElementById('chat-list-item-template').content.cloneNode(true)
@@ -7,7 +9,7 @@ export class ChatListItem {
     this.element.title = this.chat.title
     this.element.data = { id: this.chat.id }
     this.element.classList.add(`chat${this.chat.id}`)
-    if (this.chat.id === this.chatList.chats.getCurrentChat()?.id) {
+    if (selected === true) {
       this.element.classList.add('selected')
       // this.content.querySelector('.icon-selected').classList.remove('hidden')
     }
@@ -43,7 +45,7 @@ export class ChatListItem {
   }
 
   deleteChat () {
-    this.chatList.chats.delete(this.chat.id)
+    AppController.deleteChat(this.chat)
     this.element.remove()
   }
 }

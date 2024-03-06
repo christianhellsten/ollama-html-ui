@@ -81,14 +81,9 @@ export class Settings {
   }
 
   static setCurrentChatId (chatId) {
+    if (chatId === undefined) {
+      chatId = null
+    }
     Settings.set('currentChatId', chatId)
-  }
-
-  static getChats () {
-    return Settings.get('chats')
-  }
-
-  static setChats (chats) {
-    Settings.set('chats', chats)
   }
 }

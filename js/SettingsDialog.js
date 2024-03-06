@@ -27,6 +27,9 @@ export class SettingsDialog extends Modal {
     })
     this.modelParametersInput.addEventListener('blur', () => {
       const value = this.modelParametersInput.value.trim()
+      if (value === '') {
+        return
+      }
       try {
         const parsedValue = JSON.parse(value)
         const prettyJSON = JSON.stringify(parsedValue, 2)

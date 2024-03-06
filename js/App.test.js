@@ -3,10 +3,10 @@ import { chromium } from 'playwright'
 import { expect } from 'playwright/test'
 import { exec } from 'node:child_process'
 
-// The Ollama server must be running mistral:latest
+// The Ollama server must be running dolphin-phi:latest
 // TODO: Implement dummy server
 const url = 'http://localhost:11434'
-const model = 'mistral:latest'
+const model = 'dolphin-phi:latest'
 
 function openScreenshot (filePath) {
   const openCommand = process.platform === 'win32' ? 'start' : process.platform === 'darwin' ? 'open' : 'xdg-open'
@@ -191,7 +191,7 @@ test.describe('Application tests', { only: true }, () => {
   /*
   test('Send message (server down)', async () => {
     await app.updateSettings('http://localhost:999999')
-    await app.page.fill('#message-input', 'What is Mistral?')
+    await app.page.fill('#message-input', 'What is the meaning of life?')
     await app.page.click('#send-button')
     await app.page.waitForTimeout(500) // Small delay to allow UI to update
     await expect(app.page.locator('#abort-button')).not.toBeVisible()
@@ -277,8 +277,8 @@ test.describe('Application tests', { only: true }, () => {
     test('Send message', async () => {
       await app.updateSettings(url, model)
       // Create chat
-      await app.editChatTitle('What is Mistral?')
-      await app.sendMessage('What is Mistral?')
+      await app.editChatTitle('What is the meaning of life?')
+      await app.sendMessage('What is the meaning of life?')
       await app.screenshot('chat.png')
       // Collapse
       await app.page.click('#hamburger-menu')

@@ -12,6 +12,8 @@ button {
   cursor: pointer;
   i {
     color: $button-primary-color;
+    width: 1rem; // Center the icon
+    display: inline-block;
   }
 }
 
@@ -19,6 +21,7 @@ button:hover,
 button.selected {
   color: $button-primary-color;
   background-color: $light-color;
+    @extend .box-shadow;
 }
 
 .button-small {

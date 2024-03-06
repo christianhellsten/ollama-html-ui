@@ -8,9 +8,9 @@ A HTML UI for Ollama.
 
 ## Goals
 
-- Zero dependencies: vanilla HTML, CSS, and Javascript
-- Simple installation: download and open in browser
 - Minimal & responsive UI: mobile & desktop
+- Zero dependencies: vanilla HTML, CSS, and Javascript
+- Simple installation
 
 ## Features
 
@@ -22,6 +22,7 @@ A HTML UI for Ollama.
 - Edit chat
 - Delete chat
 - Download chat
+- Scroll to top/bottom
 - Copy chat to clipboard
 
 **Chats**
@@ -32,8 +33,10 @@ A HTML UI for Ollama.
 
 **Settings**
 
-- View settings
-- Update settings
+- URL
+- Model
+- System prompt
+- Model parameters
 
 ## Screenshots
 
@@ -56,7 +59,7 @@ A HTML UI for Ollama.
 First, install and start [Olama](https://ollama.ai/).
 
 ```bash
-$ ollama run mistral
+$ ollama run dolphin-phi
 ```
 
 Next, clone this repository:
@@ -97,7 +100,7 @@ Tests are written using `Playwright` and `node:test`.
 The the tests can be run from the command line using this command:
 
 ```bash
-$ ollama run mistral
+$ ollama run dolphin-phi
 $ node test
 ```
 
@@ -116,6 +119,7 @@ $ node test
 
 ## Done
 
+- [x] Model parameters
 - [x] System prompt
 - [x] Copy message to clipboard
 - [x] Select model in settings (global)

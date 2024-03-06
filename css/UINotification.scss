@@ -9,7 +9,7 @@
   padding: 1rem;
   margin: 1rem;
   @extend .box-shadow;
-  border-radius: 1rem;
+  border-radius: $border-radius;
 
   .button {
     border-radius: 2px;
@@ -20,4 +20,8 @@
 
 .notification-message {
   color: $white;
+}
+
+.notification-error {
+  background: $error-color;
 }

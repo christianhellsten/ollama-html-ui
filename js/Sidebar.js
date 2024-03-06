@@ -80,6 +80,7 @@ export class Sidebar {
 
   toggle () {
     this.element.classList.toggle('collapsed')
+    this.hamburgerButton.classList.toggle('collapsed')
     if (this.element.classList.contains('collapsed')) {
       this.settings.set('sidebar-collapsed', true)
     } else {

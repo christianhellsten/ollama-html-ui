@@ -3,10 +3,10 @@ export class OllamaApi {
     this.abortController = null;
   }
 
-  async makeRequest(chat, userMessage, systemPrompt, modelParameters) {
+  async makeRequest(chat, model, userMessage, systemPrompt, modelParameters) {
     const requestData = {
       prompt: userMessage,
-      model: chat.model,
+      model: model,
       messages: (await chat.getMessages()).map((message) => ({
         role: message.role,
         content: message.content,

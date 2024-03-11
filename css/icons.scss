@@ -9,12 +9,6 @@ i[class^='icon-'] {
   filter: grayscale(100%); // Make icons grayscale
 }
 
-svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  vertical-align: middle;
-}
-
 .user-icon {
   margin: 0rem 0.75rem 0 0;
   width: 2.5rem; /* Adjust the size as needed */
@@ -27,8 +21,7 @@ svg {
 }
 
 .system-icon {
-  color: var(--text-color);
-  background-color: var(--yellow);
+  border: 1px solid var(--gray);
   @extend %font-weight-bolder;
 }
 
@@ -146,7 +139,7 @@ svg {
 
 // Light theme
 :root {
-  svg rect {
+  .icon rect {
     fill: var(--text-color);
     stroke: var(--bg-color);
   }
@@ -160,7 +153,7 @@ svg {
 // Dark theme
 @media (prefers-color-scheme: dark) {
   :root {
-    svg rect {
+    .icon rect {
       fill: var(--text-color);
       stroke: var(--bg-color);
     }

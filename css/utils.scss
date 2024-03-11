@@ -15,13 +15,29 @@
   color: var(--gray);
 }
 
-@for $i from 1 through 10 {
+// Generate sizes, e.g., --size-1: 0.25rem
+:root {
+  @for $i from 1 through 5 {
+    --size-#{$i}: #{$i * 0.25}rem;
+  }
+}
+
+// Generate margin and padding utilities
+@for $i from 1 through 5 {
   .m-#{$i} {
-    margin: 0em * $i*0.25;
+    margin: var(--size-#{$i});
   }
 
   .p-#{$i} {
-    padding: $i*0.25rem;
+    padding: var(--size-#{$i});
+  }
+
+  .pl-#{$i} {
+    padding-left: var(--size-#{$i});
+  }
+
+  .pr-#{$i} {
+    padding-right: var(--size-#{$i});
   }
 }
 

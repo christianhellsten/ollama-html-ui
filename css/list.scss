@@ -1,5 +1,6 @@
 /* Styling for lists */
 ul {
+  user-select: none;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -23,29 +24,14 @@ ul {
       padding: 0 0.5rem;
       visibility: hidden;
     }
-
-    /*
-    .list-item-edit:after {
-      content: "..."; // \00a0 is a non-breaking space
-    }
-    */
   }
 
   li.selected {
-    @extend %font-weight-boldest;
+    @extend %font-weight-bolder;
 
     // NOTE: Should match #chat-header border-bottom
     border-top-color: #cccccc5e;
   }
-
-  /*
-  li.selected::after {
-    position: absolute;
-    right: 1.5rem;
-    padding-left: 0.5rem;
-    content: '\203A'; // \00a0 is a non-breaking space
-  }
-  */
 
   li.hover {
     border-top-color: #cccccc5e;

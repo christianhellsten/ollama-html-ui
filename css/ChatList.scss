@@ -11,13 +11,13 @@
   }
 
   .button {
-    padding: 0.25rem 0.75rem;
+    padding: var(--size-1) var(--size-3);
   }
 }
 
 .list-item.selected {
   background: var(--white);
-  border-radius: 0.25rem;
+  border-radius: var(--size-1);
 
   @extend %box-shadow;
 

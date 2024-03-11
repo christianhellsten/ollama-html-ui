@@ -30,7 +30,7 @@ export class App {
     this.settingsDialog = new SettingsDialog({
       domId: 'settings-dialog',
       buttonId: 'settings-button',
-      title: 'Global settings',
+      title: 'Application settings',
       templateId: 'settings-dialog-template',
     });
     this.chatSettingsDialog = new ChatSettingsDialog({
@@ -42,6 +42,8 @@ export class App {
     this.downloadButton = new DownloadButton();
     this.copyButton = new CopyButton();
     this.dropDownMenu = new DropDownMenu();
+    this.newChatButton = document.querySelector('#new-chat-button');
+    this.clearButton = document.querySelector('#clear-button');
     this.initializeElements();
     this.bindEventListeners();
     this.logInitialization();
@@ -66,6 +68,8 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
 
   bindEventListeners() {
     Event.listen('chatSelected', this.handleChatSelected);
+    this.newChatButton.addEventListener('click', this.handleNewChat.bind(this));
+    this.clearButton.addEventListener('click', this.handleClear.bind(this));
     // this.sendButton.addEventListener('click', this.sendMessage.bind(this));
     this.abortButton.addEventListener('click', this.handleAbort.bind(this));
     this.messageInput.addEventListener(
@@ -146,29 +150,11 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
       };
       const requestData = await this.api.makeRequest(
         chat,
+        this.getModelFromText(userMessage.content) || chat.model,
         userMessage,
         systemPrompt,
         modelParameters,
       );
-      /*
-      console.dir(requestData);
-      const requestData = {
-        prompt: userMessage,
-        model: chat.model,
-        messages: (await chat.getMessages()).map((message) => ({
-          role: message.role,
-          content: message.content,
-        })),
-      };
-      // Add system prompt
-      if (systemPrompt) {
-        requestData.system = systemPrompt;
-      }
-      // Add model parameters
-      if (modelParameters) {
-        requestData.options = modelParameters;
-      }
-      */
       // Show spinner
       responseElement.textElement.innerHTML = '<div class="waiting"></div>';
       this.chatArea.scrollToEnd();
@@ -183,6 +169,25 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
           this.handleDone(request, response, requestContext),
       );
     }
+  }
+
+  /*
+   * Returns the model mentioned in the text.
+   */
+  getModelFromText(text) {
+    if (text === null) {
+      return null;
+    }
+    let modelName = null;
+    const matches = text.match(/@(\S+)/g);
+
+    if (matches) {
+      // Get the last match from the array
+      const lastMatch = matches[matches.length - 1];
+      // Extract the text after the @ by removing the @ symbol
+      modelName = lastMatch.slice(1);
+    }
+    return modelName;
   }
 
   createChatMessage(message) {
@@ -212,6 +217,14 @@ Parameters:  ${JSON.stringify(Settings.getModelParameters())}
     console.log(`Chat ${chat.id} done`);
     await context.systemMessage.save();
     this.enableForm();
+  }
+
+  async handleNewChat() {
+    await AppController.createChat();
+  }
+
+  async handleClear() {
+    await AppController.clearChats();
   }
 
   sanitizeContent = (content) => {

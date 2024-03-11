@@ -4,7 +4,7 @@
   align-items: center;
 
   // NOTE: Should match #chat-header border-bottom
-  border-top: 1px solid #cccccc5e;
+  border-top: 1px solid #eee;
 
   .textarea {
     height: 100%;
@@ -37,4 +37,12 @@
 #message-input {
   width: 100%;
   padding: 0.25rem;
+}
+
+#chat-model {
+  border-top: 1px solid #eee;
+
+  .chat-model-name {
+    @extend %font-weight-bolder;
+  }
 }

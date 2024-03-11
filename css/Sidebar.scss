@@ -1,15 +1,12 @@
 #sidebar {
   @extend %box-shadow;
+  padding: var(--size-1);
 
   background-color: var(--secondary-bg-color);
   border-right: 1px solid #cccccc5e;
   min-width: 200px;
   max-width: 480px;
   overflow-y: auto;
-
-  #chat-list {
-    padding: 0.5rem;
-  }
 
   .buttons {
     width: 100%;
@@ -23,6 +20,7 @@
 }
 
 #sidebar.collapsed {
+  padding: var(--size-4) 0;
   min-width: 0;
   max-width: 0;
 }

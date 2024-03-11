@@ -1,6 +1,7 @@
 import { debounce } from './debounce.js';
 import { Event } from './Event.js';
 import { Chat } from './models/Chat.js';
+import { ModelsList } from './ModelsList.js';
 import { AppController } from './AppController.js';
 import { ChatList } from './ChatList.js';
 import { DownloadChatsButton } from './DownloadChatsButton.js';
@@ -8,11 +9,16 @@ import { LocalStorage } from './models/LocalStorage.js';
 
 export class Sidebar {
   constructor() {
+    this.element = document.getElementById('sidebar');
     this.settings = new LocalStorage();
     this.chatList = new ChatList();
-    this.element = document.getElementById('sidebar');
-    this.newChatButton = this.element.querySelector('#new-chat-button');
-    this.clearButton = this.element.querySelector('#clear-button');
+    /*
+    TODO: models list
+    this.modelList = new ModelsList(
+      this.element.querySelector('.chat-model-list'),
+    ).onClick(this.handleModelSelected.bind(this));
+    */
+
     this.hamburgerButton = document.getElementById('hamburger-menu');
     this.searchButton = document.getElementById('search-button');
     this.downloadChatsButton = new DownloadChatsButton();
@@ -29,6 +35,12 @@ export class Sidebar {
     this.chatList.render();
   }
 
+  async handleModelSelected(selected) {
+    const chat = await AppController.getCurrentChat();
+    this.modelName.textContent = selected;
+    AppController.updateChat(chat, { model: selected });
+  }
+
   bindEventListeners() {
     Event.listen('chatSelected', this.handleChatSelected);
     this.searchButton.addEventListener('click', this.toggleSearch.bind(this));
@@ -40,8 +52,6 @@ export class Sidebar {
       'keyup',
       debounce(this.performSearch.bind(this), 50),
     );
-    this.newChatButton.addEventListener('click', this.handleNewChat.bind(this));
-    this.clearButton.addEventListener('click', this.handleClear.bind(this));
     this.hamburgerButton.addEventListener('click', this.toggle.bind(this));
   }
 
@@ -103,13 +113,5 @@ export class Sidebar {
     } else {
       this.settings.set('sidebar-collapsed', false);
     }
-  }
-
-  async handleNewChat() {
-    await AppController.createChat();
-  }
-
-  async handleClear() {
-    await AppController.clearChats();
   }
 }

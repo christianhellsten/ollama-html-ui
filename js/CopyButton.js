@@ -23,7 +23,6 @@ export class CopyButton {
         // Remove the temporary textarea
         document.body.removeChild(textarea);
 
-        // Optional: Display a message or change the button text/content
         UINotification.show('Text copied to clipboard').autoDismiss();
       }
     });

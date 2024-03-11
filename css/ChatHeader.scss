@@ -1,20 +1,11 @@
 #chat-header {
-  // NOTE: Should match #chat-form border-top
-  border-bottom: 1px solid #ddd;
-
+  border-bottom: 1px solid #eee;
   @extend %box-shadow;
-
   z-index: 4;
-
-  .button {
-    height: 100%;
-  }
 }
 
 .hamburger-menu {
   cursor: pointer;
-  padding-left: 0.75rem;
-  padding-right: 0.5rem;
   display: inline-block;
 }
 

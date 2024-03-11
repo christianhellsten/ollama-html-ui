@@ -142,15 +142,16 @@
       this[globalName] = mainExports;
     }
   }
-})({"3pyWu":[function(require,module,exports) {
+})({"g0UqZ":[function(require,module,exports) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
+var HMR_USE_SSE = false;
 module.bundle.HMR_BUNDLE_ID = "2751c5c64de9b498";
 "use strict";
-/* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
+/* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, HMR_USE_SSE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
   HMRAsset,
   HMRMessage,
@@ -189,6 +190,7 @@ declare var HMR_HOST: string;
 declare var HMR_PORT: string;
 declare var HMR_ENV_HASH: string;
 declare var HMR_SECURE: boolean;
+declare var HMR_USE_SSE: boolean;
 declare var chrome: ExtensionContext;
 declare var browser: ExtensionContext;
 declare var __parcel__import__: (string) => Promise<void>;
@@ -232,7 +234,8 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== "undefined") {
         "0.0.0.0"
     ].includes(hostname) ? "wss" : "ws";
     var ws;
-    try {
+    if (HMR_USE_SSE) ws = new EventSource("/__parcel_hmr");
+    else try {
         ws = new WebSocket(protocol + "://" + hostname + (port ? ":" + port : "") + "/");
     } catch (err) {
         if (err.message) console.error(err.message);
@@ -302,12 +305,14 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== "undefined") {
             }
         }
     };
-    ws.onerror = function(e) {
-        if (e.message) console.error(e.message);
-    };
-    ws.onclose = function() {
-        console.warn("[parcel] \uD83D\uDEA8 Connection to the HMR server was lost");
-    };
+    if (ws instanceof WebSocket) {
+        ws.onerror = function(e) {
+            if (e.message) console.error(e.message);
+        };
+        ws.onclose = function() {
+            console.warn("[parcel] \uD83D\uDEA8 Connection to the HMR server was lost");
+        };
+    }
 }
 function removeErrorOverlay() {
     var overlay = document.getElementById(OVERLAY_ID);
@@ -625,7 +630,7 @@ class App {
         this.settingsDialog = new (0, _settingsDialogJs.SettingsDialog)({
             domId: "settings-dialog",
             buttonId: "settings-button",
-            title: "Global settings",
+            title: "Application settings",
             templateId: "settings-dialog-template"
         });
         this.chatSettingsDialog = new (0, _chatSettingsDialogJs.ChatSettingsDialog)({
@@ -637,6 +642,8 @@ class App {
         this.downloadButton = new (0, _downloadButtonJs.DownloadButton)();
         this.copyButton = new (0, _copyButtonJs.CopyButton)();
         this.dropDownMenu = new (0, _dropDownMenuJs.DropDownMenu)();
+        this.newChatButton = document.querySelector("#new-chat-button");
+        this.clearButton = document.querySelector("#clear-button");
         this.initializeElements();
         this.bindEventListeners();
         this.logInitialization();
@@ -658,6 +665,8 @@ Parameters:  ${JSON.stringify((0, _settingsJs.Settings).getModelParameters())}
     }
     bindEventListeners() {
         (0, _eventJs.Event).listen("chatSelected", this.handleChatSelected);
+        this.newChatButton.addEventListener("click", this.handleNewChat.bind(this));
+        this.clearButton.addEventListener("click", this.handleClear.bind(this));
         // this.sendButton.addEventListener('click', this.sendMessage.bind(this));
         this.abortButton.addEventListener("click", this.handleAbort.bind(this));
         this.messageInput.addEventListener("keypress", this.handleKeyPress.bind(this));
@@ -721,31 +730,27 @@ Parameters:  ${JSON.stringify((0, _settingsJs.Settings).getModelParameters())}
                 systemMessage,
                 responseElement
             };
-            const requestData = await this.api.makeRequest(chat, userMessage, systemPrompt, modelParameters);
-            /*
-      console.dir(requestData);
-      const requestData = {
-        prompt: userMessage,
-        model: chat.model,
-        messages: (await chat.getMessages()).map((message) => ({
-          role: message.role,
-          content: message.content,
-        })),
-      };
-      // Add system prompt
-      if (systemPrompt) {
-        requestData.system = systemPrompt;
-      }
-      // Add model parameters
-      if (modelParameters) {
-        requestData.options = modelParameters;
-      }
-      */ // Show spinner
+            const requestData = await this.api.makeRequest(chat, this.getModelFromText(userMessage.content) || chat.model, userMessage, systemPrompt, modelParameters);
+            // Show spinner
             responseElement.textElement.innerHTML = '<div class="waiting"></div>';
             this.chatArea.scrollToEnd();
             // Make request
             this.api.send(url, requestData, (request, response)=>this.handleResponse(request, response, requestContext), (request, error)=>this.handleResponseError(request, error), (request, response)=>this.handleDone(request, response, requestContext));
         }
+    }
+    /*
+   * Returns the model mentioned in the text.
+   */ getModelFromText(text) {
+        if (text === null) return null;
+        let modelName = null;
+        const matches = text.match(/@(\S+)/g);
+        if (matches) {
+            // Get the last match from the array
+            const lastMatch = matches[matches.length - 1];
+            // Extract the text after the @ by removing the @ symbol
+            modelName = lastMatch.slice(1);
+        }
+        return modelName;
     }
     createChatMessage(message) {
         return this.chatArea.createMessageDiv(message);
@@ -769,6 +774,12 @@ Parameters:  ${JSON.stringify((0, _settingsJs.Settings).getModelParameters())}
         console.log(`Chat ${chat.id} done`);
         await context.systemMessage.save();
         this.enableForm();
+    }
+    async handleNewChat() {
+        await (0, _appControllerJs.AppController).createChat();
+    }
+    async handleClear() {
+        await (0, _appControllerJs.AppController).clearChats();
     }
     sanitizeContent = (content)=>{
         // TODO: Sanitization logic here
@@ -1022,18 +1033,22 @@ parcelHelpers.export(exports, "Sidebar", ()=>Sidebar);
 var _debounceJs = require("./debounce.js");
 var _eventJs = require("./Event.js");
 var _chatJs = require("./models/Chat.js");
+var _modelsListJs = require("./ModelsList.js");
 var _appControllerJs = require("./AppController.js");
 var _chatListJs = require("./ChatList.js");
 var _downloadChatsButtonJs = require("./DownloadChatsButton.js");
 var _localStorageJs = require("./models/LocalStorage.js");
 class Sidebar {
     constructor(){
+        this.element = document.getElementById("sidebar");
         this.settings = new (0, _localStorageJs.LocalStorage)();
         this.chatList = new (0, _chatListJs.ChatList)();
-        this.element = document.getElementById("sidebar");
-        this.newChatButton = this.element.querySelector("#new-chat-button");
-        this.clearButton = this.element.querySelector("#clear-button");
-        this.hamburgerButton = document.getElementById("hamburger-menu");
+        /*
+    TODO: models list
+    this.modelList = new ModelsList(
+      this.element.querySelector('.chat-model-list'),
+    ).onClick(this.handleModelSelected.bind(this));
+    */ this.hamburgerButton = document.getElementById("hamburger-menu");
         this.searchButton = document.getElementById("search-button");
         this.downloadChatsButton = new (0, _downloadChatsButtonJs.DownloadChatsButton)();
         this.searchRow = document.getElementById("search-row");
@@ -1045,13 +1060,18 @@ class Sidebar {
     render() {
         this.chatList.render();
     }
+    async handleModelSelected(selected) {
+        const chat = await (0, _appControllerJs.AppController).getCurrentChat();
+        this.modelName.textContent = selected;
+        (0, _appControllerJs.AppController).updateChat(chat, {
+            model: selected
+        });
+    }
     bindEventListeners() {
         (0, _eventJs.Event).listen("chatSelected", this.handleChatSelected);
         this.searchButton.addEventListener("click", this.toggleSearch.bind(this));
         this.searchInput.addEventListener("keypress", (0, _debounceJs.debounce)(this.performSearch.bind(this), 50));
         this.searchInput.addEventListener("keyup", (0, _debounceJs.debounce)(this.performSearch.bind(this), 50));
-        this.newChatButton.addEventListener("click", this.handleNewChat.bind(this));
-        this.clearButton.addEventListener("click", this.handleClear.bind(this));
         this.hamburgerButton.addEventListener("click", this.toggle.bind(this));
     }
     // TODO: Fix
@@ -1095,15 +1115,9 @@ class Sidebar {
         if (this.element.classList.contains("collapsed")) this.settings.set("sidebar-collapsed", true);
         else this.settings.set("sidebar-collapsed", false);
     }
-    async handleNewChat() {
-        await (0, _appControllerJs.AppController).createChat();
-    }
-    async handleClear() {
-        await (0, _appControllerJs.AppController).clearChats();
-    }
 }
 
-},{"./debounce.js":"cnymS","./Event.js":"ZKUT3","./models/Chat.js":"7uLfP","./AppController.js":"dUrsU","./ChatList.js":"a7snp","./DownloadChatsButton.js":"hWz3M","./models/LocalStorage.js":"1bkpB","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cnymS":[function(require,module,exports) {
+},{"./debounce.js":"cnymS","./Event.js":"ZKUT3","./models/Chat.js":"7uLfP","./ModelsList.js":"3Iv7p","./AppController.js":"dUrsU","./ChatList.js":"a7snp","./DownloadChatsButton.js":"hWz3M","./models/LocalStorage.js":"1bkpB","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cnymS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "debounce", ()=>debounce);
@@ -1357,7 +1371,338 @@ class ChatMessage extends (0, _baseModelJs.BaseModel) {
     }
 }
 
-},{"./BaseModel.js":"8yfmU","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dUrsU":[function(require,module,exports) {
+},{"./BaseModel.js":"8yfmU","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3Iv7p":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ModelsList", ()=>ModelsList);
+var _filteredListJs = require("./FilteredList.js");
+var _eventJs = require("./Event.js");
+var _modelsJs = require("./models/Models.js");
+class ModelsList extends (0, _filteredListJs.FilteredList) {
+    constructor(container){
+        super(container, (0, _modelsJs.Models).getNames());
+        this.bindEventListeners();
+    }
+    bindEventListeners() {
+        (0, _eventJs.Event).listen("modelsLoaded", this.handleModelsLoaded.bind(this));
+    }
+    handleModelsLoaded() {
+        this.setItems((0, _modelsJs.Models).getNames());
+    }
+    static getModels() {
+        return (0, _modelsJs.Models).getNames();
+    }
+}
+
+},{"./FilteredList.js":"evx1C","./Event.js":"ZKUT3","./models/Models.js":"grZYv","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"evx1C":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "FilteredList", ()=>FilteredList);
+var _listJs = require("./List.js");
+var _domJs = require("./DOM.js");
+class FilteredList extends (0, _listJs.List) {
+    constructor(ul, items){
+        super(ul, items); // Call the constructor of the parent class
+        this.div = document.createElement("small");
+        this.div.classList.add("hidden", "p-2");
+        this.ul.prepend(this.div);
+        this.query = null;
+    }
+    escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // Escapes special characters
+    }
+    render() {
+        super.render();
+    }
+    /*
+  selectFirst() {
+    const select = document.querySelector(
+      '#chat-model .chat-model-list li:not(.hidden)',
+    )?.textContent;
+    this.setSelected(select);
+  }
+  */ filter(searchTerm) {
+        this.query = searchTerm;
+        if (searchTerm === null || searchTerm === undefined) {
+            this.clearFilter();
+            this.filtered = false;
+            return null;
+        }
+        const query = this.escapeRegExp(searchTerm).replace(/\s+/g, ".*");
+        const regex = new RegExp(query, "i"); // 'i' for case-insensitive matching
+        // Loop through the list items
+        const matches = this.li.map((listItemElement)=>{
+            const text = listItemElement.textContent;
+            const match = regex.test(text);
+            if (match) {
+                (0, _domJs.DOM).showElement(listItemElement);
+                return text;
+            } else {
+                (0, _domJs.DOM).hideElement(listItemElement);
+                return null;
+            }
+        }).filter((match)=>match);
+        console.log(`Search ${query}. Matches: ${matches}`);
+        // Update text
+        (0, _domJs.DOM).showElement(this.div);
+        let message = null;
+        if (searchTerm.length < 1) message = `Continue typing to search models. Showing all models:`;
+        else if (matches.length != 0) message = `Found ${matches.length} model(s) matching '${this.query}'. Click to change chat's model, or press tab to change prompt's model:`;
+        else message = `Did not find any models that match '${this.query}'.`;
+        this.div.textContent = message;
+        return matches;
+    }
+    clearFilter() {
+        (0, _domJs.DOM).hideElement(this.div);
+        this.query = null;
+        this.li.forEach((listItemElement)=>{
+            (0, _domJs.DOM).showElement(listItemElement);
+        });
+    }
+}
+
+},{"./List.js":"gy1Ga","./DOM.js":"EyUfz","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gy1Ga":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "List", ()=>List);
+var _eventJs = require("./Event.js");
+var _uielementJs = require("./UIElement.js");
+class List extends (0, _uielementJs.UIElement) {
+    constructor(ul, items){
+        super(ul);
+        this.ul = ul;
+        this.items = items;
+        this.render();
+        this.clickHandler = null;
+        this.ul.classList.add("list");
+    }
+    onClick(handler) {
+        this.clickHandler = handler;
+        return this; // Allow chaining
+    }
+    setItems(items) {
+        this.items = items;
+        this.render();
+    }
+    setSelected(selected) {
+        console.debug(`Select ${selected}`);
+        this.selected = selected;
+        this.li.forEach((item)=>{
+            if (item.textContent === selected) item.classList.add("selected");
+            else item.classList.remove("selected");
+        });
+        (0, _eventJs.Event).emit("select", selected, this.ul);
+    }
+    getSelected() {
+        return this.selected;
+    }
+    render() {
+        this.ul.innerHTML = ""; // Clear existing content
+        this.li = this.items.map((item)=>{
+            const li = document.createElement("li");
+            li.classList.add("list-item");
+            if (item === this.selected) li.classList.add("selected");
+            li.textContent = item;
+            li.item = item;
+            li.addEventListener("click", ()=>{
+                this.setSelected(item);
+                if (this.clickHandler) this.clickHandler(item);
+            });
+            this.ul.appendChild(li);
+            return li;
+        });
+    }
+}
+
+},{"./Event.js":"ZKUT3","./UIElement.js":"efCjh","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"efCjh":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "UIElement", ()=>UIElement);
+var _domJs = require("./DOM.js");
+class UIElement {
+    constructor(element){
+        this.element = element;
+    }
+    show() {
+        (0, _domJs.DOM).showElement(this.element);
+    }
+    hide() {
+        (0, _domJs.DOM).hideElement(this.element);
+    }
+}
+
+},{"./DOM.js":"EyUfz","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"EyUfz":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "DOM", ()=>DOM);
+class DOM {
+    static showElement(element) {
+        element.classList.remove("hidden");
+        return this;
+    }
+    static hideElement(element) {
+        element.classList.add("hidden");
+        return this;
+    }
+    static enableInput(element) {
+        element.removeAttribute("disabled");
+        return this;
+    }
+    static disableInput(element) {
+        element.setAttribute("disabled", "disabled");
+        return this;
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"grZYv":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Models", ()=>Models);
+var _eventJs = require("../Event.js");
+var _settingsJs = require("./Settings.js");
+var _ollamaApiJs = require("../OllamaApi.js");
+class Models {
+    // TODO: Get this from the settings?
+    static models = [];
+    static getUrl() {
+        return (0, _settingsJs.Settings).getUrl("/api/tags");
+    }
+    static load() {
+        if (!this.getUrl()) return null;
+        return (0, _ollamaApiJs.OllamaApi).getModels(this.getUrl(), (models)=>{
+            Models.models = models;
+            // Cache list of models
+            (0, _settingsJs.Settings).set("models", Models.models);
+            (0, _eventJs.Event).emit("modelsLoaded", Models.models);
+        });
+    }
+    static getAll() {
+        return (0, _settingsJs.Settings).get("models");
+    }
+    static getNames() {
+        const models = this.getAll();
+        if (!models) return [];
+        return models.map((model)=>model.name);
+    }
+    static findModelByName(name) {
+        return this.getAll().find((model)=>model.name === name);
+    }
+}
+
+},{"../Event.js":"ZKUT3","./Settings.js":"5L05Z","../OllamaApi.js":"jkUug","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jkUug":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "OllamaApi", ()=>OllamaApi);
+class OllamaApi {
+    constructor(){
+        this.abortController = null;
+    }
+    async makeRequest(chat, model, userMessage, systemPrompt, modelParameters) {
+        const requestData = {
+            prompt: userMessage,
+            model: model,
+            messages: (await chat.getMessages()).map((message)=>({
+                    role: message.role,
+                    content: message.content
+                }))
+        };
+        // Add system prompt
+        if (systemPrompt) requestData.system = systemPrompt;
+        // Add model parameters
+        if (modelParameters) requestData.options = modelParameters;
+        return requestData;
+    }
+    async send(url, data, onResponse, onError, onDone) {
+        const request = {
+            data
+        };
+        try {
+            const response = await this.postChatMessage(url, data);
+            await this.handleResponse(request, response, onResponse, onDone);
+        } catch (error) {
+            onError(request, error);
+        }
+    }
+    async postChatMessage(url, data) {
+        this.abortController = new AbortController();
+        const { signal } = this.abortController;
+        const response = await fetch(url, {
+            signal,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error(`${url} failed with status ${response.status}`);
+        return response;
+    }
+    async handleResponse(request, response, onResponse, onDone) {
+        const reader = response.body.getReader();
+        let partialLine = "";
+        var isRequestDone = false;
+        while(!isRequestDone){
+            const { done, value } = await reader.read();
+            if (done) {
+                onDone(request, response);
+                isRequestDone = true;
+                continue;
+            }
+            const textChunk = new TextDecoder().decode(value);
+            const lines = (partialLine + textChunk).split("\n");
+            partialLine = lines.pop();
+            lines.forEach((line)=>{
+                const responseData = JSON.parse(line);
+                if (line.trim()) {
+                    // TODO: Move this line:
+                    this.printResponseStats(responseData);
+                    onResponse(request, responseData.message.content);
+                }
+            });
+        }
+        if (partialLine.trim()) onResponse(request, partialLine);
+    }
+    abort() {
+        if (this.abortController) this.abortController.abort();
+    }
+    printResponseStats(data) {
+        if (!data.total_duration) return;
+        // Convert nanoseconds to seconds for durations
+        const totalDurationInSeconds = data.total_duration / 1e9;
+        const loadDurationInSeconds = data.load_duration / 1e9;
+        const promptEvalDurationInSeconds = data.prompt_eval_duration / 1e9;
+        const responseEvalDurationInSeconds = data.eval_duration / 1e9;
+        // Calculate tokens per second (token/s)
+        const tokensPerSecond = data.eval_count / responseEvalDurationInSeconds;
+        const output = `
+Model: ${data.model}
+Created At: ${data.created_at}
+Total Duration (s): ${totalDurationInSeconds.toFixed(2)}
+Load Duration (s): ${loadDurationInSeconds.toFixed(2)}
+Prompt Evaluation Count: ${data.prompt_eval_count}
+Prompt Evaluation Duration (s): ${promptEvalDurationInSeconds.toFixed(2)}
+Response Evaluation Count: ${data.eval_count}
+Response Evaluation Duration (s): ${responseEvalDurationInSeconds.toFixed(2)}
+Tokens Per Second: ${tokensPerSecond.toFixed(2)} token/s
+    `;
+        console.log(output);
+    }
+    static getModels(url, onResponse) {
+        if (!url) return null;
+        return fetch(url).then((response)=>{
+            if (!response.ok) throw new Error(`Unable to fetch models from ${url}`);
+            return response.json();
+        }).then((data)=>{
+            onResponse(data.models);
+        }).catch((error)=>{
+            console.debug(error);
+            console.error(`Please ensure the server is running at: ${url}. Error code: 39847`);
+            onResponse([]);
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dUrsU":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // TODO: Move all actions here?
@@ -1696,127 +2041,13 @@ class CopyButton {
                 document.execCommand("copy");
                 // Remove the temporary textarea
                 document.body.removeChild(textarea);
-                // Optional: Display a message or change the button text/content
                 (0, _uinotificationJs.UINotification).show("Text copied to clipboard").autoDismiss();
             }
         });
     }
 }
 
-},{"./UINotification.js":"13HP4","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jkUug":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "OllamaApi", ()=>OllamaApi);
-class OllamaApi {
-    constructor(){
-        this.abortController = null;
-    }
-    async makeRequest(chat, userMessage, systemPrompt, modelParameters) {
-        const requestData = {
-            prompt: userMessage,
-            model: chat.model,
-            messages: (await chat.getMessages()).map((message)=>({
-                    role: message.role,
-                    content: message.content
-                }))
-        };
-        // Add system prompt
-        if (systemPrompt) requestData.system = systemPrompt;
-        // Add model parameters
-        if (modelParameters) requestData.options = modelParameters;
-        return requestData;
-    }
-    async send(url, data, onResponse, onError, onDone) {
-        const request = {
-            data
-        };
-        try {
-            const response = await this.postChatMessage(url, data);
-            await this.handleResponse(request, response, onResponse, onDone);
-        } catch (error) {
-            onError(request, error);
-        }
-    }
-    async postChatMessage(url, data) {
-        this.abortController = new AbortController();
-        const { signal } = this.abortController;
-        const response = await fetch(url, {
-            signal,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
-        if (!response.ok) throw new Error(`${url} failed with status ${response.status}`);
-        return response;
-    }
-    async handleResponse(request, response, onResponse, onDone) {
-        const reader = response.body.getReader();
-        let partialLine = "";
-        var isRequestDone = false;
-        while(!isRequestDone){
-            const { done, value } = await reader.read();
-            if (done) {
-                onDone(request, response);
-                isRequestDone = true;
-                continue;
-            }
-            const textChunk = new TextDecoder().decode(value);
-            const lines = (partialLine + textChunk).split("\n");
-            partialLine = lines.pop();
-            lines.forEach((line)=>{
-                const responseData = JSON.parse(line);
-                if (line.trim()) {
-                    // TODO: Move this line:
-                    this.printResponseStats(responseData);
-                    onResponse(request, responseData.message.content);
-                }
-            });
-        }
-        if (partialLine.trim()) onResponse(request, partialLine);
-    }
-    abort() {
-        if (this.abortController) this.abortController.abort();
-    }
-    printResponseStats(data) {
-        if (!data.total_duration) return;
-        // Convert nanoseconds to seconds for durations
-        const totalDurationInSeconds = data.total_duration / 1e9;
-        const loadDurationInSeconds = data.load_duration / 1e9;
-        const promptEvalDurationInSeconds = data.prompt_eval_duration / 1e9;
-        const responseEvalDurationInSeconds = data.eval_duration / 1e9;
-        // Calculate tokens per second (token/s)
-        const tokensPerSecond = data.eval_count / responseEvalDurationInSeconds;
-        const output = `
-Model: ${data.model}
-Created At: ${data.created_at}
-Total Duration (s): ${totalDurationInSeconds.toFixed(2)}
-Load Duration (s): ${loadDurationInSeconds.toFixed(2)}
-Prompt Evaluation Count: ${data.prompt_eval_count}
-Prompt Evaluation Duration (s): ${promptEvalDurationInSeconds.toFixed(2)}
-Response Evaluation Count: ${data.eval_count}
-Response Evaluation Duration (s): ${responseEvalDurationInSeconds.toFixed(2)}
-Tokens Per Second: ${tokensPerSecond.toFixed(2)} token/s
-    `;
-        console.log(output);
-    }
-    static getModels(url, onResponse) {
-        if (!url) return null;
-        return fetch(url).then((response)=>{
-            if (!response.ok) throw new Error(`Unable to fetch models from ${url}`);
-            return response.json();
-        }).then((data)=>{
-            onResponse(data.models);
-        }).catch((error)=>{
-            console.debug(error);
-            console.error(`Please ensure the server is running at: ${url}. Error code: 39847`);
-            onResponse([]);
-        });
-    }
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"P5Doy":[function(require,module,exports) {
+},{"./UINotification.js":"13HP4","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"P5Doy":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "DownloadButton", ()=>DownloadButton);
@@ -2017,221 +2248,7 @@ class Modal {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3Iv7p":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "ModelsList", ()=>ModelsList);
-var _filteredListJs = require("./FilteredList.js");
-var _eventJs = require("./Event.js");
-var _modelsJs = require("./models/Models.js");
-class ModelsList extends (0, _filteredListJs.FilteredList) {
-    constructor(container){
-        super(container, (0, _modelsJs.Models).getNames());
-        this.bindEventListeners();
-    }
-    bindEventListeners() {
-        (0, _eventJs.Event).listen("modelsLoaded", this.handleModelsLoaded.bind(this));
-    }
-    handleModelsLoaded() {
-        this.setItems((0, _modelsJs.Models).getNames());
-    }
-    static getModels() {
-        return (0, _modelsJs.Models).getNames();
-    }
-}
-
-},{"./FilteredList.js":"evx1C","./Event.js":"ZKUT3","./models/Models.js":"grZYv","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"evx1C":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "FilteredList", ()=>FilteredList);
-var _listJs = require("./List.js");
-var _domJs = require("./DOM.js");
-class FilteredList extends (0, _listJs.List) {
-    constructor(ul, items){
-        super(ul, items); // Call the constructor of the parent class
-        this.div = document.createElement("small");
-        this.div.classList.add("hidden", "p-2");
-        this.ul.prepend(this.div);
-        this.query = null;
-    }
-    escapeRegExp(string) {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // Escapes special characters
-    }
-    render() {
-        super.render();
-    }
-    selectFirst() {
-        alert(document.querySelector(".chat-model-list li:not(.hidden)").textContent);
-    }
-    filter(searchTerm) {
-        this.query = searchTerm;
-        if (searchTerm === null || searchTerm === undefined) {
-            this.clearFilter();
-            this.filtered = false;
-            return null;
-        }
-        const query = this.escapeRegExp(searchTerm).replace(/\s+/g, ".*");
-        const regex = new RegExp(query, "i"); // 'i' for case-insensitive matching
-        // Loop through the list items
-        const matches = this.li.map((listItemElement)=>{
-            const text = listItemElement.textContent;
-            const match = regex.test(text);
-            if (match) {
-                (0, _domJs.DOM).showElement(listItemElement);
-                return text;
-            } else {
-                (0, _domJs.DOM).hideElement(listItemElement);
-                return null;
-            }
-        }).filter((match)=>match);
-        console.log(`Search ${query}. Matches: ${matches}`);
-        // Update text
-        (0, _domJs.DOM).showElement(this.div);
-        let message = null;
-        if (searchTerm.length < 1) message = `Continue typing to search models. Showing all models:`;
-        else if (matches.length != 0) message = `Found ${matches.length} model(s) matching '${this.query}'. Click to change chat's model, or press tab to change prompt's model:`;
-        else message = `Did not find any models that match '${this.query}'.`;
-        this.div.textContent = message;
-        return matches;
-    }
-    clearFilter() {
-        (0, _domJs.DOM).hideElement(this.div);
-        this.query = null;
-        this.li.forEach((listItemElement)=>{
-            (0, _domJs.DOM).showElement(listItemElement);
-        });
-    }
-}
-
-},{"./List.js":"gy1Ga","./DOM.js":"EyUfz","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gy1Ga":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "List", ()=>List);
-var _eventJs = require("./Event.js");
-var _uielementJs = require("./UIElement.js");
-class List extends (0, _uielementJs.UIElement) {
-    constructor(ul, items){
-        super(ul);
-        this.ul = ul;
-        this.items = items;
-        this.render();
-        this.clickHandler = null;
-        this.ul.classList.add("list");
-    }
-    onClick(handler) {
-        this.clickHandler = handler;
-        return this; // Allow chaining
-    }
-    setItems(items) {
-        this.items = items;
-        this.render();
-    }
-    setSelected(selected) {
-        console.debug(`Select ${selected}`);
-        this.selected = selected;
-        this.li.forEach((item)=>{
-            if (item.textContent === selected) item.classList.add("selected");
-            else item.classList.remove("selected");
-        });
-        (0, _eventJs.Event).emit("select", selected, this.ul);
-    }
-    getSelected() {
-        return this.selected;
-    }
-    render() {
-        this.ul.innerHTML = ""; // Clear existing content
-        this.li = this.items.map((item)=>{
-            const li = document.createElement("li");
-            li.classList.add("list-item");
-            if (item === this.selected) li.classList.add("selected");
-            li.textContent = item;
-            li.item = item;
-            li.addEventListener("click", ()=>{
-                this.setSelected(item);
-                if (this.clickHandler) this.clickHandler(item);
-            });
-            this.ul.appendChild(li);
-            return li;
-        });
-    }
-}
-
-},{"./Event.js":"ZKUT3","./UIElement.js":"efCjh","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"efCjh":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "UIElement", ()=>UIElement);
-var _domJs = require("./DOM.js");
-class UIElement {
-    constructor(element){
-        this.element = element;
-    }
-    show() {
-        (0, _domJs.DOM).showElement(this.element);
-    }
-    hide() {
-        (0, _domJs.DOM).hideElement(this.element);
-    }
-}
-
-},{"./DOM.js":"EyUfz","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"EyUfz":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "DOM", ()=>DOM);
-class DOM {
-    static showElement(element) {
-        element.classList.remove("hidden");
-        return this;
-    }
-    static hideElement(element) {
-        element.classList.add("hidden");
-        return this;
-    }
-    static enableInput(element) {
-        element.removeAttribute("disabled");
-        return this;
-    }
-    static disableInput(element) {
-        element.setAttribute("disabled", "disabled");
-        return this;
-    }
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"grZYv":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Models", ()=>Models);
-var _eventJs = require("../Event.js");
-var _settingsJs = require("./Settings.js");
-var _ollamaApiJs = require("../OllamaApi.js");
-class Models {
-    // TODO: Get this from the settings?
-    static models = [];
-    static getUrl() {
-        return (0, _settingsJs.Settings).getUrl("/api/tags");
-    }
-    static load() {
-        if (!this.getUrl()) return null;
-        return (0, _ollamaApiJs.OllamaApi).getModels(this.getUrl(), (models)=>{
-            Models.models = models;
-            // Cache list of models
-            (0, _settingsJs.Settings).set("models", Models.models);
-            (0, _eventJs.Event).emit("modelsLoaded", Models.models);
-        });
-    }
-    static getAll() {
-        return (0, _settingsJs.Settings).get("models");
-    }
-    static getNames() {
-        const models = this.getAll();
-        if (!models) return [];
-        return models.map((model)=>model.name);
-    }
-    static findModelByName(name) {
-        return this.getAll().find((model)=>model.name === name);
-    }
-}
-
-},{"../Event.js":"ZKUT3","./Settings.js":"5L05Z","../OllamaApi.js":"jkUug","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fQbdz":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fQbdz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ChatSettingsDialog", ()=>ChatSettingsDialog);
@@ -2492,7 +2509,8 @@ class AtSymbolListener {
         const key = event.key;
         // Select first item on tab
         if (event.which == 9 && this.active) {
-            this.target.selectFirst();
+            const select = this.target.element.querySelector("li:not(.hidden)")?.textContent;
+            this.handleSelected(select);
             event.preventDefault();
         } else if (key === " " || key === "Enter" || key === "Escape") this.hideTarget();
     }
@@ -2505,7 +2523,7 @@ class AtSymbolListener {
             this.input.value = text.substring(0, lastAtPos + 1) + selected;
             this.input.focus();
             this.input.setSelectionRange(this.input.value.length, this.input.value.length);
-            this.onSelected(selected);
+            // this.onSelected(selected);
             this.hideTarget();
         }
     }
@@ -2644,6 +2662,6 @@ class ChatForm {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["3pyWu","4pp4s"], "4pp4s", "parcelRequire461f")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g0UqZ","4pp4s"], "4pp4s", "parcelRequire461f")
 
 //# sourceMappingURL=index.4de9b498.js.map

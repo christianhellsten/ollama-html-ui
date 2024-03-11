@@ -70,7 +70,7 @@ class AppTest {
   }
 
   async showSettings() {
-    // await this.page.click('#chats-menu-button')
+    await this.page.click('#chats-menu');
     await this.screenshot();
     await this.page.click('#settings-button');
     await expect(this.page.locator('#settings-dialog')).toBeVisible();
@@ -183,7 +183,7 @@ class AppTest {
   async deleteChat(title) {
     const selector = `.chat-list-item:has-text("${title}")`;
     await this.page.locator(selector).click();
-    await this.page.click('#chat-menu-button');
+    await this.page.click('#chats-menu-button');
     // await this.page.waitForSelector('#delete-chat-button', { visible: true });
     await this.page.click('#delete-chat-button');
     await expect(this.page.locator(selector)).not.toBeVisible();

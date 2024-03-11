@@ -15,102 +15,115 @@
   <body>
     <div id="chat-app">
       <header id="chat-header" class="row">
-        <button id="hamburger-menu" class="hamburger-menu button" title="Collapse or expand the sidebar">
-          <svg width="24" height="24" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <rect x="4" y="6" width="16" height="2" fill="black"></rect>
-            <rect x="4" y="11" width="16" height="2" fill="black"></rect>
-            <rect x="4" y="16" width="16" height="2" fill="black"></rect>
-          </svg>
-        </button>
         <!-- Chat menu -->
+        <div id="chats-menu" class="drop-down-menu col">
+          <button id="chats-menu-button" class="button pr-1" title="Application settings">
+            <svg class="icon-settings" width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4.25" y="4.25" width="5" height="5" stroke="currentColor" stroke-width="1"></rect>
+              <rect x="14.75" y="4.25" width="5" height="5" stroke="currentColor" stroke-width="1"></rect>
+              <rect x="4.25" y="14.75" width="5" height="5" stroke="currentColor" stroke-width="1"></rect>
+              <rect x="14.75" y="14.75" width="5" height="5" stroke="currentColor" stroke-width="1"></rect>
+            </svg>
+          </button>
+
+          <div class="drop-down-menu-items hidden">
+            <button id="edit-chat-button" class="button row" title="Edit chat title">
+              Edit title
+            </button>
+            <button class="button copy-button row" title="Copy chat to clipboard" data-target="chat-history">
+              Copy chat
+            </button>
+            <button id="delete-chat-button" class="button row" title="Delete chat">
+              Delete chat
+            </button>
+            <hr>
+            <button data-target="chat-history" class="button download-button row" title="Download chat">
+              Download chat
+            </button>
+            <button id="export-chat-button" class="button row" title="Export chat to JSON">
+              Export chat
+            </button>
+            <hr>
+            <button id="export-button" class="button row" title="Export all data">
+              Download chats
+            </button>
+            <button id="clear-button" class="button row" title="Delete all chats">
+              Delete chats
+            </button>
+            <hr>
+            <button id="chat-settings-button" class="button row" title="Chat settings">
+              Chat settings
+            </button>
+            <hr>
+            <button id="settings-button" class="button" title="Application settings">
+              Application settings
+            </button>
+          </div>
+        </div>
+        <!-- Chat title -->
         <span id="chat-title" class="col grw" contenteditable="" title="Edit chat title"></span>
-        <button id="settings-button" class="button" title="Application settings">
-          <svg class="icon-settings" width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="4.25" y="4.25" width="5" height="5" stroke="currentColor" stroke-width="2"></rect>
-            <rect x="14.75" y="4.25" width="5" height="5" stroke="currentColor" stroke-width="2"></rect>
-            <rect x="4.25" y="14.75" width="5" height="5" stroke="currentColor" stroke-width="2"></rect>
-            <rect x="14.75" y="14.75" width="5" height="5" stroke="currentColor" stroke-width="2"></rect>
-          </svg>
-        </button>
+        <button id="hamburger-menu" class="hamburger-menu button col" title="Collapse or expand the sidebar">
+          <svg width="16" height="16" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1"></rect>
+            <!-- line 2/3 to the right -->
+            <line x1="16" y1="1" x2="16" y2="23" stroke="currentColor" stroke-width="1"></line>
+        </svg></button>
       </header>
       <div id="chat-area">
         <aside id="sidebar" class="grw col">
-          <!-- Buttons -->
-          <div class="row grw">
-            <button id="new-chat-button" class="button" title="New chat">
-              <i class="icon-new"></i>
-            </button>
-            <div id="chats-menu" class="drop-down-menu drop-down-menu-right col">
-              <button id="chats-menu-button" class="button" title="Chats menu">
-                <i class="icon-menu"></i>
-              </button>
-              <div class="drop-down-menu-items hidden">
-                <button id="search-button" class="button row" title="Search chats">
-                  <i class="icon-search">Search chats</i>
-                </button>
-                <button id="export-button" class="button row" title="Export all data">
-                  <i class="icon-download">Download chats</i>
-                </button>
-                <button id="clear-button" class="button row" title="Delete all chats">
-                  <i class="icon-clear">Delete chats</i>
-                </button>
-              </div>
-            </div>
-          </div>
+          <!-- TODO: Models
+          <small class="row pl-2">Models</small>
+          <ul class="chat-model-list row p-2"></ul>
+          -->
           <!-- Search -->
           <div class="row hidden" id="search-row">
             <input type="text" id="search-input" class="col" placeholder="Search...">
           </div>
+
           <!-- Chats -->
-          <ul id="chat-list" class="row"></ul>
+          <ul id="chat-list" class="row p-2"></ul>
+
+          <div class="row">
+            <button id="new-chat-button" class="button" title="New chat">
+              <svg width="16" height="16" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="22" height="22" fill="white" stroke="currentColor" stroke-width="1"></rect>
+                <line x1="12" y1="6" x2="12" y2="18" stroke="currentColor" stroke-width="1"></line>
+                <line x1="6" y1="12" x2="18" y2="12" stroke="currentColor" stroke-width="1"></line>
+              </svg>
+            </button>
+            <button id="search-button" class="button" title="Search chats">
+              <svg width="24" height="24" viewbox="0 0 24 24" preserveaspectratio="xMidYMid meet">
+                <circle cx="12" cy="12" r="8" style="fill: #fff; stroke: currentColor"></circle>
+                <line x1="2" y1="22" x2="6" y2="18" style="stroke: currentColor"></line>
+              </svg>
+            </button>
+          </div>
         </aside>
         <!-- Chat messages -->
         <div id="chat-history"></div>
-        <aside id="right-sidebar" class="col">
-          <div id="chat-menu" class="drop-down-menu drop-down-menu-right">
-            <button id="chat-menu-button" class="button col" title="Chat menu">
-              <i class="icon-menu"></i>
+        <aside id="right-sidebar" class="col" style="align-items: center">
+          <div id="scroll-buttos">
+            <button id="scroll-to-top-button" class="row button">
+              <i class="icon-scroll-to-top"></i>
             </button>
-            <div class="drop-down-menu-items hidden">
-              <button id="edit-chat-button" class="button row" title="Edit chat title">
-                <i class="icon-edit">Edit title</i>
-              </button>
-              <button class="button copy-button row" title="Copy chat to clipboard" data-target="chat-history">
-                <i class="icon-copy">Copy chat</i>
-              </button>
-              <button id="delete-chat-button" class="button row" title="Delete chat">
-                <i class="icon-delete">Delete chat</i>
-              </button>
-              <button data-target="chat-history" class="button download-button row" title="Download chat">
-                <i class="icon-download">Download chat</i>
-              </button>
-              <button id="export-chat-button" class="button row" title="Export chat to JSON">
-                <i class="icon-export">Export chat</i>
-              </button>
-              <button id="chat-settings-button" class="button row" title="Chat settings">
-                <i class="icon-settings">Chat settings</i>
-              </button>
-            </div>
+            <button id="scroll-to-end-button" class="row button">
+              <i class="icon-scroll-to-end"></i>
+            </button>
           </div>
-          <button id="scroll-to-top-button" class="row button">
-            <i class="icon-scroll-to-top"></i>
-          </button>
-          <button id="scroll-to-end-button" class="row button">
-            <i class="icon-scroll-to-end"></i>
-          </button>
         </aside>
       </div>
       <div id="chat-model" class="p-2 text-small">
         <div class="p-2">
-          Talking to:
-          <span class="chat-model-name"></span>
+          <small>Talking to
+            <span class="chat-model-name"></span>
+          </small>
         </div>
         <ul class="chat-model-list hidden"></ul>
       </div>
       <div id="chat-form">
         <!-- Chat input and button -->
         <div class="textarea">
-          <textarea id="message-input" type="text" placeholder="Type a message or @ to switch model..." required="" autofocus="" title="Type a message or @ to switch model..."></textarea>
+          <textarea id="message-input" type="text" placeholder="Type a message..." required="" autofocus="" title="Press enter to submit message. Type @ to switch model."></textarea>
         </div>
         <div class="buttons">
           <!--
@@ -144,7 +157,7 @@
               <div class="row">
                 <ul id="model-list" class="col"></ul>
                 <button class="refresh-models-button button col" title="Refresh model list">
-                    <i class="icon-refresh"></i>
+                  <i class="icon-refresh"></i>
                 </button>
               </div>
             </div>
@@ -154,7 +167,7 @@
             </div>
             <div class="input">
               <label class="" for="input-model-parameters">Model parameters</label>
-                            <textarea id="input-model-parameters" class="row" rows="3" placeholder="{ 'temperature': 0, 'stop': 'AI assistant:', 'num_ctx': 4096 }"></textarea>
+              <textarea id="input-model-parameters" class="row" rows="3" placeholder="{ 'temperature': 0, 'stop': 'AI assistant:', 'num_ctx': 4096 }"></textarea>
             </div>
           </div>
         </div>
@@ -168,26 +181,27 @@
           <div class="user-icon you-icon">You</div>
           <div class="hoverable chat-message-menu">
             <button class="copy-chat-message-button button-sm" title="Copy chat message to clipboard">
-                <i class="icon-copy copy-button"></i>
+              <i class="icon-copy copy-button"></i>
             </button>
             <button class="good-chat-message-button copy-button button-sm" title="Good chat message">
-                <i class="icon-good"></i>
+              <i class="icon-good"></i>
             </button>
             <button class="bad-chat-message-button button-sm" title="Bad chat message">
-                <i class="icon-bad"></i>
+              <i class="icon-bad"></i>
             </button>
             <button class="flag-chat-message-button button-sm" title="Flag chat message">
-                <i class="icon-flag"></i>
+              <i class="icon-flag"></i>
             </button>
             <button class="delete-chat-message-button button-sm" title="Delete chat message">
-                <i class="icon-delete"></i>
+              <i class="icon-delete"></i>
             </button>
           </div>
         </div>
         <div class="col grw">
           <span class="chat-message-text"></span>
+        </div>
       </div>
-    </div></template>
+    </template>
     <!-- Chat list item template -->
     <template id="chat-list-item-template">
       <li class="chat-list-item list-item row">

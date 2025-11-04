@@ -1,39 +1,131 @@
-// Lists
+// Modern smooth animations with cubic-bezier easing
+$ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+$ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+// Lists - Smooth stagger animation
 ul {
-    li {
-        transition: all 0.3s;
+  li {
+    transition: all 0.2s $ease-in-out;
+
+    &:hover {
+      transition: all 0.15s $ease-in-out;
     }
+  }
 }
 
-// Sidebar
+// Sidebar - Smooth slide animation
 #sidebar {
-    transition: min-width  0.5s ease-out, max-width 0.5s ease-out;
+  transition:
+    min-width 0.3s $ease-out-expo,
+    max-width 0.3s $ease-out-expo,
+    padding 0.3s $ease-out-expo;
 }
 
 #sidebar.collapsed {
-    transition: min-width 0.5s ease-in, max-width 0.5s ease-in;
+  transition:
+    min-width 0.25s $ease-in-out,
+    max-width 0.25s $ease-in-out,
+    padding 0.25s $ease-in-out;
 }
 
-// Modal dialogs
+// Modal dialogs - Modern scale and fade
 .modal {
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition:
+    opacity 0.2s ease,
+    backdrop-filter 0.2s ease;
 
   .modal-content {
-    transform: scale(0.9); /* Start slightly scaled down */
-    transition: transform 0.5s ease-in;
+    transform: scale(0.95) translateY(-10px);
+    transition: transform 0.2s $ease-out-expo;
   }
 }
 
 .modal.show {
   opacity: 1;
-  transition: opacity 0.5s ease;
+  transition:
+    opacity 0.25s ease,
+    backdrop-filter 0.25s ease;
 
   .modal-content {
-    transform: scale(1); /* Scale to original size */
-    transition: transform 0.5s ease-out;
+    transform: scale(1) translateY(0);
+    transition: transform 0.3s $ease-out-expo;
   }
 
-  pointer-events: auto; /* Allow interactions */
+  pointer-events: auto;
+}
+
+// Fade in animation for chat messages
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Pulse animation for loading states
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Smooth hover lift animation
+@keyframes hoverLift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-2px);
+  }
+}
+
+// Ripple effect for buttons
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+// Skeleton loading animation
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+// Bounce animation for notifications
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+// Fade out animation
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 

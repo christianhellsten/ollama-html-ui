@@ -3,29 +3,44 @@
 }
 
 .drop-down-menu-items {
-  background: var(--bg-color);
+  background: var(--secondary-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: $border-radius-md;
   position: absolute;
-  top: 100%; /* Position below the button */
-  display: none; /* Hide initially */
-  font-size: 0.75rem;
+  top: calc(100% + 0.5rem);
+  display: none;
+  font-size: 0.875rem;
   white-space: nowrap;
+  min-width: 12rem;
+  padding: 0.5rem;
+  @extend %box-shadow-medium;
+  @extend %transition-base;
+  animation: fadeInUp 0.2s ease-out;
 
   i[class^='icon-']::before {
-    padding-right: 0.5rem;
+    padding-right: 0.75rem;
+    color: var(--icon-color);
   }
-
-  @extend %box-shadow;
 
   left: 0;
 
   .text {
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: $border-radius-sm;
+    color: var(--text-color);
+    cursor: pointer;
+    @extend %transition-colors;
+
+    &:hover {
+      background: var(--tertiary-bg-color);
+      color: var(--primary-color);
+    }
   }
 }
 
 .drop-down-menu-items.visible {
   z-index: 10000;
-  display: inline-block;
+  display: block;
 }
 
 .drop-down-menu-right {
@@ -37,7 +52,19 @@
 
 .drop-down-menu-top {
   .drop-down-menu-items {
-    bottom: 100%; /* Align bottom of menu with top of the button */
-    top: auto; /* Reset default positioning */
+    bottom: calc(100% + 0.5rem);
+    top: auto;
+    animation: fadeInDown 0.2s ease-out;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

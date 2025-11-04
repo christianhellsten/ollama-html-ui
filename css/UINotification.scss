@@ -1,25 +1,61 @@
 .notification {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: calc(100vw - 2rem);
+  top: 1.5rem;
+  right: 1.5rem;
+  left: auto;
+  width: auto;
+  max-width: 28rem;
+  min-width: 20rem;
   z-index: 30000;
   color: var(--text-color);
-  background-color: var(--bg-color);
-  padding: 1rem;
-  margin: 1rem;
-
-  @extend %box-shadow-modal;
-
-  border-radius: var(--border-radius);
+  background-color: var(--secondary-bg-color);
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: $border-radius-lg;
+  @extend %box-shadow-large;
+  @extend %transition-base;
+  backdrop-filter: blur(8px);
+  animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   .button {
-    border-radius: 2px;
+    border-radius: $border-radius-sm;
     padding: 0.5rem;
-    line-height: 0.5rem;
+    line-height: 1;
+    @extend %transition-colors;
+
+    &:hover {
+      background: var(--tertiary-bg-color);
+    }
   }
 }
 
 .notification-error {
   background: var(--error-color);
+  color: var(--light-text-color);
+  border-color: transparent;
+
+  .button:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.notification-success {
+  background: var(--success-color);
+  color: var(--light-text-color);
+  border-color: transparent;
+
+  .button:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

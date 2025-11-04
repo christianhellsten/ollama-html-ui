@@ -4,49 +4,77 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  padding-top: 1rem;
+  padding: 1.5rem;
   max-width: 1024px;
   width: 100%; /* Full width of its parent */
   overflow-y: auto; /* Enable vertical scrolling */
+  gap: 1rem;
 }
 
 /* Base styling for all messages */
 .chat-message {
-  padding: 0.5rem;
-  padding-top: 0;
+  padding: 1.25rem 1.5rem;
   position: relative;
+  border-radius: $border-radius-lg;
+  @extend %transition-base;
+  line-height: 1.7;
 
   .drop-down-menu {
     z-index: 100;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 0.75rem;
+    right: 0.75rem;
+    opacity: 0;
+    @extend %transition-base;
+  }
+
+  &:hover {
+    .drop-down-menu {
+      opacity: 1;
+    }
   }
 }
 
 /* Styling for user messages */
 .user-chat-message {
   @extend %font-weight-bolder;
+  background: var(--chat-bg-user);
+  border: 1px solid var(--border-color);
+  @extend %box-shadow-small;
 
   .system-icon {
     display: none;
+  }
+
+  &:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-1px);
+    @extend %box-shadow-medium;
   }
 }
 
 /* Styling for system messages */
 .assistant-chat-message {
+  background: var(--chat-bg-assistant);
+  border: 1px solid var(--border-color);
   margin-bottom: 0.5rem;
 
   .you-icon {
     display: none;
   }
+
+  &:hover {
+    border-color: var(--border-hover-color);
+    @extend %box-shadow-small;
+  }
 }
 
 .chat-message-menu {
-  @extend %box-shadow;
-
+  @extend %box-shadow-medium;
   position: absolute;
   padding: 0.5rem;
-  background: var(--bg-color);
+  background: var(--secondary-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: $border-radius-md;
   z-index: 300;
 }

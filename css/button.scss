@@ -3,60 +3,97 @@ button {
   z-index: 1;
   border: none;
   cursor: pointer;
+  color: var(--text-color);
+  @extend %transition-colors;
 }
 
 .button {
-  padding: 0.5rem 0.75rem;
-  border-radius: 3px;
+  padding: 0.625rem 1rem;
+  border-radius: $border-radius;
   cursor: pointer;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  @extend %transition-base;
 
   i {
     display: inline-block;
     vertical-align: middle;
   }
-}
 
-.button:hover {
-  position: relative;
-  top: 1px;
+  &:hover {
+    background-color: var(--tertiary-bg-color);
+    transform: translateY(-1px);
+    @extend %box-shadow-small;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .button-sm {
-  padding: 0.25rem 0.5rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
 }
 
 .button:hover,
 .button.selected {
-  @extend %box-shadow-hover;
-
   i[class^='icon-'] {
     filter: grayscale(0%); // Make icons normal
   }
 }
 
+.button.selected {
+  background-color: var(--primary-color);
+  color: var(--button-primary-color);
+  border-color: var(--primary-color);
+  @extend %box-shadow-small;
+}
+
 .button-small {
-  padding: 0.25rem 1rem;
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
 }
 
 .button-mini {
-  padding: 0;
+  padding: 0.25rem;
+  min-width: 2rem;
+  min-height: 2rem;
 }
 
-/* Primary button */
+/* Primary button - Modern gradient style */
 .button-primary {
-  @extend %font-weight-boldest;
-  @extend %box-shadow;
+  @extend %font-weight-bolder;
+  background: var(--button-primary-bgcolor);
+  color: var(--button-primary-color);
+  border: none;
+  @extend %box-shadow-small;
+
+  &:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    @extend %box-shadow-medium;
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
 }
 
 .buttons {
   display: flex;
+  gap: 0.5rem;
 
   .button {
-    border-radius: 0;
-    width: 100%;
+    flex: 1;
   }
 }
 
 .button-large {
-  padding: 0 2rem;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
 }

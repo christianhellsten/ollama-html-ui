@@ -1,43 +1,64 @@
 label {
-  @extend %font-weight-boldest;
-
+  @extend %font-weight-bolder;
   padding-bottom: 0.5rem;
   display: block;
+  color: var(--text-color);
+  font-size: 0.875rem;
+  letter-spacing: 0.025em;
 }
 
 textarea {
-  padding: 0.5rem;
+  padding: 0.75rem;
   resize: none;
+  line-height: 1.5;
 }
 
 input,
 textarea {
   width: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
   display: inline-block;
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border-radius: $border-radius;
+  font-size: 0.9375rem;
+  @extend %transition-colors;
+  @extend %transition-shadow;
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  &:hover {
+    border-color: var(--border-hover-color);
+  }
 }
 
 input.error,
 textarea.error {
-  border: 1px solid var(--error-color) !important;
+  border-color: var(--error-color) !important;
+  background-color: rgba(239, 68, 68, 0.05);
 }
 
 input:focus,
 textarea:focus,
 [contenteditable]:focus {
-  border: 1px solid var(--border-color);
-  border-color: var(--secondary-color-lighten-40);
+  border-color: var(--border-focus-color);
+  background-color: var(--input-focus-bg);
   outline: none !important;
-
-  @extend %box-shadow-hover;
-}
-
-input:hover,
-textarea:hover {
-  border: 1px solid var(--secondary-color-lighten-40);
+  @extend %box-shadow-small;
 }
 
 .input {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+// Modern form group
+.form-group {
+  margin-bottom: 1.25rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }

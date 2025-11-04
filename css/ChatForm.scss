@@ -1,14 +1,14 @@
 #chat-form {
-  flex: 0 0 60px; /* fixed height */
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
-
-  // NOTE: Should match #chat-header border-bottom
-  border-top: 1px solid #cccccc5e;
+  padding: 1rem 1.5rem;
+  background: var(--secondary-bg-color);
+  border-top: 1px solid var(--border-color);
+  gap: 0.75rem;
+  @extend %box-shadow-small;
 
   .textarea {
-    height: 100%;
-    width: 100%;
     display: flex;
     flex-grow: 1;
   }
@@ -16,17 +16,42 @@
   .buttons {
     display: flex;
     position: relative;
-    height: 100%;
+    gap: 0.5rem;
   }
 
   button {
-    background-color: var(--bg-color);
+    background-color: var(--primary-color);
+    color: var(--button-primary-color);
+    border-radius: $border-radius-full;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    @extend %transition-base;
+
+    &:hover {
+      background-color: var(--primary-hover);
+      transform: scale(1.05);
+      @extend %box-shadow-medium;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
   }
 
   textarea {
-    padding: 1rem;
+    padding: 1rem 1.25rem;
     resize: none;
-    border: 0;
+    border: 1.5px solid var(--border-color);
+    border-radius: $border-radius-lg;
+    background: var(--input-bg);
+    min-height: 3rem;
+    max-height: 10rem;
+    @extend %transition-colors;
+
+    &:focus {
+      border-color: var(--border-focus-color);
+      @extend %box-shadow-small;
+    }
   }
 
   .icon-send {

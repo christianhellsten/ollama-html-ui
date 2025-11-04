@@ -1,55 +1,123 @@
 @use 'sass:color';
 
-// Light theme as default
+// Modern Light theme with beautiful gradients
 :root {
-  --primary-color: #393e46;
-  --secondary-color: #222831;
-  --secondary-color-lighten-20: #{color.adjust(#222831, $lightness:20%)};
-  --secondary-color-lighten-40: #{color.adjust(#222831, $lightness:40%)};
-  --tertiary-color: #eee;
-  --error-color: #ef4040;
-  --bg-color: #fafafa;
-  --secondary-bg-color: #f0f0f0;
-  --text-color: #333;
-  --text-color-lighten-20: #{color.adjust(#eee, $lightness:20%)};
-  --icon-color: var(--primary-color);
-  --light-text-color: #fff;
-  --button-primary-color: var(--primary-color);
-  --button-primary-bgcolor: #fff;
+  // Brand colors - Modern purple/blue gradient
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-light: #818cf8;
+  --accent-color: #8b5cf6;
+  --accent-hover: #7c3aed;
+
+  // Semantic colors
+  --secondary-color: #1e293b;
+  --secondary-color-lighten-20: #334155;
+  --secondary-color-lighten-40: #475569;
+  --tertiary-color: #e2e8f0;
+  --error-color: #ef4444;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+
+  // Background colors - Clean, modern layers
+  --bg-color: #f8fafc;
+  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  --secondary-bg-color: #ffffff;
+  --tertiary-bg-color: #f1f5f9;
+  --chat-bg-user: #eff6ff;
+  --chat-bg-assistant: #ffffff;
+
+  // Text colors
+  --text-color: #1e293b;
+  --text-secondary: #64748b;
+  --text-tertiary: #94a3b8;
+  --text-color-lighten-20: #475569;
+  --icon-color: var(--text-secondary);
+  --light-text-color: #ffffff;
+
+  // Button colors
+  --button-primary-color: #ffffff;
+  --button-primary-bgcolor: var(--primary-color);
   --button-secondary-color: var(--text-color);
-  --button-secondary-bgcolor: $bg-color;
-  --border-color: #{color.adjust(#393e46, $lightness:60%)};
-  --border-hover-color: #{color.adjust(#393e46, $lightness:40%)};
-  --border-focus-color: #{color.adjust(#393e46, $lightness:30%)};
-  --box-shadow-color: rgb(196 204 213 / 37%);
-  --box-shadow-modal-color: #444;
-  --modal-header-bg-color: var(--primary-color);
+  --button-secondary-bgcolor: var(--secondary-bg-color);
+
+  // Border colors - Subtle and refined
+  --border-color: #e2e8f0;
+  --border-hover-color: #cbd5e1;
+  --border-focus-color: var(--primary-color);
+
+  // Shadow colors - Layered depth
+  --box-shadow-color: rgba(15, 23, 42, 0.08);
+  --box-shadow-hover-color: rgba(15, 23, 42, 0.12);
+  --box-shadow-modal-color: rgba(15, 23, 42, 0.2);
+
+  // Modal colors
+  --modal-header-bg-color: var(--secondary-bg-color);
+  --modal-backdrop: rgba(15, 23, 42, 0.4);
+
+  // Input colors
+  --input-bg: #ffffff;
+  --input-border: #e2e8f0;
+  --input-focus-bg: #ffffff;
 }
 
-// Dark theme for users who prefer dark mode
+// Modern Dark theme - Elegant and eye-friendly
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary-color: #4f5b66;
-    --secondary-color: #1c2025;
-    --secondary-color-lighten-20: #{color.adjust(#1c2025, $lightness:20%)};
-    --secondary-color-lighten-40: #{color.adjust(#1c2025, $lightness:40%)};
-    --tertiary-color: #d1d1d1;
-    --error-color: #ff6b6b;
-    --bg-color: #121212;
-    --secondary-bg-color: #222;
-    --text-color: #fafafa;
-    --text-color-lighten-20: #{color.adjust(#fafafa, $lightness:20%)};
-    --icon-color: var(--text-color);
-    --light-text-color: #fff;
-    --button-primary-color: #fff;
+    // Brand colors - Softer in dark mode
+    --primary-color: #818cf8;
+    --primary-hover: #a5b4fc;
+    --primary-light: #c7d2fe;
+    --accent-color: #a78bfa;
+    --accent-hover: #c4b5fd;
+
+    // Semantic colors
+    --secondary-color: #e2e8f0;
+    --secondary-color-lighten-20: #cbd5e1;
+    --secondary-color-lighten-40: #94a3b8;
+    --tertiary-color: #334155;
+    --error-color: #f87171;
+    --success-color: #34d399;
+    --warning-color: #fbbf24;
+
+    // Background colors - Rich dark tones
+    --bg-color: #0f172a;
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --secondary-bg-color: #1e293b;
+    --tertiary-bg-color: #334155;
+    --chat-bg-user: #1e3a5f;
+    --chat-bg-assistant: #1e293b;
+
+    // Text colors
+    --text-color: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --text-color-lighten-20: #e2e8f0;
+    --icon-color: var(--text-secondary);
+    --light-text-color: #ffffff;
+
+    // Button colors
+    --button-primary-color: #0f172a;
     --button-primary-bgcolor: var(--primary-color);
     --button-secondary-color: var(--text-color);
-    --button-secondary-bgcolor: var(--bg-color);
-    --border-color: #{color.adjust(#4f5b66, $lightness:30%)};
-    --border-hover-color: #{color.adjust(#4f5b66, $lightness:50%)};
-    --border-focus-color: #{color.adjust(#4f5b66, $lightness:60%)};
-    --box-shadow-color: rgb(40 48 57 / 30%);
-    --box-shadow-modal-color: #444;
-    --modal-header-bg-color: var(--bg-color);
+    --button-secondary-bgcolor: var(--secondary-bg-color);
+
+    // Border colors
+    --border-color: #334155;
+    --border-hover-color: #475569;
+    --border-focus-color: var(--primary-color);
+
+    // Shadow colors - Deeper in dark mode
+    --box-shadow-color: rgba(0, 0, 0, 0.3);
+    --box-shadow-hover-color: rgba(0, 0, 0, 0.4);
+    --box-shadow-modal-color: rgba(0, 0, 0, 0.6);
+
+    // Modal colors
+    --modal-header-bg-color: var(--secondary-bg-color);
+    --modal-backdrop: rgba(0, 0, 0, 0.6);
+
+    // Input colors
+    --input-bg: #1e293b;
+    --input-border: #334155;
+    --input-focus-bg: #1e293b;
   }
 }

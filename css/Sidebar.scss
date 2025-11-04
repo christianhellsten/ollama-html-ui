@@ -1,29 +1,50 @@
 #sidebar {
-  @extend %box-shadow;
-
-  background-color: var(--secondary-bg-color);
-  border-right: 1px solid #cccccc5e;
-  min-width: 200px;
-  max-width: 480px;
+  background: var(--secondary-bg-color);
+  border-right: 1px solid var(--border-color);
+  min-width: 260px;
+  max-width: 320px;
   overflow-y: auto;
+  @extend %box-shadow-small;
+  @extend %transition-base;
 
   .buttons {
     width: 100%;
     display: flex;
     flex-grow: 1;
+    gap: 0.5rem;
+    padding: 1rem;
   }
 }
 
 #search-input {
-  padding-left: 0.75rem;
+  padding-left: 1rem;
+  border-radius: $border-radius-lg;
+  background-color: var(--tertiary-bg-color);
+  border: 1px solid transparent;
+
+  &:focus {
+    background-color: var(--input-focus-bg);
+    border-color: var(--border-focus-color);
+  }
 }
 
 #sidebar.collapsed {
   min-width: 0;
   max-width: 0;
   padding: 0;
+  border-right: none;
+  box-shadow: none;
 }
 
 #new-chat-button {
-  padding: .5rem 1.25rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: $border-radius-lg;
+  background: var(--primary-color);
+  color: var(--button-primary-color);
+
+  &:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+  }
 }

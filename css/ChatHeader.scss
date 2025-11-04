@@ -1,31 +1,40 @@
 #chat-header {
-  // NOTE: Should match #chat-form border-top
-  border-bottom: 1px solid #ddd;
-
-  @extend %box-shadow;
-
+  border-bottom: 1px solid var(--border-color);
+  background: var(--secondary-bg-color);
+  padding: 0.75rem 1rem;
+  @extend %box-shadow-small;
   z-index: 4;
 
   .button {
     height: 100%;
+    border-radius: $border-radius;
   }
 }
 
 .hamburger-menu {
   cursor: pointer;
-  padding-left: 0.75rem;
-  padding-right: 0.5rem;
-  display: inline-block;
-}
+  padding: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  border-radius: $border-radius;
+  @extend %transition-base;
 
-.hamburger-menu:hover {
-  @extend %box-shadow;
+  &:hover {
+    background: var(--tertiary-bg-color);
+    @extend %box-shadow-small;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .hamburger-menu .bar {
   width: 1.5rem;
-  height: 2px;
-  background-color: #333;
-  margin: 6px 0;
-  transition: 0.4s;
+  height: 2.5px;
+  background-color: var(--text-color);
+  margin: 4px 0;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

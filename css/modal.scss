@@ -1,54 +1,67 @@
 .modal {
-  display: flex; // Positioned behind other elements so not visible
+  display: flex;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgb(0 0 0 / 50%); /* semi-transparent background */
+  background-color: var(--modal-backdrop);
+  backdrop-filter: blur(4px);
   z-index: -1; /* Start behind other elements */
   overflow: scroll;
   opacity: 0; /* Start invisible */
   pointer-events: none; /* Prevent interaction when modal is not visible */
+  @extend %transition-base;
 }
 
 .modal-header {
   font-weight: 700;
   background-color: var(--modal-header-bg-color);
-  padding: 0 1rem;
+  padding: 1.25rem 1.5rem;
   border-bottom: 1px solid var(--border-color);
+  border-radius: $border-radius-xl $border-radius-xl 0 0;
 
   .button {
     color: var(--text-color);
-    background-color: var(--bg-color);
-    padding: 0.35rem;
-    line-height: 0.5rem;
-    border-radius: 0.1rem;
+    background-color: var(--tertiary-bg-color);
+    padding: 0.5rem;
+    line-height: 1;
+    border-radius: $border-radius-sm;
+    @extend %transition-colors;
+
+    &:hover {
+      background-color: var(--error-color);
+      color: var(--light-text-color);
+    }
   }
 
   h2 {
-    color: var(--light-text-color);
-
+    color: var(--text-color);
+    font-size: 1.5rem;
     @extend %font-weight-boldest;
+    margin: 0;
   }
 }
 
 .modal-content {
-  background: var(--bg-color);
+  background: var(--secondary-bg-color);
   width: 640px;
   min-width: 320px;
   max-width: 50vw;
   margin: auto; /* Center the modal */
-  // border-radius: 2px;
-  // overflow: hidden; /* Ensures the border-radius applies to children */
+  border-radius: $border-radius-xl;
+  overflow: hidden; /* Ensures the border-radius applies to children */
+  border: 1px solid var(--border-color);
   @extend %box-shadow-modal;
 }
 
 .modal-body {
-  padding: 1rem;
+  padding: 1.5rem;
+  background: var(--bg-color);
 }
 
 .modal.show {
   z-index: 20000;
   opacity: 1; /* Fully visible */
+  pointer-events: auto;
 }

@@ -1,0 +1,704 @@
+/* ============================================
+   CSS Variables & Theme
+   ============================================ */
+:root {
+  /* Colors */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f5;
+  --color-bg-tertiary: #e8e8e8;
+  --color-bg-sidebar: #fafafa;
+  --color-bg-hover: #f0f0f0;
+  --color-bg-active: #e0e0e0;
+
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+
+  --color-border: #e0e0e0;
+  --color-border-light: #f0f0f0;
+  --color-border-dark: #cccccc;
+
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-active: #1e40af;
+
+  --color-secondary: #64748b;
+  --color-secondary-hover: #475569;
+
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  --color-user-bg: #eff6ff;
+  --color-ai-bg: #f9fafb;
+  --color-ai-avatar: #6366f1;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Borders */
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-full: 9999px;
+
+  --border-width: 1px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Layout */
+  --sidebar-width: 260px;
+  --chat-controls-width: 60px;
+  --header-height: 60px;
+  --model-selector-height: 48px;
+  --form-height: auto;
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+  --transition-slow: 350ms ease-in-out;
+
+  /* Z-index */
+  --z-dropdown: 100;
+  --z-modal: 1000;
+  --z-toast: 2000;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-primary: #1a1a1a;
+    --color-bg-secondary: #2a2a2a;
+    --color-bg-tertiary: #3a3a3a;
+    --color-bg-sidebar: #1f1f1f;
+    --color-bg-hover: #333333;
+    --color-bg-active: #404040;
+
+    --color-text-primary: #f5f5f5;
+    --color-text-secondary: #b0b0b0;
+    --color-text-tertiary: #808080;
+
+    --color-border: #404040;
+    --color-border-light: #333333;
+    --color-border-dark: #555555;
+
+    --color-primary: #3b82f6;
+    --color-primary-hover: #2563eb;
+    --color-primary-active: #1d4ed8;
+
+    --color-user-bg: #1e3a5f;
+    --color-ai-bg: #2a2a2a;
+    --color-ai-avatar: #818cf8;
+  }
+}
+
+/* ============================================
+   Reset & Base Styles
+   ============================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+svg {
+  fill: currentColor;
+}
+
+/* ============================================
+   Layout - CSS Grid
+   ============================================ */
+#app {
+  display: grid;
+  grid-template-rows: var(--header-height) 1fr var(--model-selector-height) auto;
+  grid-template-columns: 1fr;
+  height: 100vh;
+  width: 100%;
+}
+
+.chat-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 0 var(--space-lg);
+  background-color: var(--color-bg-primary);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr var(--chat-controls-width);
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.chat-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  outline: none;
+  cursor: text;
+  padding: var(--space-sm);
+  border-radius: var(--border-radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.chat-title:hover,
+.chat-title:focus {
+  background-color: var(--color-bg-hover);
+}
+
+/* ============================================
+   Sidebar
+   ============================================ */
+.sidebar {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  background-color: var(--color-bg-sidebar);
+  border-right: var(--border-width) solid var(--color-border);
+  overflow: hidden;
+}
+
+.sidebar-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-bottom: var(--border-width) solid var(--color-border-light);
+}
+
+.search-container {
+  padding: var(--space-md);
+  border-bottom: var(--border-width) solid var(--color-border-light);
+}
+
+.search-input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.search-input:focus {
+  border-color: var(--color-primary);
+}
+
+.chat-list {
+  overflow-y: auto;
+  padding: var(--space-sm);
+}
+
+.chat-list-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.chat-list-item:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.chat-list-item.active {
+  background-color: var(--color-bg-active);
+}
+
+.chat-list-title {
+  font-size: var(--font-size-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-list-item .delete-btn {
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.chat-list-item:hover .delete-btn {
+  opacity: 1;
+}
+
+/* ============================================
+   Chat Area
+   ============================================ */
+.chat-area {
+  display: grid;
+  grid-template-columns: 1fr var(--chat-controls-width);
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-bg-primary);
+}
+
+.chat-history {
+  overflow-y: auto;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ============================================
+   Messages
+   ============================================ */
+.message {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-radius: var(--border-radius-lg);
+  transition: background-color var(--transition-fast);
+}
+
+.message:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.message.user-message {
+  background-color: var(--color-user-bg);
+}
+
+.message.ai-message {
+  background-color: var(--color-ai-bg);
+}
+
+.message-avatar {
+  display: flex;
+  align-items: flex-start;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--border-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+}
+
+.ai-avatar {
+  background-color: var(--color-ai-avatar);
+  color: white;
+}
+
+.message-content {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: var(--space-sm);
+}
+
+.message-text {
+  color: var(--color-text-primary);
+}
+
+.message-text p {
+  margin-bottom: var(--space-md);
+}
+
+.message-text p:last-child {
+  margin-bottom: 0;
+}
+
+.message-text ul,
+.message-text ol {
+  list-style: disc;
+  margin-left: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.message-text ol {
+  list-style: decimal;
+}
+
+.message-text code {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-bg-secondary);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--border-radius-sm);
+}
+
+.message-text pre {
+  background-color: var(--color-bg-secondary);
+  padding: var(--space-md);
+  border-radius: var(--border-radius-md);
+  overflow-x: auto;
+  margin-bottom: var(--space-md);
+}
+
+.message-text pre code {
+  background: none;
+  padding: 0;
+}
+
+.message-actions {
+  display: flex;
+  gap: var(--space-xs);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.message:hover .message-actions {
+  opacity: 1;
+}
+
+/* ============================================
+   Chat Controls
+   ============================================ */
+.chat-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-sm);
+  border-left: var(--border-width) solid var(--color-border);
+  background-color: var(--color-bg-sidebar);
+}
+
+/* ============================================
+   Model Selector
+   ============================================ */
+.model-selector {
+  display: flex;
+  align-items: center;
+  padding: var(--space-sm) var(--space-lg);
+  border-top: var(--border-width) solid var(--color-border);
+  background-color: var(--color-bg-primary);
+}
+
+.model-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.model-name {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ============================================
+   Chat Form
+   ============================================ */
+.chat-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-top: var(--border-width) solid var(--color-border);
+  background-color: var(--color-bg-primary);
+}
+
+.input-container {
+  position: relative;
+}
+
+.message-input {
+  width: 100%;
+  min-height: 52px;
+  max-height: 200px;
+  padding: var(--space-md);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  line-height: var(--line-height-normal);
+  resize: none;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.message-input:focus {
+  border-color: var(--color-primary);
+}
+
+.form-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-sm);
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-primary:active {
+  background-color: var(--color-primary-active);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.btn-sm {
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--font-size-sm);
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-md);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background-color: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.icon-btn:active {
+  background-color: var(--color-bg-active);
+}
+
+/* ============================================
+   Dropdown
+   ============================================ */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + var(--space-xs));
+  right: 0;
+  min-width: 200px;
+  background-color: var(--color-bg-primary);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-sm);
+  z-index: var(--z-dropdown);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all var(--transition-fast);
+}
+
+.dropdown.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+  text-align: left;
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.dropdown-item:hover {
+  background-color: var(--color-bg-hover);
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+.hidden {
+  display: none !important;
+}
+
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: var(--border-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-border-dark);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 0;
+    --chat-controls-width: 0;
+  }
+
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar,
+  .chat-controls {
+    display: none;
+  }
+
+  .sidebar.visible {
+    display: grid;
+    position: fixed;
+    left: 0;
+    top: var(--header-height);
+    bottom: 0;
+    width: 280px;
+    z-index: var(--z-dropdown);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .chat-area {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-history {
+    padding: var(--space-md);
+  }
+
+  .message {
+    padding: var(--space-md);
+  }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+  .sidebar,
+  .chat-controls,
+  .chat-header,
+  .model-selector,
+  .chat-form,
+  .message-actions {
+    display: none !important;
+  }
+
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-area {
+    grid-template-columns: 1fr;
+  }
+
+  .message {
+    break-inside: avoid;
+  }
+}

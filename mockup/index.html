@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat - Static Mockup</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Main Application Container -->
+  <div id="app">
+
+    <!-- Header -->
+    <header class="chat-header">
+      <button class="icon-btn hamburger-btn" aria-label="Toggle sidebar" title="Toggle sidebar">
+        <svg width="24" height="24" viewBox="0 0 24 24">
+          <rect x="4" y="6" width="16" height="2"/>
+          <rect x="4" y="11" width="16" height="2"/>
+          <rect x="4" y="16" width="16" height="2"/>
+        </svg>
+      </button>
+
+      <h1 class="chat-title" contenteditable="true" spellcheck="false">New Chat</h1>
+
+      <button class="icon-btn settings-btn" aria-label="Settings" title="Settings">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="4.25" y="4.25" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+          <rect x="14.75" y="4.25" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+          <rect x="4.25" y="14.75" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+          <rect x="14.75" y="14.75" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <button class="btn btn-primary new-chat-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            New Chat
+          </button>
+
+          <div class="dropdown">
+            <button class="icon-btn menu-btn" aria-label="Chats menu" title="Chats menu">
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <circle cx="12" cy="5" r="2"/>
+                <circle cx="12" cy="12" r="2"/>
+                <circle cx="12" cy="19" r="2"/>
+              </svg>
+            </button>
+            <div class="dropdown-menu">
+              <button class="dropdown-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.35-4.35"/>
+                </svg>
+                Search chats
+              </button>
+              <button class="dropdown-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download chats
+              </button>
+              <button class="dropdown-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                Delete chats
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-container hidden">
+          <input type="search" class="search-input" placeholder="Search...">
+        </div>
+
+        <ul class="chat-list">
+          <li class="chat-list-item active">
+            <span class="chat-list-title">New Chat</span>
+            <button class="icon-btn delete-btn" aria-label="Delete chat">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+            </button>
+          </li>
+          <li class="chat-list-item">
+            <span class="chat-list-title">Code review discussion</span>
+            <button class="icon-btn delete-btn" aria-label="Delete chat">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+            </button>
+          </li>
+          <li class="chat-list-item">
+            <span class="chat-list-title">Python debugging help</span>
+            <button class="icon-btn delete-btn" aria-label="Delete chat">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Chat Area -->
+      <div class="chat-area">
+        <div class="chat-history">
+
+          <!-- Sample User Message -->
+          <div class="message user-message">
+            <div class="message-avatar">
+              <div class="avatar">You</div>
+            </div>
+            <div class="message-content">
+              <div class="message-text">
+                <p>Hello! Can you help me understand how CSS Grid works?</p>
+              </div>
+              <div class="message-actions">
+                <button class="icon-btn" title="Copy message">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                </button>
+                <button class="icon-btn" title="Delete message">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sample AI Message -->
+          <div class="message ai-message">
+            <div class="message-avatar">
+              <div class="avatar ai-avatar">AI</div>
+            </div>
+            <div class="message-content">
+              <div class="message-text">
+                <p>Of course! CSS Grid is a powerful two-dimensional layout system in CSS. Here's what makes it special:</p>
+                <ul>
+                  <li><strong>Two-dimensional:</strong> Unlike Flexbox (which is one-dimensional), Grid can handle both rows and columns simultaneously.</li>
+                  <li><strong>Grid Container:</strong> You start by setting <code>display: grid</code> on a parent element.</li>
+                  <li><strong>Grid Template:</strong> Use <code>grid-template-columns</code> and <code>grid-template-rows</code> to define the structure.</li>
+                </ul>
+                <p>Here's a simple example:</p>
+                <pre><code>.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-gap: 1rem;
+}</code></pre>
+                <p>This creates a three-column layout where the middle column is twice as wide as the others. Would you like me to explain any specific aspect in more detail?</p>
+              </div>
+              <div class="message-actions">
+                <button class="icon-btn" title="Copy message">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                </button>
+                <button class="icon-btn" title="Good response">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                  </svg>
+                </button>
+                <button class="icon-btn" title="Bad response">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/>
+                  </svg>
+                </button>
+                <button class="icon-btn" title="Flag message">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                    <line x1="4" y1="22" x2="4" y2="15"/>
+                  </svg>
+                </button>
+                <button class="icon-btn" title="Delete message">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Another User Message -->
+          <div class="message user-message">
+            <div class="message-avatar">
+              <div class="avatar">You</div>
+            </div>
+            <div class="message-content">
+              <div class="message-text">
+                <p>Yes! Can you explain what 'fr' units mean?</p>
+              </div>
+              <div class="message-actions">
+                <button class="icon-btn" title="Copy message">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                </button>
+                <button class="icon-btn" title="Delete message">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Chat Controls Sidebar -->
+        <aside class="chat-controls">
+          <div class="dropdown">
+            <button class="icon-btn" title="Chat menu">
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <circle cx="12" cy="5" r="2"/>
+                <circle cx="12" cy="12" r="2"/>
+                <circle cx="12" cy="19" r="2"/>
+              </svg>
+            </button>
+            <div class="dropdown-menu">
+              <button class="dropdown-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                Edit title
+              </button>
+              <button class="dropdown-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                Copy chat
+              </button>
+              <button class="dropdown-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                Delete chat
+              </button>
+              <button class="dropdown-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download chat
+              </button>
+              <button class="dropdown-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="4.25" y="4.25" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+                  <rect x="14.75" y="4.25" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+                  <rect x="4.25" y="14.75" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+                  <rect x="14.75" y="14.75" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Chat settings
+              </button>
+            </div>
+          </div>
+
+          <button class="icon-btn scroll-btn" title="Scroll to top">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="18 15 12 9 6 15"/>
+            </svg>
+          </button>
+
+          <button class="icon-btn scroll-btn" title="Scroll to bottom">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+        </aside>
+
+      </div>
+    </main>
+
+    <!-- Model Selector -->
+    <div class="model-selector">
+      <button class="btn btn-sm model-btn">
+        <span class="model-name">llama3.2:latest</span>
+        <svg width="16" height="16" viewBox="0 0 24 24">
+          <circle cx="12" cy="5" r="2"/>
+          <circle cx="12" cy="12" r="2"/>
+          <circle cx="12" cy="19" r="2"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Chat Input Form -->
+    <form class="chat-form">
+      <div class="input-container">
+        <textarea
+          class="message-input"
+          placeholder="Message..."
+          rows="1"
+          aria-label="Message input"
+        ></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary send-btn hidden" title="Send message">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+        <button type="button" class="btn btn-secondary abort-btn hidden" title="Abort">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="15" y1="9" x2="9" y2="15"/>
+            <line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
+        </button>
+      </div>
+    </form>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
